@@ -1,5 +1,6 @@
 // apps/api/src/shared/middleware/error.middleware.ts
 import type { NextFunction, Request, Response } from 'express';
+import multer from 'multer';
 import { ZodError } from 'zod';
 import { env } from '../config/env';
 import { AppError } from '../utils/app-error';
@@ -20,6 +21,15 @@ export const errorMiddleware = (
       error: err.error,
       message: err.message,
       details: err.details,
+    });
+    return;
+  }
+  if (err instanceof multer.MulterError) {
+    const message = err.code === 'LIMIT_FILE_SIZE' ? 'File too large (max 10MB)' : err.message;
+    res.status(400).json({
+      statusCode: 400,
+      error: 'Bad Request',
+      message,
     });
     return;
   }

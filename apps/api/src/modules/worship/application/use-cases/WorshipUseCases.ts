@@ -151,15 +151,39 @@ export class WorshipUseCases {
   async listRehearsals(ministryId?: string) {
     return prisma.rehearsal.findMany({
       where: ministryId ? { ministryId } : {},
-      include: { songs: { include: { song: true } }, attendance: true },
+      include: { songs: { include: { song: true }, orderBy: { order: 'asc' } }, attendance: true },
       orderBy: { date: 'desc' },
     });
   }
 
-  async markSongReady(rehearsalId: string, songId: string, isReady: boolean) {
+  async getRehearsal(id: string) {
+    const rehearsal = await prisma.rehearsal.findUnique({
+      where: { id },
+      include: { songs: { include: { song: true }, orderBy: { order: 'asc' } }, attendance: true },
+    });
+    if (!rehearsal) {
+      throw AppError.notFound('Rehearsal not found');
+    }
+    return rehearsal;
+  }
+
+  async addRehearsalSong(rehearsalId: string, input: { songId: string; order: number; key: string }) {
+    await this.getRehearsal(rehearsalId);
+    return prisma.rehearsalSong.create({
+      data: { rehearsalId, songId: input.songId, order: input.order, key: input.key },
+      include: { song: true },
+    });
+  }
+
+  async updateRehearsalSong(
+    rehearsalId: string,
+    songId: string,
+    input: { isReady?: boolean; key?: string; order?: number },
+  ) {
     return prisma.rehearsalSong.update({
       where: { rehearsalId_songId: { rehearsalId, songId } },
-      data: { isReady },
+      data: input,
+      include: { song: true },
     });
   }
 

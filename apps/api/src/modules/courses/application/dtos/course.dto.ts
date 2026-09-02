@@ -32,6 +32,21 @@ export const createLessonBodySchema = z.object({
   assignmentDescription: z.string().max(5000).optional(),
 });
 
+export const updateLessonBodySchema = z.object({
+  title: z.string().min(2).max(180).optional(),
+  bodyContent: z.unknown().optional(),
+  moduleId: z.string().min(1).nullable().optional(),
+  youtubeUrl: z.string().optional(),
+  order: z.number().int().nonnegative().optional(),
+  status: z.enum(['DRAFT', 'PUBLISHED']).optional(),
+  hasAssignment: z.boolean().optional(),
+  assignmentDescription: z.string().max(5000).nullable().optional(),
+});
+
+export const oembedQuerySchema = z.object({
+  url: z.string().min(1),
+});
+
 export const enrollBodySchema = z.object({
   userId: z.string().min(1),
 });

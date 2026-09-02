@@ -26,6 +26,9 @@ import { worshipRouter } from './modules/worship/interface/routes/worship.routes
 import { notificationRouter } from './modules/notifications/interface/routes/notification.routes';
 import { developerRouter } from './modules/developer/interface/routes/developer.routes';
 import { dashboardRouter } from './modules/dashboard/interface/routes/dashboard.routes';
+import { uploadRouter } from './modules/uploads/interface/routes/upload.routes';
+import { settingRouter } from './modules/settings/interface/routes/setting.routes';
+import { UPLOADS_DIR } from './modules/uploads/infrastructure/UploadService';
 
 /**
  * Builds the Express application with security middleware and module routers.
@@ -49,7 +52,7 @@ const applySecurity = (app: Express): void => {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
-          imgSrc: ["'self'", 'data:', 'https://*.amazonaws.com'],
+          imgSrc: ["'self'", 'data:', 'https://*.amazonaws.com', 'https://i.ytimg.com', 'https://img.youtube.com'],
           mediaSrc: ["'self'", 'https://www.youtube.com'],
           frameSrc: ['https://www.youtube.com'],
           connectSrc: ["'self'"],
@@ -119,6 +122,7 @@ const registerRoutes = (app: Express): void => {
   if (env.NODE_ENV !== 'production') {
     app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(buildOpenApiDocument()));
   }
+  app.use('/uploads', express.static(UPLOADS_DIR));
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
   app.use('/api/ministries', ministryRouter);
@@ -133,4 +137,6 @@ const registerRoutes = (app: Express): void => {
   app.use('/api/notifications', notificationRouter);
   app.use('/api/developer', developerRouter);
   app.use('/api/dashboard', dashboardRouter);
+  app.use('/api/uploads', uploadRouter);
+  app.use('/api/settings', settingRouter);
 };

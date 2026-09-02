@@ -15,6 +15,8 @@ import {
   createModuleBodySchema,
   enrollBodySchema,
   lessonIdParamsSchema,
+  oembedQuerySchema,
+  updateLessonBodySchema,
 } from '../../application/dtos/course.dto';
 import { CourseUseCases } from '../../application/use-cases/CourseUseCases';
 
@@ -67,6 +69,15 @@ courseRouter.get(
   '/',
   asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     sendSuccess(res, await useCases.list(actorOf(req)));
+  }),
+);
+courseRouter.get(
+  '/oembed',
+  requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']),
+  validate({ query: oembedQuerySchema }),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const url = typeof req.query.url === 'string' ? req.query.url : '';
+    sendSuccess(res, await useCases.previewYoutube(url));
   }),
 );
 courseRouter.post(
@@ -139,6 +150,21 @@ courseRouter.patch(
  *       200:
  *         description: Progreso actualizado
  */
+lessonRouter.get(
+  '/:id',
+  validate({ params: lessonIdParamsSchema }),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    sendSuccess(res, await useCases.getLesson(actorOf(req), req.params.id));
+  }),
+);
+lessonRouter.patch(
+  '/:id',
+  requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']),
+  validate({ params: lessonIdParamsSchema, body: updateLessonBodySchema }),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    sendSuccess(res, await useCases.updateLesson(actorOf(req), req.params.id, req.body));
+  }),
+);
 lessonRouter.post(
   '/:id/complete',
   validate({ params: lessonIdParamsSchema }),

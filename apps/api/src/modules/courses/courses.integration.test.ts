@@ -47,6 +47,21 @@ describe('Courses HTTP', () => {
       .get(`/api/courses/${courseId}/progress`)
       .set(authHeader(studentToken));
     expect(progress.body.data.percent).toBe(100);
+    const fetched = await request(app)
+      .get(`/api/lessons/${lesson.body.data.id}`)
+      .set(authHeader(studentToken));
+    expect(fetched.status).toBe(200);
+    expect(fetched.body.data.title).toBe('Gracia');
+  });
+
+  it('rejects an invalid YouTube URL on oEmbed preview', async () => {
+    const leader = await createTestUser('LEADER', `${suffix}yt`);
+    const token = await loginToken(app, leader.email, leader.password);
+    const response = await request(app)
+      .get('/api/courses/oembed')
+      .query({ url: 'https://example.com/not-youtube' })
+      .set(authHeader(token));
+    expect(response.status).toBe(422);
   });
 
   it('forbids a student from creating courses', async () => {

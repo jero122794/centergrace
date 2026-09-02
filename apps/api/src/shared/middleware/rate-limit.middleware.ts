@@ -53,14 +53,17 @@ export const generalLimiter: RequestHandler =
         ...storeFor('rl:general:'),
       });
 
-export const uploadLimiter = rateLimit({
-  windowMs: UPLOAD_RATE_LIMIT_WINDOW_MS,
-  max: UPLOAD_RATE_LIMIT_MAX,
-  standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: (req) => {
-    const userId = (req as { user?: { sub?: string } }).user?.sub;
-    return userId ?? req.ip ?? 'anonymous';
-  },
-  ...storeFor('rl:upload:'),
-});
+export const uploadLimiter: RequestHandler =
+  env.NODE_ENV === 'test'
+    ? passthrough
+    : rateLimit({
+        windowMs: UPLOAD_RATE_LIMIT_WINDOW_MS,
+        max: UPLOAD_RATE_LIMIT_MAX,
+        standardHeaders: true,
+        legacyHeaders: false,
+        keyGenerator: (req) => {
+          const userId = (req as { user?: { sub?: string } }).user?.sub;
+          return userId ?? req.ip ?? 'anonymous';
+        },
+        ...storeFor('rl:upload:'),
+      });

@@ -35,6 +35,24 @@ export const applyAuditionBodySchema = z.object({
     .optional(),
 });
 
+export const rehearsalIdParamsSchema = z.object({ id: z.string().min(1) });
+export const rehearsalSongParamsSchema = z.object({
+  id: z.string().min(1),
+  songId: z.string().min(1),
+});
+
+export const addRehearsalSongBodySchema = z.object({
+  songId: z.string().min(1),
+  order: z.number().int().nonnegative(),
+  key: z.string().min(1).max(8),
+});
+
+export const updateRehearsalSongBodySchema = z.object({
+  isReady: z.boolean().optional(),
+  key: z.string().min(1).max(8).optional(),
+  order: z.number().int().nonnegative().optional(),
+});
+
 export const updateAuditionBodySchema = z.object({
   status: z.enum(['PENDING', 'SCHOOL', 'ELIGIBLE', 'SCHEDULED', 'APPROVED', 'REJECTED', 'WAITLIST']),
   scheduledAt: z.string().datetime().optional(),

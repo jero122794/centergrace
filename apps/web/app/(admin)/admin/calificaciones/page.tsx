@@ -2,40 +2,63 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { useState } from 'react';
+import { GradeBadge } from '@/components/grading/GradeBadge';
+import { SubmissionReviewer, type SubmissionForReview } from '@/components/grading/SubmissionReviewer';
 
 const GradesPage = () => {
   const client = useQueryClient();
-  const [scores, setScores] = useState<Record<string, number>>({});
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const query = useQuery({
     queryKey: ['submissions'],
-    queryFn: async () => (await api.get('/api/submissions')).data.data,
+    queryFn: async () => (await api.get('/api/submissions')).data.data as SubmissionForReview[],
   });
+  const selected = query.data?.find((item) => item.id === selectedId) ?? query.data?.[0] ?? null;
   const grade = useMutation({
-    mutationFn: async (id: string) => api.put(`/api/grades/${id}`, { score: scores[id] ?? 0, feedback: 'Bien hecho' }),
+    mutationFn: async (values: { score: number; feedback: string }) => {
+      if (!selected) {
+        return;
+      }
+      await api.put(`/api/grades/${selected.id}`, values);
+    },
     onSuccess: () => client.invalidateQueries({ queryKey: ['submissions'] }),
   });
 
   return (
     <div className="space-y-4">
       <h1 className="font-display text-3xl text-teal">Calificaciones</h1>
-      {query.data?.map((item: { id: string; content: string; user: { name: string }; status: string }) => (
-        <Card key={item.id} className="space-y-2">
-          <p className="font-medium">{item.user.name}</p>
-          <p className="text-sm">{item.content}</p>
-          <input
-            type="number"
-            min={0}
-            max={100}
-            className="rounded-xl border px-3 py-2"
-            onChange={(event) => setScores((current) => ({ ...current, [item.id]: Number(event.target.value) }))}
-          />
-          <Button onClick={() => grade.mutate(item.id)}>Calificar</Button>
-        </Card>
-      ))}
+      {query.isLoading ? <p>Cargando entregas…</p> : null}
+      {query.isError ? <p className="text-red-600">No se pudieron cargar las entregas.</p> : null}
+      {!query.isLoading && query.data?.length === 0 ? <p>No hay trabajos pendientes.</p> : null}
+      {query.data && query.data.length > 0 ? (
+        <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+          <div className="space-y-2">
+            {query.data.map((item) => (
+              <button key={item.id} type="button" className="w-full text-left" onClick={() => setSelectedId(item.id)}>
+                <Card className={selected?.id === item.id ? 'ring-2 ring-teal' : ''}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="font-medium">{item.user.name}</p>
+                      <p className="text-xs text-slate-500">{item.lesson.title}</p>
+                    </div>
+                    <GradeBadge score={item.grade?.score ?? null} status={item.status} />
+                  </div>
+                </Card>
+              </button>
+            ))}
+          </div>
+          {selected ? (
+            <SubmissionReviewer
+              key={selected.id}
+              submission={selected}
+              submitting={grade.isPending}
+              onGrade={(values) => grade.mutate(values)}
+            />
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 };

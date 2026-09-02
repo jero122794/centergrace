@@ -5,8 +5,11 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import Link from 'next/link';
+import { useAuthStore } from '@/store/auth.store';
 
 const DevotionalsPage = () => {
+  const role = useAuthStore((state) => state.user?.role);
+  const canCreate = role === 'LEADER' || role === 'ADMIN' || role === 'DEVELOPER';
   const today = useQuery({
     queryKey: ['devotional-today'],
     queryFn: async () => (await api.get('/api/devotionals/today')).data.data,
@@ -14,7 +17,14 @@ const DevotionalsPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Devocionales</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="font-display text-3xl text-teal">Devocionales</h1>
+        {canCreate ? (
+          <Link className="text-sm font-semibold text-teal" href="/admin/devocional/nuevo">
+            Crear
+          </Link>
+        ) : null}
+      </div>
       <Card>
         {today.data ? (
           <div>

@@ -10,10 +10,14 @@ import { validate } from '../../../../shared/middleware/validate.middleware';
 import { sendSuccess } from '../../../../shared/utils/http';
 import { AppError } from '../../../../shared/utils/app-error';
 import {
+  addRehearsalSongBodySchema,
   applyAuditionBodySchema,
   createRehearsalBodySchema,
   createSongBodySchema,
+  rehearsalIdParamsSchema,
+  rehearsalSongParamsSchema,
   updateAuditionBodySchema,
+  updateRehearsalSongBodySchema,
 } from '../../application/dtos/worship.dto';
 import { WorshipUseCases } from '../../application/use-cases/WorshipUseCases';
 import { prisma } from '../../../../shared/config/prisma';
@@ -85,15 +89,30 @@ worshipRouter.post(
     sendSuccess(res, await useCases.createRehearsal(actor(req).id, req.body), 201);
   }),
 );
+worshipRouter.get(
+  '/rehearsals/:id',
+  validate({ params: rehearsalIdParamsSchema }),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    sendSuccess(res, await useCases.getRehearsal(req.params.id));
+  }),
+);
+worshipRouter.post(
+  '/rehearsals/:id/songs',
+  requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']),
+  validate({ params: rehearsalIdParamsSchema, body: addRehearsalSongBodySchema }),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    sendSuccess(res, await useCases.addRehearsalSong(req.params.id, req.body), 201);
+  }),
+);
 worshipRouter.patch(
   '/rehearsals/:id/songs/:songId',
   requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']),
   validate({
-    params: z.object({ id: z.string(), songId: z.string() }),
-    body: z.object({ isReady: z.boolean() }),
+    params: rehearsalSongParamsSchema,
+    body: updateRehearsalSongBodySchema,
   }),
   asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
-    sendSuccess(res, await useCases.markSongReady(req.params.id, req.params.songId, req.body.isReady));
+    sendSuccess(res, await useCases.updateRehearsalSong(req.params.id, req.params.songId, req.body));
   }),
 );
 worshipRouter.post(

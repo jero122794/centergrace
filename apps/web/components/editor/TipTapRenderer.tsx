@@ -1,12 +1,28 @@
 // apps/web/components/editor/TipTapRenderer.tsx
 'use client';
 
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+
 interface Props {
   content: unknown;
 }
 
 export const TipTapRenderer = ({ content }: Props) => {
-  const json = content as { content?: Array<{ content?: Array<{ text?: string }>; type?: string }> };
-  const text = json?.content?.map((node) => node.content?.map((item) => item.text).join(' ') ?? '').join('\n\n');
-  return <div className="prose max-w-none whitespace-pre-wrap text-ink">{text}</div>;
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: (content as object) ?? { type: 'doc', content: [{ type: 'paragraph' }] },
+    editable: false,
+    immediatelyRender: false,
+  });
+
+  if (!editor) {
+    return <p className="text-sm text-slate-500">Cargando contenido…</p>;
+  }
+
+  return (
+    <div className="prose max-w-none text-ink">
+      <EditorContent editor={editor} />
+    </div>
+  );
 };

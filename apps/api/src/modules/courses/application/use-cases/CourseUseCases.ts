@@ -58,6 +58,73 @@ export class CourseUseCases {
     return prisma.courseModule.create({ data: { courseId, title, order } });
   }
 
+  async previewYoutube(url: string) {
+    return this.youtube.resolve(url);
+  }
+
+  async getLesson(actor: { id: string; role: Role }, lessonId: string) {
+    const lesson = await prisma.lesson.findUnique({
+      where: { id: lessonId },
+      include: { course: true },
+    });
+    if (!lesson) {
+      throw AppError.notFound('Lesson not found');
+    }
+    await this.assertCanView(actor, lesson.course);
+    if (actor.role === 'STUDENT' && lesson.status !== 'PUBLISHED') {
+      throw AppError.notFound('Lesson not found');
+    }
+    return lesson;
+  }
+
+  async updateLesson(
+    actor: { id: string; role: Role },
+    lessonId: string,
+    input: {
+      title?: string;
+      bodyContent?: unknown;
+      moduleId?: string | null;
+      youtubeUrl?: string;
+      order?: number;
+      status?: 'DRAFT' | 'PUBLISHED';
+      hasAssignment?: boolean;
+      assignmentDescription?: string | null;
+    },
+  ) {
+    const lesson = await this.getLesson(actor, lessonId);
+    if (actor.role === 'STUDENT') {
+      throw AppError.forbidden();
+    }
+    if (actor.role === 'LEADER' && lesson.course.createdById !== actor.id) {
+      throw AppError.forbidden();
+    }
+    const youtube =
+      input.youtubeUrl === undefined
+        ? undefined
+        : input.youtubeUrl.length > 0
+          ? await this.youtube.resolve(input.youtubeUrl)
+          : { youtubeId: null, youtubeTitle: null, youtubeThumbnail: null };
+    return prisma.lesson.update({
+      where: { id: lessonId },
+      data: {
+        title: input.title,
+        bodyContent: input.bodyContent as Prisma.InputJsonValue | undefined,
+        moduleId: input.moduleId === undefined ? undefined : input.moduleId,
+        order: input.order,
+        status: input.status,
+        hasAssignment: input.hasAssignment,
+        assignmentDescription: input.assignmentDescription,
+        ...(youtube
+          ? {
+              youtubeId: youtube.youtubeId,
+              youtubeTitle: youtube.youtubeTitle,
+              youtubeThumbnail: youtube.youtubeThumbnail,
+            }
+          : {}),
+      },
+    });
+  }
+
   async addLesson(
     actor: { id: string; role: Role },
     courseId: string,

@@ -2,46 +2,45 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { formatDateTimeBogota } from '@/lib/formatters';
+import { SetlistBuilder } from '@/components/worship/SetlistBuilder';
+
+interface RehearsalDetail {
+  id: string;
+  date: string;
+  location?: string | null;
+  notes?: string | null;
+  songs: Array<{
+    songId: string;
+    order: number;
+    key: string;
+    isReady: boolean;
+    song: { title: string; originalKey: string };
+  }>;
+}
 
 const RehearsalDetailPage = () => {
   const params = useParams<{ id: string }>();
-  const client = useQueryClient();
   const query = useQuery({
-    queryKey: ['rehearsals'],
-    queryFn: async () => (await api.get('/api/worship/rehearsals')).data.data,
-  });
-  const rehearsal = query.data?.find((item: { id: string }) => item.id === params.id);
-  const ready = useMutation({
-    mutationFn: async (songId: string) =>
-      api.patch(`/api/worship/rehearsals/${params.id}/songs/${songId}`, { isReady: true }),
-    onSuccess: () => client.invalidateQueries({ queryKey: ['rehearsals'] }),
+    queryKey: ['rehearsal', params.id],
+    queryFn: async () => (await api.get(`/api/worship/rehearsals/${params.id}`)).data.data as RehearsalDetail,
   });
 
-  if (!rehearsal) {
+  if (query.isLoading) {
     return <p>Cargando ensayo…</p>;
+  }
+  if (query.isError || !query.data) {
+    return <p className="text-red-600">No se pudo cargar el ensayo.</p>;
   }
 
   return (
     <div className="space-y-4">
       <h1 className="font-display text-3xl text-teal">Ensayo</h1>
-      <p>{formatDateTimeBogota(rehearsal.date)}</p>
-      {rehearsal.songs?.map((item: { songId: string; key: string; isReady: boolean; song: { title: string } }) => (
-        <Card key={item.songId} className="flex items-center justify-between">
-          <p>
-            {item.song.title} · {item.key}
-          </p>
-          {item.isReady ? (
-            <span>Lista</span>
-          ) : (
-            <Button onClick={() => ready.mutate(item.songId)}>Marcar lista</Button>
-          )}
-        </Card>
-      ))}
+      <p>{formatDateTimeBogota(query.data.date)}</p>
+      {query.data.location ? <p className="text-slate-600">{query.data.location}</p> : null}
+      <SetlistBuilder rehearsalId={query.data.id} songs={query.data.songs} />
     </div>
   );
 };

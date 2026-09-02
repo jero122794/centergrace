@@ -20,7 +20,14 @@ import { UpdateUserUseCase } from '../../application/use-cases/UpdateUserUseCase
 import { ChangeUserRoleUseCase } from '../../application/use-cases/ChangeUserRoleUseCase';
 import { ToggleUserActiveUseCase } from '../../application/use-cases/ToggleUserActiveUseCase';
 import { CreateStudentUseCase } from '../../application/use-cases/CreateStudentUseCase';
+import { GetMemberFollowUpUseCase } from '../../application/use-cases/GetMemberFollowUpUseCase';
 import { UserController } from '../controllers/UserController';
+import { sendSuccess } from '../../../../shared/utils/http';
+import { AppError } from '../../../../shared/utils/app-error';
+import type { Response } from 'express';
+import type { AuthenticatedRequest } from '../../../../shared/middleware/auth.middleware';
+
+const followUp = new GetMemberFollowUpUseCase();
 
 const directory = new PrismaUserDirectoryRepository();
 const controller = new UserController(
@@ -94,6 +101,18 @@ userRouter.post(
   validate({ body: createStudentBodySchema }),
   audit({ action: 'USER_CREATE_STUDENT', entity: 'User', entityIdFrom: 'body', entityIdKey: 'email' }),
   asyncHandler(controller.createStudentHandler),
+);
+
+userRouter.get(
+  '/:id/follow-up',
+  requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']),
+  validate({ params: userIdParamsSchema }),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    if (!req.user) {
+      throw AppError.unauthorized();
+    }
+    sendSuccess(res, await followUp.execute({ id: req.user.sub, role: req.user.role }, req.params.id));
+  }),
 );
 
 userRouter.patch(

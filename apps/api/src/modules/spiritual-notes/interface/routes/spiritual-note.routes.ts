@@ -17,6 +17,11 @@ const createNoteSchema = z.object({
   content: z.string().min(3).max(8000),
 });
 
+const listNotesQuerySchema = z.object({
+  userId: z.string().min(1).optional(),
+  groupId: z.string().min(1).optional(),
+});
+
 export const spiritualNoteRouter = Router();
 spiritualNoteRouter.use(authMiddleware);
 spiritualNoteRouter.use(requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']));
@@ -63,16 +68,27 @@ spiritualNoteRouter.post(
 
 spiritualNoteRouter.get(
   '/',
+  validate({ query: listNotesQuerySchema }),
   asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     if (!req.user) {
       throw AppError.unauthorized();
     }
-    const where = req.user.role === 'LEADER' ? { leaderId: req.user.sub } : {};
+    const userId = typeof req.query.userId === 'string' ? req.query.userId : undefined;
+    const groupId = typeof req.query.groupId === 'string' ? req.query.groupId : undefined;
+    const where = {
+      ...(req.user.role === 'LEADER' ? { leaderId: req.user.sub } : {}),
+      ...(userId ? { userId } : {}),
+      ...(groupId ? { groupId } : {}),
+    };
     sendSuccess(
       res,
       await prisma.spiritualNote.findMany({
         where,
-        include: { user: { select: USER_PUBLIC_SELECT } },
+        include: {
+          user: { select: USER_PUBLIC_SELECT },
+          leader: { select: USER_PUBLIC_SELECT },
+          group: { select: { id: true, name: true } },
+        },
         orderBy: { createdAt: 'desc' },
       }),
     );
