@@ -32,9 +32,9 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <div className="flex min-h-screen bg-cream">
+    <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex min-h-screen flex-1 flex-col pb-16 lg:pb-0">
+      <div className="flex min-h-screen flex-1 flex-col pb-20 lg:pb-0">
         <Topbar />
         <main className="flex-1 p-4 md:p-8">{children}</main>
       </div>

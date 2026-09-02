@@ -7,6 +7,10 @@ import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { GradeBadge } from '@/components/grading/GradeBadge';
 import { SubmissionReviewer, type SubmissionForReview } from '@/components/grading/SubmissionReviewer';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Alert } from '@/components/ui/Alert';
 
 const GradesPage = () => {
   const client = useQueryClient();
@@ -28,10 +32,12 @@ const GradesPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Calificaciones</h1>
-      {query.isLoading ? <p>Cargando entregas…</p> : null}
-      {query.isError ? <p className="text-red-600">No se pudieron cargar las entregas.</p> : null}
-      {!query.isLoading && query.data?.length === 0 ? <p>No hay trabajos pendientes.</p> : null}
+      <PageHeader kicker="Pastoreo" title="Calificaciones" description="Revisa entregas lado a lado." />
+      {query.isLoading ? <Skeleton lines={3} /> : null}
+      {query.isError ? <Alert>No se pudieron cargar las entregas.</Alert> : null}
+      {!query.isLoading && query.data?.length === 0 ? (
+        <EmptyState icon="clipboard" title="Sin trabajos pendientes" description="Cuando los estudiantes entreguen, aparecerán aquí." />
+      ) : null}
       {query.data && query.data.length > 0 ? (
         <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
           <div className="space-y-2">

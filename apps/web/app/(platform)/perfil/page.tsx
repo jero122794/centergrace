@@ -7,6 +7,8 @@ import { useAuthStore } from '@/store/auth.store';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Alert } from '@/components/ui/Alert';
 import { isPushSupported, subscribeToPush, unsubscribeFromPush } from '@/lib/push';
 import { api } from '@/lib/api';
 
@@ -35,33 +37,37 @@ const ProfilePage = () => {
   });
 
   return (
-    <Card className="max-w-lg space-y-3">
-      <h1 className="font-display text-3xl text-teal">Perfil</h1>
-      <p>{user?.name}</p>
-      <p className="text-sm text-slate-500">{user?.email}</p>
-      <p className="text-sm">Rol: {user?.role}</p>
-      <div className="flex items-center gap-2">
-        <span className="text-sm">Push</span>
-        <Badge tone={status.data?.subscribed ? 'teal' : 'neutral'}>
-          {status.data?.subscribed ? 'activo' : 'inactivo'}
-        </Badge>
-      </div>
-      {!isPushSupported() ? (
-        <p className="text-sm text-slate-500">
-          Web Push requiere HTTPS (o localhost) y un service worker de producción. En desarrollo HTTP las alertas
-          siguen llegando al centro de notificaciones.
+    <div className="space-y-6">
+      <PageHeader kicker="Cuenta" title="Perfil" description="Tu identidad en la plataforma y las alertas de este dispositivo." />
+      <Card className="max-w-lg space-y-3">
+        <p className="font-display text-2xl text-teal">{user?.name}</p>
+        <p className="text-sm text-ink/55">{user?.email}</p>
+        <p className="text-sm">
+          Rol: <Badge>{user?.role ?? ''}</Badge>
         </p>
-      ) : null}
-      <div className="flex gap-2">
-        <Button type="button" onClick={() => subscribe.mutate()} disabled={subscribe.isPending}>
-          Activar notificaciones
-        </Button>
-        <Button type="button" variant="secondary" onClick={() => unsubscribe.mutate()}>
-          Desactivar
-        </Button>
-      </div>
-      {message ? <p className="text-sm text-slate-600">{message}</p> : null}
-    </Card>
+        <div className="flex items-center gap-2">
+          <span className="text-sm">Push</span>
+          <Badge tone={status.data?.subscribed ? 'teal' : 'neutral'}>
+            {status.data?.subscribed ? 'activo' : 'inactivo'}
+          </Badge>
+        </div>
+        {!isPushSupported() ? (
+          <Alert tone="info">
+            Web Push requiere HTTPS (o localhost) y un service worker de producción. En desarrollo HTTP las alertas
+            siguen llegando al centro de notificaciones.
+          </Alert>
+        ) : null}
+        <div className="flex flex-wrap gap-2">
+          <Button type="button" onClick={() => subscribe.mutate()} disabled={subscribe.isPending}>
+            Activar notificaciones
+          </Button>
+          <Button type="button" variant="secondary" onClick={() => unsubscribe.mutate()}>
+            Desactivar
+          </Button>
+        </div>
+        {message ? <p className="text-sm text-ink/70">{message}</p> : null}
+      </Card>
+    </div>
   );
 };
 

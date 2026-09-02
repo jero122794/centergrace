@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 const GroupsPage = () => {
   const client = useQueryClient();
@@ -22,7 +23,7 @@ const GroupsPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Grupos</h1>
+      <PageHeader kicker="Pastoreo" title="Grupos" description="Células y grupos de seguimiento." />
       <form
         className="flex gap-2"
         onSubmit={form.handleSubmit((values) => create.mutate(values.name))}

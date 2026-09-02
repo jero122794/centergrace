@@ -10,6 +10,10 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { LessonEditor } from '@/components/courses/LessonEditor';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Alert } from '@/components/ui/Alert';
 
 interface CourseSummary {
   id: string;
@@ -46,7 +50,7 @@ const ContentPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl text-teal">Contenido</h1>
+      <PageHeader kicker="Pastoreo" title="Contenido" description="Cursos y lecciones de la iglesia." />
       <Card>
         <h2 className="mb-3 font-display text-xl">Nuevo curso</h2>
         <form className="space-y-3" onSubmit={form.handleSubmit((values) => createCourse.mutate(values))}>
@@ -57,9 +61,11 @@ const ContentPage = () => {
           </Button>
         </form>
       </Card>
-      {courses.isLoading ? <p>Cargando cursos…</p> : null}
-      {courses.isError ? <p className="text-red-600">No se pudieron cargar los cursos.</p> : null}
-      {!courses.isLoading && courses.data?.length === 0 ? <p>No hay cursos todavía.</p> : null}
+      {courses.isLoading ? <Skeleton lines={2} /> : null}
+      {courses.isError ? <Alert>No se pudieron cargar los cursos.</Alert> : null}
+      {!courses.isLoading && courses.data?.length === 0 ? (
+        <EmptyState icon="book" title="Sin cursos" description="Crea el primero con el formulario de arriba." />
+      ) : null}
       <div className="grid gap-3 md:grid-cols-2">
         {courses.data?.map((course) => (
           <button key={course.id} type="button" className="text-left" onClick={() => setSelectedId(course.id)}>

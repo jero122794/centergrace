@@ -7,5 +7,5 @@ interface Props {
 }
 
 export const Card = ({ children, className = '' }: Props) => (
-  <div className={`rounded-2xl border border-white/80 bg-white p-5 shadow-sm ${className}`}>{children}</div>
+  <div className={`rounded-3xl border border-teal/10 bg-surface p-5 shadow-card ${className}`}>{children}</div>
 );

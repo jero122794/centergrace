@@ -6,6 +6,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { TipTapRenderer } from '@/components/editor/TipTapRenderer';
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
 import { useState } from 'react';
 
 interface Question {
@@ -31,32 +35,34 @@ const DevotionalDetailPage = () => {
     onSuccess: () => client.invalidateQueries({ queryKey: ['devotional-today'] }),
   });
 
+  if (today.isLoading) {
+    return <Skeleton lines={3} />;
+  }
   const item = today.data;
   if (!item) {
-    return <p>Cargando…</p>;
+    return <Alert>No se encontró el devocional.</Alert>;
   }
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">{item.title}</h1>
-      <p className="italic">{item.verse}</p>
-      <TipTapRenderer content={item.content} />
+      <PageHeader title={item.title} description={item.verse} />
+      <Card>
+        <TipTapRenderer content={item.content} />
+      </Card>
       {(item.questions as Question[]).map((question) => (
         <label key={question.id} className="block">
           <span className="text-sm font-medium">{question.text}</span>
           <textarea
-            className="mt-1 w-full rounded-xl border p-3"
+            className="mt-1"
+            rows={3}
             onChange={(event) => setAnswers((current) => ({ ...current, [question.id]: event.target.value }))}
           />
         </label>
       ))}
-      <textarea
-        className="w-full rounded-xl border p-3"
-        placeholder="Reflexión general"
-        value={content}
-        onChange={(event) => setContent(event.target.value)}
-      />
-      <Button onClick={() => participate.mutate()}>Enviar participación</Button>
+      <textarea rows={4} placeholder="Reflexión general" value={content} onChange={(event) => setContent(event.target.value)} />
+      <Button onClick={() => participate.mutate()} disabled={participate.isPending}>
+        {participate.isSuccess ? 'Participación enviada' : 'Enviar participación'}
+      </Button>
     </div>
   );
 };

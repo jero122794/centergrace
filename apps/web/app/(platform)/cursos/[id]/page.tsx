@@ -7,6 +7,10 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { ProgressBar } from '@/components/courses/ProgressBar';
 import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Alert } from '@/components/ui/Alert';
 
 interface Lesson {
   id: string;
@@ -25,20 +29,31 @@ const CourseDetailPage = () => {
     queryFn: async () => (await api.get(`/api/courses/${params.id}/progress`)).data.data,
   });
 
-  if (!course.data) {
-    return <p>Cargando curso…</p>;
+  if (course.isLoading) {
+    return <Skeleton lines={4} />;
+  }
+  if (course.isError || !course.data) {
+    return <Alert>No se pudo cargar el curso.</Alert>;
   }
 
+  const lessons = (course.data.lessons as Lesson[] | undefined) ?? [];
+
   return (
-    <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">{course.data.title}</h1>
-      <p>{course.data.description}</p>
+    <div className="space-y-5">
+      <PageHeader title={course.data.title} description={course.data.description} />
       <ProgressBar percent={progress.data?.percent ?? 0} />
-      {(course.data.lessons as Lesson[]).map((lesson) => (
-        <Card key={lesson.id}>
-          <Link href={`/cursos/${params.id}/leccion/${lesson.id}`}>{lesson.title}</Link>
-        </Card>
-      ))}
+      {lessons.length === 0 ? (
+        <EmptyState icon="file" title="Sin lecciones" description="Este curso todavía no tiene lecciones publicadas." />
+      ) : (
+        lessons.map((lesson) => (
+          <Link key={lesson.id} href={`/cursos/${params.id}/leccion/${lesson.id}`} className="block">
+            <Card className="flex items-center justify-between transition hover:border-teal/30">
+              <p className="font-medium text-ink">{lesson.title}</p>
+              <span className="text-sm text-teal">Abrir</span>
+            </Card>
+          </Link>
+        ))
+      )}
     </div>
   );
 };

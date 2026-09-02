@@ -11,7 +11,7 @@ const start = async (): Promise<void> => {
   await prisma.$connect();
   jobRegistry.start();
   const app = createApp();
-  app.listen(env.PORT, () => {
+  app.listen(env.PORT, '0.0.0.0', () => {
     logger.info(`API listening on port ${env.PORT}`);
   });
 };

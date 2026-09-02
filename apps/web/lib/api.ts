@@ -18,6 +18,19 @@ export const setAccessToken = (token: string | null): void => {
 
 export const getAccessToken = (): string | null => accessToken;
 
+export const getApiErrorMessage = (error: unknown, fallback = 'No se pudo completar la acción.'): string => {
+  if (axios.isAxiosError(error)) {
+    const payload = error.response?.data as { message?: string } | undefined;
+    if (payload?.message) {
+      return payload.message;
+    }
+  }
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+  return fallback;
+};
+
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;

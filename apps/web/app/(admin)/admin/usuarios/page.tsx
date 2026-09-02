@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const UsersPage = () => {
   const query = useQuery({
@@ -13,7 +15,8 @@ const UsersPage = () => {
   });
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Usuarios</h1>
+      <PageHeader kicker="Iglesia" title="Usuarios" description="Miembros y roles de la plataforma." />
+      {query.isLoading ? <Skeleton lines={3} /> : null}
       {query.data?.map((user: { id: string; name: string; email: string; role: string; isActive: boolean }) => (
         <Card key={user.id} className="flex items-center justify-between">
           <div>

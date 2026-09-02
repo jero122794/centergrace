@@ -21,7 +21,7 @@ export const DeveloperNav = () => {
           key={item.href}
           href={item.href}
           className={`rounded-full px-3 py-1 text-sm ${
-            pathname === item.href ? 'bg-teal text-white' : 'bg-white text-teal border border-teal/20'
+            pathname === item.href ? 'bg-teal text-white' : 'border border-teal/20 bg-surface text-teal'
           }`}
         >
           {item.label}

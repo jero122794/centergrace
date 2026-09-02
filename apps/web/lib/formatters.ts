@@ -1,10 +1,16 @@
 // apps/web/lib/formatters.ts
+import { es } from 'date-fns/locale';
 import { formatInTimeZone } from 'date-fns-tz';
 
 const BOGOTA = 'America/Bogota';
 
 export const formatDateBogota = (value: string | Date): string => {
   return formatInTimeZone(value, BOGOTA, 'dd/MM/yyyy');
+};
+
+export const formatGreetingDate = (value: Date): string => {
+  const raw = formatInTimeZone(value, BOGOTA, "EEEE d 'de' MMMM", { locale: es });
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
 };
 
 export const formatDateTimeBogota = (value: string | Date): string => {

@@ -4,6 +4,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { StatCard } from '@/components/dashboard/StatCard';
+import { PageHeader } from '@/components/ui/PageHeader';
 import Link from 'next/link';
 
 const WorshipDashboardPage = () => {
@@ -19,13 +20,13 @@ const WorshipDashboardPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Ministerio de Alabanza</h1>
+      <PageHeader kicker="Ministerio" title="Alabanza" description="Repertorio, ensayos, escuela y equipo." />
       <div className="grid gap-4 md:grid-cols-3">
-        <StatCard label="Canciones" value={songs.data?.length ?? 0} />
-        <StatCard label="Ensayos" value={rehearsals.data?.length ?? 0} />
-        <StatCard label="Audiciones" value={auditions.data?.length ?? 0} />
+        <StatCard label="Canciones" value={songs.data?.length ?? 0} icon="music" />
+        <StatCard label="Ensayos" value={rehearsals.data?.length ?? 0} icon="clock" />
+        <StatCard label="Audiciones" value={auditions.data?.length ?? 0} icon="users" />
       </div>
-      <div className="flex gap-3 text-teal">
+      <div className="flex flex-wrap gap-3 text-sm font-semibold text-teal">
         <Link href="/worship/repertorio">Repertorio</Link>
         <Link href="/worship/ensayos">Ensayos</Link>
         <Link href="/worship/audiciones">Audiciones</Link>

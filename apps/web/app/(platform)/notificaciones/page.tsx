@@ -6,6 +6,10 @@ import Link from 'next/link';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
 import { formatDateTimeBogota } from '@/lib/formatters';
 
 interface InAppNotification {
@@ -40,24 +44,27 @@ const NotificationsPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl text-teal">Notificaciones</h1>
-        <Button variant="secondary" onClick={() => markAll.mutate()} disabled={markAll.isPending}>
-          Marcar todas como leídas
-        </Button>
-      </div>
-      {query.isLoading ? <p>Cargando…</p> : null}
-      {query.isError ? <p className="text-red-600">No se pudieron cargar las notificaciones.</p> : null}
+      <PageHeader
+        kicker="Comunidad"
+        title="Notificaciones"
+        action={
+          <Button variant="secondary" onClick={() => markAll.mutate()} disabled={markAll.isPending}>
+            Marcar todas como leídas
+          </Button>
+        }
+      />
+      {query.isLoading ? <Skeleton lines={3} /> : null}
+      {query.isError ? <Alert>No se pudieron cargar las notificaciones.</Alert> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <p className="text-slate-500">No tienes notificaciones todavía.</p>
+        <EmptyState icon="bell" title="Sin avisos" description="Cuando haya mensajes de la iglesia, aparecerán aquí." />
       ) : null}
       {query.data?.map((item) => (
         <Card key={item.id} className={item.readAt ? 'opacity-70' : ''}>
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="font-medium">{item.title}</p>
-              <p className="text-sm text-slate-600">{item.body}</p>
-              <p className="mt-1 text-xs text-slate-400">{formatDateTimeBogota(item.createdAt)}</p>
+              <p className="text-sm text-ink/65">{item.body}</p>
+              <p className="mt-1 text-xs text-ink/40">{formatDateTimeBogota(item.createdAt)}</p>
               {item.url ? (
                 <Link className="mt-2 inline-block text-sm text-teal" href={item.url} onClick={() => markOne.mutate(item.id)}>
                   Abrir

@@ -4,6 +4,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Skeleton } from '@/components/ui/Skeleton';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth.store';
 
@@ -16,28 +19,39 @@ const DevotionalsPage = () => {
   });
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl text-teal">Devocionales</h1>
-        {canCreate ? (
-          <Link className="text-sm font-semibold text-teal" href="/admin/devocional/nuevo">
-            Crear
-          </Link>
-        ) : null}
-      </div>
-      <Card>
-        {today.data ? (
-          <div>
-            <h2 className="font-display text-2xl">{today.data.title}</h2>
-            <p className="mt-2 text-slate-600">{today.data.verse}</p>
-            <Link className="mt-4 inline-block text-teal" href={`/devocionales/${today.data.id}`}>
-              Participar hoy
+    <div className="space-y-6">
+      <PageHeader
+        kicker="Cada día"
+        title="Devocionales"
+        description="Un espacio diario para meditar la Palabra."
+        action={
+          canCreate ? (
+            <Link className="text-sm font-semibold text-teal" href="/admin/devocional/nuevo">
+              Crear
             </Link>
-          </div>
-        ) : (
-          <p>No hay un devocional publicado para hoy.</p>
-        )}
-      </Card>
+          ) : null
+        }
+      />
+      {today.isLoading ? <Skeleton className="h-40" /> : null}
+      {!today.isLoading && today.data ? (
+        <Card className="bg-teal-dark text-cream">
+          <h2 className="font-display text-2xl">{today.data.title}</h2>
+          <p className="mt-2 text-cream/75">{today.data.verse}</p>
+          <Link
+            className="mt-4 inline-flex rounded-xl bg-gold px-4 py-2 text-sm font-semibold text-ink hover:bg-gold-light"
+            href={`/devocionales/${today.data.id}`}
+          >
+            Participar hoy
+          </Link>
+        </Card>
+      ) : null}
+      {!today.isLoading && !today.data ? (
+        <EmptyState
+          icon="sun"
+          title="Sin devocional hoy"
+          description="Todavía no hay un devocional publicado para este día."
+        />
+      ) : null}
     </div>
   );
 };

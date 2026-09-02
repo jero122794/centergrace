@@ -47,10 +47,6 @@ const PRODUCTION_REQUIRED: Array<keyof AppEnv> = [
   'REDIS_URL',
   'VAPID_PUBLIC_KEY',
   'VAPID_PRIVATE_KEY',
-  'AWS_ACCESS_KEY_ID',
-  'AWS_SECRET_ACCESS_KEY',
-  'AWS_S3_BUCKET',
-  'AWS_SES_FROM',
 ];
 
 const restorePem = (value: string): string => value.replace(/\\n/g, '\n');

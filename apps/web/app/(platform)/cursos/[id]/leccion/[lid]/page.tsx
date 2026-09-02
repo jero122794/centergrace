@@ -7,6 +7,10 @@ import { api } from '@/lib/api';
 import { VideoPlayer } from '@/components/courses/VideoPlayer';
 import { TipTapRenderer } from '@/components/editor/TipTapRenderer';
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
 import { useState } from 'react';
 
 const LessonPage = () => {
@@ -29,36 +33,42 @@ const LessonPage = () => {
     mutationFn: async () => api.post('/api/submissions', { lessonId: params.lid, content }),
   });
 
+  if (course.isLoading) {
+    return <Skeleton lines={4} />;
+  }
   if (!lesson) {
-    return <p>Cargando lección…</p>;
+    return <Alert>No se encontró la lección.</Alert>;
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl text-teal">{String(lesson.title)}</h1>
+      <PageHeader kicker="Lección" title={String(lesson.title)} />
       {typeof lesson.youtubeId === 'string' && lesson.youtubeId ? (
         <VideoPlayer youtubeId={lesson.youtubeId} title={String(lesson.title)} />
       ) : null}
-      <TipTapRenderer content={lesson.bodyContent} />
-      <Button onClick={() => complete.mutate()}>Marcar como completada</Button>
+      <Card>
+        <TipTapRenderer content={lesson.bodyContent} />
+      </Card>
+      <Button onClick={() => complete.mutate()} disabled={complete.isPending}>
+        {complete.isSuccess ? 'Completada' : 'Marcar como completada'}
+      </Button>
       {lesson.hasAssignment ? (
-        <form
-          className="space-y-3"
-          onSubmit={(event) => {
-            event.preventDefault();
-            submit.mutate();
-          }}
-        >
-          <h2 className="font-display text-xl">Asignación</h2>
-          <p>{String(lesson.assignmentDescription ?? '')}</p>
-          <textarea
-            className="w-full rounded-xl border p-3"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            required
-          />
-          <Button type="submit">Entregar</Button>
-        </form>
+        <Card>
+          <form
+            className="space-y-3"
+            onSubmit={(event) => {
+              event.preventDefault();
+              submit.mutate();
+            }}
+          >
+            <h2 className="font-display text-xl text-teal">Asignación</h2>
+            <p className="text-sm text-ink/70">{String(lesson.assignmentDescription ?? '')}</p>
+            <textarea value={content} onChange={(event) => setContent(event.target.value)} required rows={6} />
+            <Button type="submit" disabled={submit.isPending}>
+              {submit.isSuccess ? 'Entregado' : 'Entregar'}
+            </Button>
+          </form>
+        </Card>
       ) : null}
     </div>
   );

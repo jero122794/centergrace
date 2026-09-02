@@ -5,8 +5,8 @@ interface Props {
 }
 
 const tones: Record<NonNullable<Props['tone']>, string> = {
-  teal: 'bg-teal/10 text-teal-dark',
-  gold: 'bg-gold/20 text-ink',
+  teal: 'bg-teal-mist text-teal-dark',
+  gold: 'bg-gold-light/70 text-ink',
   danger: 'bg-red-100 text-red-700',
   neutral: 'bg-slate-100 text-slate-700',
 };
