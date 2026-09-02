@@ -57,7 +57,7 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <div className="flex min-h-screen bg-bg">
+    <div className="flex min-h-screen bg-transparent">
       {isDeveloper ? null : <Sidebar />}
       <div className="flex min-h-screen flex-1 flex-col pb-16 lg:pb-0">
         <Topbar />

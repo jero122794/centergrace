@@ -12,26 +12,15 @@ interface Props {
 }
 
 const variants: Record<CardVariant, string> = {
-  base: 'rounded-2xl border border-border bg-paper p-6 shadow-card',
-  surface: 'rounded-2xl border border-border bg-surface p-6',
-  accent: 'rounded-r-xl border-l-4 border-accent bg-paper p-6',
-  devotional: 'rounded-b-2xl border-t-[6px] border-primary-d bg-paper p-7',
+  base: 'sheet',
+  surface: 'sheet sheet--quiet',
+  accent: 'sheet sheet--accent',
+  devotional: 'sheet--ribbon',
 };
 
 /**
- * Surface container for content blocks.
- *
- * @example
- * <Card variant="devotional">...</Card>
+ * Paper sheet used as a content surface. Radii are intentionally uneven.
  */
 export const Card = ({ children, className = '', variant = 'base', hover = false }: Props) => (
-  <div
-    className={cn(
-      variants[variant],
-      hover && 'transition duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lift',
-      className,
-    )}
-  >
-    {children}
-  </div>
+  <div className={cn(variants[variant], hover && 'sheet-hover', className)}>{children}</div>
 );

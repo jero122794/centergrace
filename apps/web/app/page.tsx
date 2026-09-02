@@ -1,59 +1,85 @@
 // apps/web/app/page.tsx
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
+import { Ornament } from '@/components/brand/Ornament';
 
 const PILLARS = [
-  { title: 'Estudios bíblicos', body: 'Cursos, lecciones y entregas para crecer con tu grupo.' },
-  { title: 'Seguimiento espiritual', body: 'Notas pastorales y acompañamiento de cada vida en la iglesia.' },
-  { title: 'Alabanza', body: 'Repertorio, ensayos, setlists y escuela de adoración.' },
+  {
+    n: '01',
+    title: 'Estudios',
+    body: 'Lecciones para crecer con tu grupo, a un ritmo que cabe en la semana.',
+  },
+  {
+    n: '02',
+    title: 'Pastoreo',
+    body: 'Notas espirituales y acompañamiento, lejos del ruido de un tablero genérico.',
+  },
+  {
+    n: '03',
+    title: 'Alabanza',
+    body: 'Repertorio, ensayos y la escuela de adoración, con la misma casa visual.',
+  },
 ];
 
 const HomePage = () => (
-  <main className="min-h-screen bg-bg">
-    <header className="mx-auto flex max-w-content items-center justify-between px-6 py-6">
+  <main className="wash min-h-screen overflow-hidden">
+    <header className="mx-auto flex max-w-content items-center justify-between px-6 py-7">
       <Logo />
-      <div className="flex items-center gap-3">
-        <Link href="/login" className="hidden text-sm font-semibold text-accent sm:inline">
+      <div className="flex items-center gap-5">
+        <Link href="/login" className="hidden text-sm text-accent sm:inline">
           Entrar
         </Link>
-        <Link href="/register" className="rounded-pill bg-accent px-4 py-2 text-sm font-semibold text-white">
+        <Link href="/register" className="btn-grace text-sm">
           Crear cuenta
         </Link>
       </div>
     </header>
-    <section className="mx-auto grid max-w-content items-center gap-12 px-6 pb-20 pt-8 lg:grid-cols-2 lg:pt-16">
+
+    <section className="mx-auto grid max-w-content items-end gap-10 px-6 pb-16 pt-4 lg:grid-cols-[1.15fr_0.85fr] lg:pb-24 lg:pt-10">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-d">Centro Misionero Shalom</p>
-        <h1 className="mt-4 font-display text-display text-dark">Paz que forma discípulos.</h1>
-        <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-          Centro de Gracia es la casa digital de la iglesia: estudios, devocionales, seguimiento pastoral y ministerio de
-          alabanza.
+        <p className="text-[11px] uppercase tracking-[0.28em] text-gold-d">Una casa para la Palabra</p>
+        <h1 className="hero-display mt-5 text-dark">
+          Paz que
+          <br />
+          forma
+          <br />
+          discípulos.
+        </h1>
+        <Ornament className="my-7 max-w-sm" />
+        <p className="max-w-md text-[17px] leading-relaxed text-muted">
+          Centro de Gracia es el espacio digital de Centro Misionero Shalom: estudio, devocional cotidiano y ministerio,
+          con el tono de un cuaderno pastoral.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/login" className="rounded-pill bg-accent px-5 py-3 text-sm font-semibold text-white shadow-card">
-            Entrar a la plataforma
+        <div className="mt-9 flex flex-wrap items-center gap-4">
+          <Link href="/login" className="btn-grace">
+            Entrar a la casa
           </Link>
-          <Link
-            href="/register"
-            className="rounded-pill border-[1.5px] border-primary-d bg-surface px-5 py-3 text-sm font-semibold text-accent"
-          >
-            Soy nuevo
+          <Link href="/register" className="text-sm font-medium text-accent underline decoration-gold underline-offset-4">
+            Soy nuevo en la iglesia
           </Link>
         </div>
       </div>
-      <blockquote className="rounded-[32px] border-l-[6px] border-gold bg-warm p-8 font-display text-verse italic text-muted">
+      <blockquote className="sheet--verse verse-mark tilt-a">
         «Y la paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones y vuestros pensamientos en Cristo
         Jesús.»
-        <cite className="mt-6 block text-sm not-italic text-gold-d">Filipenses 4:7</cite>
+        <cite className="mt-6 block text-sm not-italic tracking-[0.14em] text-gold-d">FILIPENSES 4:7</cite>
       </blockquote>
     </section>
-    <section className="mx-auto grid max-w-content gap-4 px-6 pb-24 md:grid-cols-3">
-      {PILLARS.map((pillar) => (
-        <article key={pillar.title} className="rounded-2xl border border-border bg-paper p-6 shadow-card">
-          <h2 className="font-display text-xl text-dark">{pillar.title}</h2>
-          <p className="mt-2 text-sm text-muted">{pillar.body}</p>
-        </article>
-      ))}
+
+    <section className="mx-auto max-w-content px-6 pb-24">
+      <Ornament label="Tres caminos" className="mb-10" />
+      <div className="grid items-start gap-6 md:grid-cols-3">
+        {PILLARS.map((pillar, index) => (
+          <article
+            key={pillar.title}
+            className={`sheet ${index === 1 ? 'tilt-b md:mt-8' : index === 2 ? 'tilt-a md:mt-3' : ''}`}
+          >
+            <p className="font-display text-3xl text-gold">{pillar.n}</p>
+            <h2 className="mt-3 font-display text-2xl text-dark">{pillar.title}</h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted">{pillar.body}</p>
+          </article>
+        ))}
+      </div>
     </section>
   </main>
 );

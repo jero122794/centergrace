@@ -12,7 +12,7 @@ export const VideoPlayer = ({ youtubeId, title }: Props) => {
     return null;
   }
   return (
-    <div className="aspect-video overflow-hidden rounded-xl bg-black">
+    <div className="aspect-video overflow-hidden bg-black" style={{ borderRadius: '18px 42px 16px 30px' }}>
       <iframe
         title={title}
         className="h-full w-full border-0"

@@ -75,7 +75,7 @@ const AdminDashboardPage = () => {
       {query.isLoading ? (
         <Skeleton lines={2} />
       ) : (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <dl className="ledger">
           <StatCard label={isAdmin ? 'Miembros activos' : 'Miembros'} value={data.users ?? 0} icon={Users} />
           <StatCard
             label="Entregas por calificar"
@@ -85,7 +85,7 @@ const AdminDashboardPage = () => {
           />
           <StatCard label={isAdmin ? 'Cursos publicados' : 'Devocionales este mes'} value={isAdmin ? (data.courses ?? 0) : (data.devotionals ?? 0)} icon={isAdmin ? BookOpen : Sun} />
           <StatCard label="Participaciones hoy" value={data.participationsToday ?? 0} icon={Heart} accent="gold" />
-        </div>
+        </dl>
       )}
       <div className="flex flex-wrap gap-2">
         <Link href="/admin/devocional/nuevo">

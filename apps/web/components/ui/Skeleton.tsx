@@ -17,9 +17,10 @@ export const Skeleton = ({ className = 'h-24', lines }: Props) => {
     <div
       key={key}
       className={cn(
-        'rounded-2xl bg-[linear-gradient(90deg,var(--color-surface)_0%,#fff_50%,var(--color-surface)_100%)] bg-[length:200%_100%] animate-shimmer',
-        lines ? 'h-20' : className,
+        'bg-[linear-gradient(90deg,var(--color-surface)_0%,#fff_50%,var(--color-surface)_100%)] bg-[length:200%_100%] animate-shimmer',
+        lines ? 'h-16' : className,
       )}
+      style={{ borderRadius: '8px 28px 14px 22px' }}
     />
   );
   if (lines) {

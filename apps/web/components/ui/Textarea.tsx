@@ -39,8 +39,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
     const hintId = `${inputId}-hint`;
     const current = typeof value === 'string' ? value.length : typeof defaultValue === 'string' ? defaultValue.length : 0;
     return (
-      <label className="block" htmlFor={inputId}>
-        <span className="mb-1.5 block text-xs font-medium text-muted">{label}</span>
+      <label className="field block" htmlFor={inputId}>
+        <span className="field-label">{label}</span>
         <textarea
           id={inputId}
           ref={ref}
@@ -48,14 +48,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
           defaultValue={defaultValue}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : hint ? hintId : undefined}
-          className={cn(
-            'min-h-[100px] w-full resize-y rounded-[10px] border-[1.5px] bg-paper px-3.5 py-2.5 text-[15px] leading-[1.7] text-dark placeholder:text-hint',
-            error
-              ? 'border-danger-d ring-danger focus:ring-[3px]'
-              : 'border-border focus:border-border-f focus:ring-[3px] focus:ring-primary/30',
-            'outline-none transition disabled:bg-bg disabled:opacity-60',
-            className,
-          )}
+          className={cn('field-control min-h-[100px] resize-y leading-[1.7]', error && 'border-l-danger-d', className)}
           {...props}
         />
         <span className="mt-1 flex items-start justify-between gap-2">

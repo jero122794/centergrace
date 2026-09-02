@@ -29,11 +29,11 @@ const WorshipDashboardPage = () => {
   return (
     <div className="space-y-8">
       <PageHeader kicker="Ministerio" title="Alabanza" description="Repertorio, ensayos, escuela y equipo." />
-      <div className="grid gap-4 md:grid-cols-3">
+      <dl className="ledger">
         <StatCard label="Canciones" value={songs.data?.length ?? 0} icon={Music} accent="worship" />
         <StatCard label="Ensayos" value={rehearsals.data?.length ?? 0} icon={Clock3} accent="worship" />
         <StatCard label="Audiciones" value={auditions.data?.length ?? 0} icon={Users} accent="worship" />
-      </div>
+      </dl>
       <section className="space-y-3">
         <h2 className="font-display text-h2 text-dark">Ruta de ingreso</h2>
         <AuditionStepper current={step} />
