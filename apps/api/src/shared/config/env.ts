@@ -4,11 +4,13 @@ import { resolve } from 'path';
 import dotenv from 'dotenv';
 import { z } from 'zod';
 
-const envCandidates = [resolve(process.cwd(), '.env'), resolve(process.cwd(), '../../.env')];
+const envCandidates = [
+  resolve(process.cwd(), '.env'),
+  resolve(process.cwd(), '../../.env'),
+];
 for (const file of envCandidates) {
   if (existsSync(file)) {
     dotenv.config({ path: file });
-    break;
   }
 }
 

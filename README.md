@@ -12,19 +12,32 @@ PWA de estudios bíblicos, seguimiento espiritual y gestión de ministerios para
 
 ## Arranque local
 
-```bash
-cp .env.example .env
-docker compose up --build
-```
+El archivo de entorno está en la **raíz** del repo (`.env.example`). Hay una copia en `apps/api/.env.example`. Prisma y el seed necesitan `DATABASE_URL`; Postgres y Redis deben estar arriba **antes** de migrar.
 
-Sin Docker:
+El aviso `npm warn deprecated eslint@8` y el reporte de `npm audit` no bloquean el arranque. No ejecutes `npm audit fix --force`.
 
 ```bash
 npm install
-npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
-npm run prisma:seed --workspace=apps/api
-npm run dev:api
-npm run dev:web
+npm run setup:local
+docker compose up -d postgres redis
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
+
+`setup:local` copia `.env.example` a `.env`, `apps/api/.env` y `apps/web/.env.local` si aún no existen. Equivale a:
+
+```bash
+cp .env.example .env
+cp .env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
+```
+
+Todo en Docker (API + web + Postgres + Redis):
+
+```bash
+cp .env.example .env
+docker compose up --build
 ```
 
 Servicios:
@@ -70,7 +83,7 @@ Paleta olivo / pergamino / oro, tipografía Libre Baskerville + Source Sans 3, s
 
 ## Variables de entorno
 
-Ver `.env.example` (API) y `apps/web/.env.example` (PWA). En producción no hay valores por defecto para secretos. El panel Developer (`/developer/entorno`) solo muestra presencia/ausencia.
+Ver `.env.example` (raíz y `apps/api/.env.example`) y `apps/web/.env.example` (PWA). En producción no hay valores por defecto para secretos. El panel Developer (`/developer/entorno`) solo muestra presencia/ausencia.
 
 Obligatorias en producción: `DATABASE_URL`, `REDIS_URL`, JWT PEM, `JWT_REFRESH_SECRET`, VAPID, `FRONTEND_URL`.
 
