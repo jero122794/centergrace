@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { ChordTransposer } from '@/components/worship/ChordTransposer';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const SongPage = () => {
   const params = useParams<{ id: string }>();
@@ -14,11 +16,11 @@ const SongPage = () => {
   });
   const song = query.data?.find((item: { id: string }) => item.id === params.id);
   if (!song) {
-    return <p>Cargando canción…</p>;
+    return <Skeleton lines={3} />;
   }
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">{song.title}</h1>
+      <PageHeader kicker="Repertorio" title={song.title} />
       <ChordTransposer originalKey={song.originalKey} chords={song.chords} />
     </div>
   );

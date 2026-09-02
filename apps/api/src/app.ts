@@ -35,6 +35,7 @@ import { UPLOADS_DIR } from './modules/uploads/infrastructure/UploadService';
  */
 export const createApp = (): Express => {
   const app = express();
+  app.set('trust proxy', 1);
   applySecurity(app);
   app.use(metricsMiddleware);
   app.use(generalLimiter);
@@ -61,9 +62,9 @@ const applySecurity = (app: Express): void => {
           upgradeInsecureRequests: [],
         },
       },
-      crossOriginEmbedderPolicy: true,
+      crossOriginEmbedderPolicy: false,
       crossOriginOpenerPolicy: { policy: 'same-origin' },
-      crossOriginResourcePolicy: { policy: 'same-site' },
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
       dnsPrefetchControl: { allow: false },
       frameguard: { action: 'deny' },
       hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },

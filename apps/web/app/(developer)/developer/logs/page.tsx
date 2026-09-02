@@ -4,6 +4,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 const LogsPage = () => {
   const query = useQuery({
@@ -12,7 +13,7 @@ const LogsPage = () => {
   });
   return (
     <div className="space-y-3">
-      <h1 className="font-display text-3xl text-teal">System logs</h1>
+      <PageHeader kicker="Sistema" title="Logs" />
       {query.data?.data?.map((item: { id: string; level: string; message: string }) => (
         <Card key={item.id}>
           <p className="text-xs uppercase">{item.level}</p>

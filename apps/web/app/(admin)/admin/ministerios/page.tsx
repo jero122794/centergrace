@@ -4,6 +4,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
 import Link from 'next/link';
 
 const MinistriesPage = () => {
@@ -13,7 +14,7 @@ const MinistriesPage = () => {
   });
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Ministerios</h1>
+      <PageHeader kicker="Iglesia" title="Ministerios" />
       {query.data?.map((item: { id: string; name: string; type: string }) => (
         <Link key={item.id} href={`/admin/ministerios/${item.id}`}>
           <Card>

@@ -58,6 +58,9 @@ describe('Auth HTTP', () => {
     expect(login.status).toBe(200);
     const firstCookie = cookieHeader(login);
     expect(firstCookie).toContain('refreshToken=');
+    expect(firstCookie).toMatch(/HttpOnly/i);
+    expect(firstCookie).toMatch(/SameSite=Strict/i);
+    expect(firstCookie).toContain('Path=/api/auth');
     const rotated = await request(app).post('/api/auth/refresh').set('Cookie', firstCookie);
     expect(rotated.status).toBe(200);
     expect(rotated.body.data.accessToken).toBeTruthy();

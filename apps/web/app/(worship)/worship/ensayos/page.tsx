@@ -4,6 +4,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { formatDateTimeBogota } from '@/lib/formatters';
 import Link from 'next/link';
 
@@ -14,12 +15,15 @@ const RehearsalsPage = () => {
   });
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl text-teal">Ensayos</h1>
-        <Link className="text-teal" href="/worship/ensayos/nuevo">
-          Nuevo
-        </Link>
-      </div>
+      <PageHeader
+        kicker="Alabanza"
+        title="Ensayos"
+        action={
+          <Link className="text-sm font-semibold text-teal" href="/worship/ensayos/nuevo">
+            Nuevo
+          </Link>
+        }
+      />
       {query.data?.map((item: { id: string; date: string; location?: string }) => (
         <Link key={item.id} href={`/worship/ensayos/${item.id}`}>
           <Card>

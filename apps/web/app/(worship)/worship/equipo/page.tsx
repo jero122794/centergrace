@@ -5,6 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
 
 interface TeamMember {
   musicalRole: string;
@@ -21,11 +25,11 @@ const TeamPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Equipo</h1>
-      {query.isLoading ? <p>Cargando equipo…</p> : null}
-      {query.isError ? <p className="text-red-600">No se pudo cargar el equipo.</p> : null}
+      <PageHeader kicker="Alabanza" title="Equipo" description="Miembros con rol musical asignado." />
+      {query.isLoading ? <Skeleton lines={2} /> : null}
+      {query.isError ? <Alert>No se pudo cargar el equipo.</Alert> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <p className="text-slate-500">Aún no hay miembros con rol musical asignado.</p>
+        <EmptyState icon="users" title="Equipo vacío" description="Aún no hay miembros con rol musical asignado." />
       ) : null}
       {query.data?.map((item) => (
         <Card key={`${item.user.id}-${item.ministry.id}`} className="flex items-center justify-between">

@@ -6,6 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { formatDateTimeBogota } from '@/lib/formatters';
 import { SetlistBuilder } from '@/components/worship/SetlistBuilder';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
 
 interface RehearsalDetail {
   id: string;
@@ -29,16 +32,15 @@ const RehearsalDetailPage = () => {
   });
 
   if (query.isLoading) {
-    return <p>Cargando ensayo…</p>;
+    return <Skeleton lines={3} />;
   }
   if (query.isError || !query.data) {
-    return <p className="text-red-600">No se pudo cargar el ensayo.</p>;
+    return <Alert>No se pudo cargar el ensayo.</Alert>;
   }
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Ensayo</h1>
-      <p>{formatDateTimeBogota(query.data.date)}</p>
+      <PageHeader kicker="Alabanza" title="Ensayo" description={formatDateTimeBogota(query.data.date)} />
       {query.data.location ? <p className="text-slate-600">{query.data.location}</p> : null}
       <SetlistBuilder rehearsalId={query.data.id} songs={query.data.songs} />
     </div>

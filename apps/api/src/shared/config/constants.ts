@@ -2,8 +2,8 @@
 export const APP_NAME = 'Centro Misionero Shalom';
 export const APP_VERSION = '1.0.0';
 export const DEFAULT_CHURCH_NAME = 'Centro Misionero Shalom';
-export const DEFAULT_PRIMARY_COLOR = '#4A7C7F';
-export const DEFAULT_ACCENT_COLOR = '#C4A574';
+export const DEFAULT_PRIMARY_COLOR = '#2F5D50';
+export const DEFAULT_ACCENT_COLOR = '#C4A265';
 
 export const BCRYPT_ROUNDS = 12;
 export const ACCESS_TOKEN_TTL_SECONDS = 15 * 60;

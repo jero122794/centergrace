@@ -7,29 +7,36 @@ import {
 } from '../../../shared/config/constants';
 import { env } from '../../../shared/config/env';
 
-const cookieOptions = (): CookieOptions => ({
-  httpOnly: true,
-  sameSite: 'strict',
-  secure: env.NODE_ENV === 'production',
-  path: REFRESH_COOKIE_PATH,
-  maxAge: REFRESH_TOKEN_TTL_SECONDS * 1000,
-});
+type NodeEnv = 'development' | 'test' | 'production';
 
 /**
- * Stores the rotating refresh token in a tightly scoped HttpOnly cookie.
+ * Refresh cookie flags for Vercel (web) + Railway (API) on different sites.
+ * Production uses SameSite=None; Secure so the browser sends the cookie on
+ * cross-origin XHR. Local/test keep Strict because both apps share localhost.
  */
+export const buildRefreshCookieOptions = (nodeEnv: NodeEnv): CookieOptions => {
+  const isProd = nodeEnv === 'production';
+  return {
+    httpOnly: true,
+    sameSite: isProd ? 'none' : 'strict',
+    secure: isProd,
+    path: REFRESH_COOKIE_PATH,
+    maxAge: REFRESH_TOKEN_TTL_SECONDS * 1000,
+  };
+};
+
+const cookieOptions = (): CookieOptions => buildRefreshCookieOptions(env.NODE_ENV);
+
 export const setRefreshCookie = (res: Response, token: string): void => {
   res.cookie(REFRESH_COOKIE_NAME, token, cookieOptions());
 };
 
-/**
- * Clears the refresh cookie on logout.
- */
 export const clearRefreshCookie = (res: Response): void => {
+  const options = cookieOptions();
   res.clearCookie(REFRESH_COOKIE_NAME, {
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: env.NODE_ENV === 'production',
-    path: REFRESH_COOKIE_PATH,
+    httpOnly: options.httpOnly,
+    sameSite: options.sameSite,
+    secure: options.secure,
+    path: options.path,
   });
 };

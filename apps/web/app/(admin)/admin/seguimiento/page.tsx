@@ -7,6 +7,8 @@ import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { SpiritualNotesPanel } from '@/components/groups/SpiritualNotesPanel';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { formatDateBogota } from '@/lib/formatters';
 
 interface GroupRow {
@@ -50,8 +52,8 @@ const FollowUpPage = () => {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Seguimiento espiritual</h1>
-      {groups.isLoading ? <p>Cargando grupos…</p> : null}
+      <PageHeader kicker="Pastoreo" title="Seguimiento espiritual" description="Notas y acompañamiento por grupo." />
+      {groups.isLoading ? <Skeleton lines={2} /> : null}
       <div className="flex flex-wrap gap-2">
         {groups.data?.map((group) => (
           <button

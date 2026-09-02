@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { resolveMediaUrl } from '@/lib/formatters';
 
 interface ChurchSettings {
@@ -21,8 +22,8 @@ const SettingsPage = () => {
   const [form, setForm] = useState<ChurchSettings>({
     churchName: '',
     logoUrl: '',
-    primaryColor: '#4A7C7F',
-    accentColor: '#C4A574',
+    primaryColor: '#2F5D50',
+    accentColor: '#C4A265',
   });
   const query = useQuery({
     queryKey: ['settings'],
@@ -60,7 +61,7 @@ const SettingsPage = () => {
 
   return (
     <div className="max-w-xl space-y-4">
-      <h1 className="font-display text-3xl text-teal">Identidad de la iglesia</h1>
+      <PageHeader kicker="Iglesia" title="Identidad de la iglesia" description="Nombre, logo y colores de la plataforma." />
       <Card>
         <form
           className="space-y-3"

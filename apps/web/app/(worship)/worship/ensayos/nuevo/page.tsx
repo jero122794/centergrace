@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 const NewRehearsalPage = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const NewRehearsalPage = () => {
         router.push('/worship/ensayos');
       })}
     >
-      <h1 className="font-display text-3xl text-teal">Nuevo ensayo</h1>
+      <PageHeader kicker="Alabanza" title="Nuevo ensayo" />
       <Input label="Fecha y hora" type="datetime-local" {...form.register('date')} />
       <Input label="Lugar" {...form.register('location')} />
       <label className="block text-sm">

@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 interface ServicesPayload {
   postgres?: { connected?: boolean };
@@ -26,7 +27,9 @@ const ServicesPage = () => {
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <h1 className="font-display text-3xl text-teal md:col-span-2">Servicios</h1>
+      <div className="md:col-span-2">
+        <PageHeader kicker="Sistema" title="Servicios" description="Postgres, Redis y proveedores opcionales." />
+      </div>
       <Card className="flex items-center justify-between">
         <p>PostgreSQL</p>
         <Badge tone={flag(data?.postgres?.connected)}>{data?.postgres?.connected ? 'ok' : 'caído'}</Badge>

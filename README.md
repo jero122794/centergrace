@@ -157,6 +157,7 @@ Railway también puede desplegar al conectar el repo (sin Actions). El workflow 
    - `NEXT_PUBLIC_VAPID_KEY` = misma clave pública que el API
 3. Guardar `VERCEL_TOKEN`, `VERCEL_ORG_ID` y `VERCEL_PROJECT_ID`.
 4. En Railway, `FRONTEND_URL` debe ser el dominio de Vercel (CORS y cookies).
+5. En producción la cookie de refresh va con `SameSite=None; Secure` para que el login funcione entre `*.vercel.app` y `*.up.railway.app`. CORS solo permite `FRONTEND_URL`.
 
 DNS sugerido: `app.tudominio.com` → Vercel, `api.tudominio.com` → Railway.
 

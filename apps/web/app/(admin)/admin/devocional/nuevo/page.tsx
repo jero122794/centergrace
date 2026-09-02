@@ -8,6 +8,7 @@ import { api } from '@/lib/api';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { TipTapEditor } from '@/components/editor/TipTapEditor';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { extractYoutubeId } from '@/lib/youtube';
 
 interface GroupOption {
@@ -85,7 +86,7 @@ const NewDevotionalPage = () => {
         create.mutate();
       }}
     >
-      <h1 className="font-display text-3xl text-teal">Nuevo devocional</h1>
+      <PageHeader kicker="Pastoreo" title="Nuevo devocional" description="Publica la reflexión del día para la iglesia o un grupo." />
       <Input label="Título" value={title} onChange={(event) => setTitle(event.target.value)} required />
       <Input label="Versículo" value={verse} onChange={(event) => setVerse(event.target.value)} />
       <Input label="Fecha" type="date" value={date} onChange={(event) => setDate(event.target.value)} required />

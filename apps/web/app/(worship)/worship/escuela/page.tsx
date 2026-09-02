@@ -7,6 +7,9 @@ import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/courses/ProgressBar';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
 
 interface SchoolStatus {
   ministry: { id: string; name: string };
@@ -28,15 +31,15 @@ const SchoolPage = () => {
   });
 
   if (query.isLoading) {
-    return <p>Cargando escuela…</p>;
+    return <Skeleton lines={3} />;
   }
   if (query.isError || !query.data) {
-    return <p className="text-red-600">No se pudo cargar la escuela de alabanza.</p>;
+    return <Alert>No se pudo cargar la escuela de alabanza.</Alert>;
   }
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl text-teal">Escuela de alabanza</h1>
+      <PageHeader kicker="Alabanza" title="Escuela de alabanza" description="Cursos requeridos para audicionar." />
       <p className="text-slate-600">
         Completa los cursos de {query.data.ministry.name} hasta {query.data.minProgress}% para habilitar tu audición.
       </p>

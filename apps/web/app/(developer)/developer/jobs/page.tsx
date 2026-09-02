@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 const JobsPage = () => {
   const client = useQueryClient();
@@ -19,7 +20,7 @@ const JobsPage = () => {
 
   return (
     <div className="space-y-3">
-      <h1 className="font-display text-3xl text-teal">Cron jobs</h1>
+      <PageHeader kicker="Sistema" title="Cron jobs" />
       {query.data?.map((job: { name: string; expression: string }) => (
         <Card key={job.name} className="flex items-center justify-between">
           <div>
