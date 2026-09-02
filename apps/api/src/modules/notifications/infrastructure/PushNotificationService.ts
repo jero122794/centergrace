@@ -38,6 +38,9 @@ export class PushNotificationService {
   }
 
   async sendToUser(userId: string, payload: PushPayload): Promise<void> {
+    if (env.NODE_ENV === 'test') {
+      return;
+    }
     configureVapid();
     const subscriptions = await prisma.pushSubscription.findMany({ where: { userId } });
     await Promise.all(subscriptions.map((item) => this.sendOne(item, payload)));

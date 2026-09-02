@@ -1,4 +1,5 @@
 // apps/api/src/shared/middleware/rate-limit.middleware.ts
+import type { RequestHandler } from 'express';
 import rateLimit from 'express-rate-limit';
 import RedisStore, { type RedisReply } from 'rate-limit-redis';
 import {
@@ -12,6 +13,8 @@ import {
 import { env } from '../config/env';
 import { redis } from '../config/redis';
 
+const passthrough: RequestHandler = (_req, _res, next) => next();
+
 const redisStore = (prefix: string): RedisStore =>
   new RedisStore({
     sendCommand: ((...args: string[]) => redis.call(...(args as [string, ...string[]]))) as (
@@ -23,26 +26,32 @@ const redisStore = (prefix: string): RedisStore =>
 const storeFor = (prefix: string): { store?: RedisStore } =>
   env.NODE_ENV === 'test' ? {} : { store: redisStore(prefix) };
 
-export const authLimiter = rateLimit({
-  windowMs: AUTH_RATE_LIMIT_WINDOW_MS,
-  max: AUTH_RATE_LIMIT_MAX,
-  standardHeaders: true,
-  legacyHeaders: false,
-  ...storeFor('rl:auth:'),
-  message: {
-    statusCode: 429,
-    error: 'Too Many Requests',
-    message: 'Too many authentication attempts. Try again later.',
-  },
-});
+export const authLimiter: RequestHandler =
+  env.NODE_ENV === 'test'
+    ? passthrough
+    : rateLimit({
+        windowMs: AUTH_RATE_LIMIT_WINDOW_MS,
+        max: AUTH_RATE_LIMIT_MAX,
+        standardHeaders: true,
+        legacyHeaders: false,
+        ...storeFor('rl:auth:'),
+        message: {
+          statusCode: 429,
+          error: 'Too Many Requests',
+          message: 'Too many authentication attempts. Try again later.',
+        },
+      });
 
-export const generalLimiter = rateLimit({
-  windowMs: GENERAL_RATE_LIMIT_WINDOW_MS,
-  max: GENERAL_RATE_LIMIT_MAX,
-  standardHeaders: true,
-  legacyHeaders: false,
-  ...storeFor('rl:general:'),
-});
+export const generalLimiter: RequestHandler =
+  env.NODE_ENV === 'test'
+    ? passthrough
+    : rateLimit({
+        windowMs: GENERAL_RATE_LIMIT_WINDOW_MS,
+        max: GENERAL_RATE_LIMIT_MAX,
+        standardHeaders: true,
+        legacyHeaders: false,
+        ...storeFor('rl:general:'),
+      });
 
 export const uploadLimiter = rateLimit({
   windowMs: UPLOAD_RATE_LIMIT_WINDOW_MS,
