@@ -108,6 +108,7 @@ model User {
   lessonProgress           LessonProgress[]
   songsCreated             Song[]                    @relation("SongCreator")
   rehearsalsCreated        Rehearsal[]               @relation("RehearsalCreator")
+  inAppNotifications       InAppNotification[]
 }
 
 model Ministry {
@@ -512,6 +513,20 @@ model PushSubscription {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model InAppNotification {
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  url       String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
 
 model RefreshToken {

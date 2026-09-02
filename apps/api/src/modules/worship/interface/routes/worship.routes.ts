@@ -47,6 +47,21 @@ const actor = (req: AuthenticatedRequest) => {
  *         schema: { type: string, example: "Cuan grande es Dios" }
  */
 worshipRouter.get(
+  '/school',
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const ministryId = typeof req.query.ministryId === 'string' ? req.query.ministryId : undefined;
+    sendSuccess(res, await useCases.schoolStatus(actor(req).id, ministryId));
+  }),
+);
+worshipRouter.get(
+  '/team',
+  requireRoles(['DEVELOPER', 'ADMIN', 'LEADER']),
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const ministryId = typeof req.query.ministryId === 'string' ? req.query.ministryId : undefined;
+    sendSuccess(res, await useCases.listTeam(ministryId));
+  }),
+);
+worshipRouter.get(
   '/songs',
   asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     sendSuccess(res, await useCases.listSongs(typeof req.query.q === 'string' ? req.query.q : undefined));

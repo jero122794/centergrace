@@ -21,7 +21,7 @@ export interface PushPayload {
 }
 
 /**
- * Sends Web Push notifications to stored subscriptions.
+ * Persists in-app notifications and delivers Web Push when subscriptions exist.
  */
 export class PushNotificationService {
   async subscribe(userId: string, input: { endpoint: string; keys: { p256dh: string; auth: string } }) {
@@ -37,18 +37,78 @@ export class PushNotificationService {
     });
   }
 
+  async unsubscribe(userId: string, endpoint: string): Promise<void> {
+    await prisma.pushSubscription.deleteMany({ where: { userId, endpoint } });
+  }
+
+  async listForUser(userId: string) {
+    return prisma.inAppNotification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+  }
+
+  async unreadCount(userId: string): Promise<number> {
+    return prisma.inAppNotification.count({ where: { userId, readAt: null } });
+  }
+
+  async markRead(userId: string, id: string) {
+    const existing = await prisma.inAppNotification.findUnique({ where: { id } });
+    if (!existing || existing.userId !== userId) {
+      return null;
+    }
+    return prisma.inAppNotification.update({
+      where: { id },
+      data: { readAt: existing.readAt ?? new Date() },
+    });
+  }
+
+  async markAllRead(userId: string): Promise<number> {
+    const result = await prisma.inAppNotification.updateMany({
+      where: { userId, readAt: null },
+      data: { readAt: new Date() },
+    });
+    return result.count;
+  }
+
+  async pushStatus(userId: string) {
+    const count = await prisma.pushSubscription.count({ where: { userId } });
+    return { subscribed: count > 0, subscriptionCount: count };
+  }
+
   async sendToUser(userId: string, payload: PushPayload): Promise<void> {
+    await this.persist([userId], payload);
+    await this.pushToUser(userId, payload);
+  }
+
+  async sendToUsers(userIds: string[], payload: PushPayload): Promise<void> {
+    const unique = [...new Set(userIds)];
+    await this.persist(unique, payload);
+    await Promise.all(unique.map((id) => this.pushToUser(id, payload)));
+  }
+
+  private async persist(userIds: string[], payload: PushPayload): Promise<void> {
+    if (userIds.length === 0) {
+      return;
+    }
+    await prisma.inAppNotification.createMany({
+      data: userIds.map((userId) => ({
+        userId,
+        title: payload.title,
+        body: payload.body,
+        url: payload.url,
+      })),
+    });
+  }
+
+  private async pushToUser(userId: string, payload: PushPayload): Promise<void> {
     if (env.NODE_ENV === 'test') {
       return;
     }
     configureVapid();
     const subscriptions = await prisma.pushSubscription.findMany({ where: { userId } });
     await Promise.all(subscriptions.map((item) => this.sendOne(item, payload)));
-  }
-
-  async sendToUsers(userIds: string[], payload: PushPayload): Promise<void> {
-    const unique = [...new Set(userIds)];
-    await Promise.all(unique.map((id) => this.sendToUser(id, payload)));
   }
 
   private async sendOne(
@@ -65,6 +125,10 @@ export class PushNotificationService {
         context: 'web-push',
         message: error instanceof Error ? error.message : 'unknown',
       });
+      const status = (error as { statusCode?: number }).statusCode;
+      if (status === 404 || status === 410) {
+        await prisma.pushSubscription.delete({ where: { id: item.id } }).catch(() => undefined);
+      }
     }
   }
 }

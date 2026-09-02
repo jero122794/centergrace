@@ -15,6 +15,7 @@ apps/web/public/worker-*.js
 apps/web/public/fallback-*.js
 apps/api/prisma/*.db
 apps/api/uploads/
+dump.rdb
 .DS_Store
 .vscode/
 .idea/

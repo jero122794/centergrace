@@ -29,6 +29,7 @@ async function seed(): Promise<void> {
   await prisma.systemLog.deleteMany();
   await prisma.auditLog.deleteMany();
   await prisma.refreshToken.deleteMany();
+  await prisma.inAppNotification.deleteMany();
   await prisma.pushSubscription.deleteMany();
   await prisma.participationAnswer.deleteMany();
   await prisma.participation.deleteMany();
@@ -42,6 +43,7 @@ async function seed(): Promise<void> {
   await prisma.lesson.deleteMany();
   await prisma.courseModule.deleteMany();
   await prisma.groupCourse.deleteMany();
+  await prisma.worshipSchoolCourse.deleteMany();
   await prisma.course.deleteMany();
   await prisma.spiritualNote.deleteMany();
   await prisma.groupMembership.deleteMany();
@@ -52,7 +54,6 @@ async function seed(): Promise<void> {
   await prisma.song.deleteMany();
   await prisma.audition.deleteMany();
   await prisma.ministryMemberRole.deleteMany();
-  await prisma.worshipSchoolCourse.deleteMany();
   await prisma.worshipSchoolEnrollment.deleteMany();
   await prisma.worshipSchoolConfig.deleteMany();
   await prisma.group.deleteMany();
@@ -234,6 +235,14 @@ async function seed(): Promise<void> {
       leaderId: leader.id,
       groupId: group.id,
       content: 'Muestra hambre espiritual y constancia en la célula.',
+    },
+  });
+  await prisma.inAppNotification.create({
+    data: {
+      userId: student.id,
+      title: 'Bienvenido a Shalom',
+      body: 'Tu curso Fundamentos de la Fe ya está disponible.',
+      url: '/cursos',
     },
   });
 

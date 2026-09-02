@@ -50,4 +50,44 @@ describe('Worship auditions HTTP', () => {
     });
     expect(role?.musicalRole).toBe('VOCALIST');
   });
+
+  it('reports school progress and an empty team until someone is approved', async () => {
+    const leader = await createTestUser('LEADER', `${suffix}t`);
+    const student = await createTestUser('STUDENT', `${suffix}u`);
+    const ministry = await prisma.ministry.create({
+      data: {
+        name: 'Alabanza',
+        type: 'MINISTRY',
+        leaderId: leader.id,
+        createdById: leader.id,
+      },
+    });
+    const course = await prisma.course.create({
+      data: {
+        title: 'Teoría',
+        description: 'Curso requerido',
+        createdById: leader.id,
+        lessons: { create: { title: 'Nota', bodyContent: { type: 'doc' }, order: 1, status: 'PUBLISHED' } },
+      },
+    });
+    await prisma.worshipSchoolConfig.create({
+      data: {
+        ministryId: ministry.id,
+        minProgress: 80,
+        requiredCourses: { create: [{ courseId: course.id }] },
+      },
+    });
+    const studentToken = await loginToken(app, student.email, student.password);
+    const school = await request(app)
+      .get('/api/worship/school')
+      .query({ ministryId: ministry.id })
+      .set(authHeader(studentToken));
+    expect(school.status).toBe(200);
+    expect(school.body.data.canAudition).toBe(false);
+    expect(school.body.data.courses[0].percent).toBe(0);
+    const leaderToken = await loginToken(app, leader.email, leader.password);
+    const team = await request(app).get('/api/worship/team').set(authHeader(leaderToken));
+    expect(team.status).toBe(200);
+    expect(team.body.data).toEqual([]);
+  });
 });

@@ -16,6 +16,7 @@ const NAV: NavItem[] = [
   { href: '/dashboard', label: 'Inicio', roles: ['STUDENT', 'LEADER', 'ADMIN', 'DEVELOPER'] },
   { href: '/cursos', label: 'Cursos', roles: ['STUDENT', 'LEADER', 'ADMIN', 'DEVELOPER'] },
   { href: '/devocionales', label: 'Devocionales', roles: ['STUDENT', 'LEADER', 'ADMIN', 'DEVELOPER'] },
+  { href: '/notificaciones', label: 'Notificaciones', roles: ['STUDENT', 'LEADER', 'ADMIN', 'DEVELOPER'] },
   { href: '/mis-trabajos', label: 'Mis trabajos', roles: ['STUDENT'] },
   { href: '/mi-historial', label: 'Historial', roles: ['STUDENT'] },
   { href: '/admin/dashboard', label: 'Admin', roles: ['LEADER', 'ADMIN', 'DEVELOPER'] },

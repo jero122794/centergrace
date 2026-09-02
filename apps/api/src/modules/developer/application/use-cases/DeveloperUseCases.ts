@@ -48,6 +48,7 @@ export class DeveloperUseCases {
   async services() {
     const redisInfo = await redis.info('memory');
     const usedMemoryMatch = redisInfo.match(/used_memory_human:(.+)/);
+    const youtube = await this.pingYoutube();
     return {
       postgres: { connected: true },
       redis: {
@@ -57,9 +58,10 @@ export class DeveloperUseCases {
       },
       s3: { configured: Boolean(env.AWS_S3_BUCKET) },
       ses: { configured: Boolean(env.AWS_SES_FROM) },
-      youtube: { reachable: true },
+      youtube,
       webPush: {
         subscriptions: await prisma.pushSubscription.count(),
+        vapidConfigured: Boolean(env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY),
       },
     };
   }
@@ -114,5 +116,18 @@ export class DeveloperUseCases {
       key,
       present: Boolean(process.env[key] && process.env[key] !== ''),
     }));
+  }
+
+  private async pingYoutube(): Promise<{ reachable: boolean; latencyMs?: number }> {
+    const started = Date.now();
+    try {
+      const response = await fetch(
+        'https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ&format=json',
+        { signal: AbortSignal.timeout(4000) },
+      );
+      return { reachable: response.ok, latencyMs: Date.now() - started };
+    } catch {
+      return { reachable: false, latencyMs: Date.now() - started };
+    }
   }
 }

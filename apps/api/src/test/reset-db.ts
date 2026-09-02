@@ -9,6 +9,7 @@ export const resetDatabase = async (): Promise<void> => {
   await prisma.systemLog.deleteMany();
   await prisma.auditLog.deleteMany();
   await prisma.refreshToken.deleteMany();
+  await prisma.inAppNotification.deleteMany();
   await prisma.pushSubscription.deleteMany();
   await prisma.participationAnswer.deleteMany();
   await prisma.participation.deleteMany();

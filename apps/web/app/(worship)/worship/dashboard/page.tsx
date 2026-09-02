@@ -29,6 +29,8 @@ const WorshipDashboardPage = () => {
         <Link href="/worship/repertorio">Repertorio</Link>
         <Link href="/worship/ensayos">Ensayos</Link>
         <Link href="/worship/audiciones">Audiciones</Link>
+        <Link href="/worship/escuela">Escuela</Link>
+        <Link href="/worship/equipo">Equipo</Link>
       </div>
     </div>
   );

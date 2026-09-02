@@ -187,26 +187,63 @@ export class WorshipUseCases {
     });
   }
 
-  private async hasReachedSchoolThreshold(userId: string, ministryId: string): Promise<boolean> {
+  async markSongReady(rehearsalId: string, songId: string, isReady: boolean) {
+    return this.updateRehearsalSong(rehearsalId, songId, { isReady });
+  }
+
+  async schoolStatus(userId: string, ministryId?: string) {
+    const ministry = ministryId
+      ? await prisma.ministry.findUnique({ where: { id: ministryId } })
+      : await prisma.ministry.findFirst({ orderBy: { createdAt: 'asc' } });
+    if (!ministry) {
+      throw AppError.notFound('Ministry not found');
+    }
     const config = await prisma.worshipSchoolConfig.findUnique({
-      where: { ministryId },
-      include: { requiredCourses: true },
+      where: { ministryId: ministry.id },
+      include: { requiredCourses: { include: { course: { select: { id: true, title: true, description: true } } } } },
     });
     const minProgress = config?.minProgress ?? WORSHIP_DEFAULT_MIN_PROGRESS;
-    const courseIds = config?.requiredCourses.map((item) => item.courseId) ?? [];
-    if (courseIds.length === 0) {
-      return true;
-    }
-    const percents = await Promise.all(
-      courseIds.map(async (courseId) => {
-        const published = await prisma.lesson.count({ where: { courseId, status: 'PUBLISHED' } });
-        const completed = await prisma.lessonProgress.count({
-          where: { userId, completed: true, lesson: { courseId } },
+    const courses = await Promise.all(
+      (config?.requiredCourses ?? []).map(async (required) => {
+        const published = await prisma.lesson.count({
+          where: { courseId: required.courseId, status: 'PUBLISHED' },
         });
-        return published === 0 ? 100 : Math.round((completed / published) * 100);
+        const completed = await prisma.lessonProgress.count({
+          where: { userId, completed: true, lesson: { courseId: required.courseId } },
+        });
+        const percent = published === 0 ? 100 : Math.round((completed / published) * 100);
+        return {
+          course: required.course,
+          percent,
+          published,
+          completed,
+          meetsThreshold: percent >= minProgress,
+        };
       }),
     );
-    return percents.every((value) => value >= minProgress);
+    const canAudition = courses.length === 0 || courses.every((item) => item.meetsThreshold);
+    return {
+      ministry: { id: ministry.id, name: ministry.name },
+      minProgress,
+      courses,
+      canAudition,
+    };
+  }
+
+  async listTeam(ministryId?: string) {
+    return prisma.ministryMemberRole.findMany({
+      where: ministryId ? { ministryId } : {},
+      include: {
+        user: { select: USER_PUBLIC_SELECT },
+        ministry: { select: { id: true, name: true } },
+      },
+      orderBy: { joinedAt: 'desc' },
+    });
+  }
+
+  private async hasReachedSchoolThreshold(userId: string, ministryId: string): Promise<boolean> {
+    const status = await this.schoolStatus(userId, ministryId);
+    return status.canAudition;
   }
 }
 
