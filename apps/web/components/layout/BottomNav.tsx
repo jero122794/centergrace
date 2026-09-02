@@ -47,7 +47,7 @@ export const BottomNav = () => {
   const pathname = usePathname();
   const role = useAuthStore((state) => state.user?.role) ?? 'STUDENT';
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 grid h-16 grid-cols-4 border-t border-border bg-paper shadow-nav md:hidden">
+    <nav className="dock fixed inset-x-0 bottom-0 z-30 grid h-16 grid-cols-4 md:hidden">
       {ITEMS[role].map((item) => {
         const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;

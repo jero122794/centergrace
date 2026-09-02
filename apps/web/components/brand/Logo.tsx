@@ -7,23 +7,34 @@ interface Props {
 }
 
 /**
- * Centro de Gracia wordmark with olive-leaf mark.
+ * Centro de Gracia wordmark with an oval olive mark.
  */
 export const Logo = ({ className, compact = false }: Props) => (
   <div className={cn('flex items-center gap-3', className)}>
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-accent text-warm">
+    <span
+      className="inline-flex h-11 w-10 items-center justify-center text-warm"
+      style={{
+        background: 'var(--color-accent)',
+        borderRadius: '58% 42% 50% 50% / 42% 48% 52% 58%',
+      }}
+    >
       <svg viewBox="0 0 32 32" className="h-6 w-6" fill="none" aria-hidden>
         <path
-          d="M16 6c2.8 3.2 4.2 6.4 4.2 9.2 0 3.4-1.8 6.2-4.2 8-2.4-1.8-4.2-4.6-4.2-8C11.8 12.4 13.2 9.2 16 6Z"
+          d="M16 5.5c3.1 3.6 4.6 7.1 4.6 10.2 0 3.6-1.9 6.5-4.6 8.4-2.7-1.9-4.6-4.8-4.6-8.4 0-3.1 1.5-6.6 4.6-10.2Z"
           fill="currentColor"
         />
-        <path d="M8 18.5c3.4.2 6 1.8 8 4.5 2-2.7 4.6-4.3 8-4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <path
+          d="M7.5 19c3.8.15 6.6 1.9 8.5 4.8 1.9-2.9 4.7-4.65 8.5-4.8"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
       </svg>
     </span>
     {compact ? null : (
       <span className="leading-tight">
-        <span className="block font-display text-lg text-dark">Centro de Gracia</span>
-        <span className="block text-[11px] uppercase tracking-[0.16em] text-muted">Centro Misionero Shalom</span>
+        <span className="block font-display text-[1.15rem] tracking-tight text-dark">Centro de Gracia</span>
+        <span className="block text-[10px] uppercase tracking-[0.22em] text-muted">Centro Misionero Shalom</span>
       </span>
     )}
   </div>

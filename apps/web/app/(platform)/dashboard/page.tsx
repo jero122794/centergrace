@@ -3,7 +3,6 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { BookOpen, ClipboardList } from 'lucide-react';
 import { api } from '@/lib/api';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { StreakCard } from '@/components/dashboard/StreakCard';
@@ -14,7 +13,7 @@ import { CourseCard } from '@/components/courses/CourseCard';
 import { useAuthStore } from '@/store/auth.store';
 import { formatGreeting, formatGreetingDate, formatLongDateBogota } from '@/lib/formatters';
 import { GradeBadge } from '@/components/grading/GradeBadge';
-import { Card } from '@/components/ui/Card';
+import { Ornament } from '@/components/brand/Ornament';
 
 interface CourseSummary {
   id: string;
@@ -41,15 +40,20 @@ const DashboardPage = () => {
   });
   const isStudent = user?.role === 'STUDENT';
   const alreadyParticipated = Boolean(today.data?.participations?.length);
+  const firstName = user?.name?.split(' ')[0] ?? user?.name;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-h2 text-dark">
-          {formatGreeting(now)}, {user?.name}
+    <div className="space-y-12">
+      <header className="max-w-2xl">
+        <p className="text-[11px] uppercase tracking-[0.22em] text-gold-d">{formatGreetingDate(now)}</p>
+        <h1 className="hero-display mt-3 text-dark">
+          {formatGreeting(now)},
+          <br />
+          {firstName}.
         </h1>
-        <p className="text-[13px] text-muted">{formatGreetingDate(now)}</p>
-      </div>
+        <Ornament className="mt-6 max-w-sm" />
+      </header>
+
       {today.data ? (
         <DevotionalCard
           title={today.data.title}
@@ -67,62 +71,51 @@ const DashboardPage = () => {
         />
       ) : (
         <DevotionalCard
-          title="Sin devocional hoy"
-          verse="Vuelve más tarde; tu líder publicará la reflexión del día."
+          title="Hoy descansa la página"
+          verse="Aún no hay un devocional publicado. Vuelve más tarde; tu líder lo dejará aquí."
           dateLabel={formatLongDateBogota(now)}
         />
       )}
+
       {isStudent ? (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <dl className="ledger">
           <StreakCard days={dashboard.data?.streak ?? 0} />
-          <StatCard label="Cursos activos" value={dashboard.data?.enrollments ?? 0} icon={BookOpen} />
-          <StatCard
-            label="Última nota"
-            value={dashboard.data?.lastGrade?.score ?? '—'}
-            icon={ClipboardList}
-            accent="gold"
-          />
-          <Card className="flex flex-col justify-center border-t-[3px] border-t-accent p-5">
-            <p className="text-xs font-medium uppercase tracking-wide text-muted">Última calificación</p>
-            <div className="mt-3">
-              <GradeBadge score={dashboard.data?.lastGrade?.score ?? null} status={dashboard.data?.lastGrade ? 'GRADED' : 'PENDING'} large />
-            </div>
-          </Card>
-        </div>
+          <StatCard label="Cursos activos" value={dashboard.data?.enrollments ?? 0} />
+          <StatCard label="Última nota" value={dashboard.data?.lastGrade?.score ?? '—'} />
+          <div className="ledger-item">
+            <dt>Calificación</dt>
+            <dd className="!text-base !font-sans">
+              <GradeBadge
+                score={dashboard.data?.lastGrade?.score ?? null}
+                status={dashboard.data?.lastGrade ? 'GRADED' : 'PENDING'}
+              />
+            </dd>
+          </div>
+        </dl>
       ) : (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <StatCard label="Usuarios" value={dashboard.data?.users ?? 0} />
-          <StatCard label="Cursos" value={dashboard.data?.courses ?? 0} icon={BookOpen} />
+        <dl className="ledger">
+          <StatCard label="Personas" value={dashboard.data?.users ?? 0} />
+          <StatCard label="Cursos" value={dashboard.data?.courses ?? 0} />
           <StatCard label="Participaciones hoy" value={dashboard.data?.participationsToday ?? 0} />
           <StatCard label="Ministerios" value={dashboard.data?.ministries ?? 0} />
-        </div>
+        </dl>
       )}
+
       {isStudent && courses.data && courses.data.length > 0 ? (
         <section>
-          <h2 className="mb-4 font-display text-h2 text-dark">Mis cursos</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <h2 className="font-display text-3xl text-dark">En el pupitre</h2>
+            <Link href="/cursos" className="text-sm text-accent underline decoration-gold underline-offset-4">
+              Ver todos
+            </Link>
+          </div>
+          <div className="course-mosaic grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {courses.data.slice(0, 6).map((course) => (
               <CourseCard key={course.id} {...course} />
             ))}
           </div>
         </section>
       ) : null}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Link href="/cursos" className="block">
-          <div className="rounded-2xl border border-border bg-paper p-6 shadow-card transition hover:-translate-y-0.5 hover:shadow-lift">
-            <Badge tone="warm">Continuar</Badge>
-            <h3 className="mt-3 font-display text-xl text-dark">Tus cursos</h3>
-            <p className="mt-1 text-sm text-muted">Entra a las lecciones y sigue tu progreso.</p>
-          </div>
-        </Link>
-        <Link href="/notificaciones" className="block">
-          <div className="rounded-2xl border border-border bg-paper p-6 shadow-card transition hover:-translate-y-0.5 hover:shadow-lift">
-            <Badge tone="info">Comunidad</Badge>
-            <h3 className="mt-3 font-display text-xl text-dark">Avisos</h3>
-            <p className="mt-1 text-sm text-muted">Revisa mensajes de tus líderes y de la iglesia.</p>
-          </div>
-        </Link>
-      </div>
     </div>
   );
 };

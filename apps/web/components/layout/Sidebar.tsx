@@ -102,13 +102,12 @@ export const Sidebar = () => {
       ) : null}
       <aside
         className={cn(
-          'group/sidebar fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r bg-surface transition-[width,transform] duration-[250ms] ease-in-out lg:static lg:translate-x-0',
-          worship ? 'border-worship/30' : developer ? 'border-dev/30' : 'border-border',
+          'group/sidebar rail fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col transition-[width,transform] duration-[250ms] ease-in-out lg:static lg:translate-x-0',
           'md:w-16 md:hover:w-[220px] md:overflow-hidden lg:w-[260px] lg:hover:w-[260px]',
           open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
         )}
       >
-        <div className="flex h-16 items-center border-b border-border px-5">
+        <div className="flex h-[4.6rem] items-center px-5">
           <Logo compact={false} />
         </div>
         <nav className="flex-1 overflow-y-auto py-2">
@@ -128,11 +127,10 @@ export const Sidebar = () => {
                       onClick={close}
                       title={item.label}
                       className={cn(
-                        'mx-2 my-0.5 flex items-center gap-3 rounded-[10px] px-4 py-2.5 text-sm text-muted transition',
-                        'hover:bg-paper hover:text-accent',
-                        active && 'border-l-[3px] border-accent bg-primary/20 font-semibold text-accent',
-                        worship && item.match === '/worship' && 'border-worship text-worship',
-                        developer && item.match === '/developer' && 'border-dev text-dev',
+                        'nav-leaf text-sm',
+                        active && 'is-active',
+                        worship && item.match === '/worship' && 'text-worship',
+                        developer && item.match === '/developer' && 'text-dev',
                       )}
                     >
                       <Icon className="h-5 w-5 shrink-0" aria-hidden />
@@ -145,7 +143,7 @@ export const Sidebar = () => {
           ))}
         </nav>
         {user ? (
-          <Link href="/perfil" onClick={close} className="m-2 rounded-xl border border-border bg-paper p-3">
+          <Link href="/perfil" onClick={close} className="sheet m-3 p-3">
             <p className="truncate text-[13px] font-semibold text-dark">{user.name}</p>
             <Badge tone={roleTone(user.role)} className="mt-1">
               {user.role}

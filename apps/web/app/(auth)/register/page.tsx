@@ -14,6 +14,7 @@ import { Logo } from '@/components/brand/Logo';
 import { api, getApiErrorMessage } from '@/lib/api';
 import { useAuthStore } from '@/store/auth.store';
 import { cn } from '@/lib/cn';
+import { Ornament } from '@/components/brand/Ornament';
 
 const schema = z
   .object({
@@ -62,15 +63,13 @@ const RegisterPage = () => {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center bg-bg px-4 py-10">
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="relative w-full max-w-[420px] rounded-[20px] bg-paper p-10 shadow-auth"
-      >
+    <main className="wash relative flex min-h-screen items-center justify-center px-4 py-12">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="sheet relative w-full max-w-[440px] px-8 py-10 sm:px-11">
         <Logo className="justify-center" />
-        <h1 className="mt-6 text-center font-display text-[28px] text-dark">Crea tu cuenta</h1>
-        <p className="mt-1 text-center text-sm text-muted">Únete al espacio de formación de la iglesia</p>
-        <div className="mt-8 space-y-4">
+        <h1 className="mt-7 text-center font-display text-[2rem] leading-tight text-dark">Crea tu cuenta</h1>
+        <p className="mt-2 text-center text-sm text-muted">Únete al espacio de formación de la iglesia</p>
+        <Ornament className="my-6" />
+        <div className="space-y-5">
           {error ? <Alert>{error}</Alert> : null}
           <Input label="Nombre completo" autoComplete="name" {...form.register('name')} error={form.formState.errors.name?.message} />
           <Input label="Correo" type="email" autoComplete="email" {...form.register('email')} error={form.formState.errors.email?.message} />

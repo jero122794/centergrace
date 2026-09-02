@@ -8,16 +8,16 @@ interface Props {
 }
 
 const tones: Record<NonNullable<Props['tone']>, string> = {
-  danger: 'border-danger-d/30 bg-danger text-danger-d',
-  info: 'border-primary bg-surface text-dark',
-  success: 'border-success-d/20 bg-success text-success-d',
+  danger: 'border-l-danger-d bg-danger text-danger-d',
+  info: 'border-l-accent bg-surface text-dark',
+  success: 'border-l-success-d bg-success text-success-d',
 };
 
 /**
  * Inline status banner for forms and pages.
  */
 export const Alert = ({ children, tone = 'danger' }: Props) => (
-  <p role="alert" className={cn('rounded-xl border px-3.5 py-2.5 text-sm', tones[tone])}>
+  <p role="alert" className={cn('border-l-[3px] py-2.5 pl-3.5 pr-3 text-sm', tones[tone])}>
     {children}
   </p>
 );

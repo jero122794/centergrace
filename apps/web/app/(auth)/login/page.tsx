@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Alert';
 import { Logo } from '@/components/brand/Logo';
+import { Ornament } from '@/components/brand/Ornament';
 import { useAuthStore } from '@/store/auth.store';
 import { getApiErrorMessage } from '@/lib/api';
 
@@ -46,20 +47,13 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center bg-bg px-4 py-10">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20" />
-        <div className="absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/15" />
-        <div className="absolute left-1/2 top-1/2 h-[240px] w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10" />
-      </div>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="relative w-full max-w-[420px] rounded-[20px] bg-paper p-10 shadow-auth"
-      >
+    <main className="wash relative flex min-h-screen items-center justify-center px-4 py-12">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="sheet relative w-full max-w-[440px] px-8 py-10 sm:px-11">
         <Logo className="justify-center" />
-        <h1 className="mt-6 text-center font-display text-[28px] text-dark">Bienvenido de vuelta</h1>
-        <p className="mt-1 text-center text-sm text-muted">Ingresa a tu espacio espiritual</p>
-        <div className="mt-8 space-y-4">
+        <h1 className="mt-7 text-center font-display text-[2rem] leading-tight text-dark">Bienvenido de vuelta</h1>
+        <p className="mt-2 text-center text-sm text-muted">Entra a tu espacio espiritual</p>
+        <Ornament className="my-6" />
+        <div className="space-y-5">
           {error ? <Alert>{error}</Alert> : null}
           <Input label="Correo" type="email" autoComplete="email" {...form.register('email')} error={form.formState.errors.email?.message} />
           <div className="relative">
@@ -80,22 +74,15 @@ const LoginPage = () => {
             </button>
           </div>
           <p className="text-right text-xs">
-            <a className="text-accent" href="mailto:admin@iglesia.com">
+            <a className="text-accent underline decoration-gold/70 underline-offset-4" href="mailto:admin@iglesia.com">
               ¿Olvidaste tu contraseña?
             </a>
           </p>
           <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'Entrando…' : 'Iniciar sesión'}
           </Button>
-          <div className="flex items-center gap-3 text-xs text-hint">
-            <span className="h-px flex-1 bg-border" />
-            o
-            <span className="h-px flex-1 bg-border" />
-          </div>
-          <a
-            href={`${API_URL}/api/auth/google`}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-pill border-[1.5px] border-border bg-paper py-2.5 text-sm font-semibold text-dark hover:bg-surface"
-          >
+          <Ornament label="o" />
+          <a href={`${API_URL}/api/auth/google`} className="btn-grace btn-grace--quiet w-full">
             Continuar con Google
           </a>
           <p className="text-center text-sm text-muted">

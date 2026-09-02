@@ -41,11 +41,7 @@ export const Topbar = () => {
   };
 
   return (
-    <header
-      className={`sticky top-0 z-20 flex h-[52px] items-center justify-between gap-3 border-b bg-paper px-4 md:h-14 lg:h-16 ${
-        isWorship ? 'border-worship/30' : isDeveloper ? 'border-dev/30' : 'border-border'
-      }`}
-    >
+    <header className="masthead sticky top-0 z-20 flex h-[52px] items-center justify-between gap-3 px-4 md:h-14 lg:h-16">
       <div className="flex min-w-0 items-center gap-3">
         {isDeveloper ? null : (
           <Button variant="icon" className="lg:hidden" onClick={toggle} aria-label="Abrir menú">
@@ -84,7 +80,7 @@ export const Topbar = () => {
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Buscar cursos"
               aria-label="Buscar cursos"
-              className="h-10 w-52 rounded-[10px] border-[1.5px] border-border bg-paper pl-9 pr-3 text-sm text-dark placeholder:text-hint focus:border-border-f focus:outline-none focus:ring-[3px] focus:ring-primary/30 lg:w-64"
+              className="field-control h-10 w-52 pl-9 lg:w-64"
             />
           </form>
           <Link

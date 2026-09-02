@@ -45,7 +45,7 @@ const tones: Record<BadgeTone, string> = {
  * <Badge tone="student">STUDENT</Badge>
  */
 export const Badge = ({ children, tone = 'neutral', className }: Props) => (
-  <span className={cn('inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide', tones[tone], className)}>
+  <span className={cn('chip inline-flex px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide', tones[tone], className)}>
     {children}
   </span>
 );
