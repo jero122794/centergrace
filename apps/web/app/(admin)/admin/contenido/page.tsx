@@ -64,12 +64,12 @@ const ContentPage = () => {
       {courses.isLoading ? <Skeleton lines={2} /> : null}
       {courses.isError ? <Alert>No se pudieron cargar los cursos.</Alert> : null}
       {!courses.isLoading && courses.data?.length === 0 ? (
-        <EmptyState icon="book" title="Sin cursos" description="Crea el primero con el formulario de arriba." />
+        <EmptyState title="Sin cursos" description="Crea el primero con el formulario de arriba." />
       ) : null}
       <div className="grid gap-3 md:grid-cols-2">
         {courses.data?.map((course) => (
           <button key={course.id} type="button" className="text-left" onClick={() => setSelectedId(course.id)}>
-            <Card className={selectedId === course.id ? 'ring-2 ring-teal' : ''}>
+            <Card className={selectedId === course.id ? 'ring-2 ring-accent' : ''}>
               <p className="font-medium">{course.title}</p>
               <p className="text-sm text-slate-500">{course._count?.lessons ?? 0} lecciones</p>
             </Card>
@@ -78,7 +78,7 @@ const ContentPage = () => {
       </div>
       {selected.data ? (
         <Card className="space-y-4">
-          <h2 className="font-display text-2xl text-teal">{selected.data.title}</h2>
+          <h2 className="font-display text-2xl text-accent">{selected.data.title}</h2>
           <ul className="space-y-2">
             {selected.data.lessons.map((lesson) => (
               <li key={lesson.id} className="flex items-center justify-between rounded-xl bg-cream px-3 py-2">

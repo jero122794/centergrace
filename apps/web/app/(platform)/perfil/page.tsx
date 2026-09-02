@@ -40,7 +40,7 @@ const ProfilePage = () => {
     <div className="space-y-6">
       <PageHeader kicker="Cuenta" title="Perfil" description="Tu identidad en la plataforma y las alertas de este dispositivo." />
       <Card className="max-w-lg space-y-3">
-        <p className="font-display text-2xl text-teal">{user?.name}</p>
+        <p className="font-display text-2xl text-dark">{user?.name}</p>
         <p className="text-sm text-ink/55">{user?.email}</p>
         <p className="text-sm">
           Rol: <Badge>{user?.role ?? ''}</Badge>

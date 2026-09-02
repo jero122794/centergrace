@@ -3,8 +3,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { StatCard } from '@/components/dashboard/StatCard';
+import { SystemMetricCard } from '@/components/developer/SystemMetricCard';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const SystemPage = () => {
   const query = useQuery({
@@ -14,15 +15,19 @@ const SystemPage = () => {
   const data = query.data ?? {};
   return (
     <div className="space-y-6">
-      <PageHeader kicker="Sistema" title="Salud" description="Métricas del proceso Node." />
-      <div className="grid gap-4 md:grid-cols-3">
-        <StatCard label="Uptime (s)" value={data.uptimeSeconds ?? 0} />
-        <StatCard label="CPU %" value={data.cpuPercent ?? 0} />
-        <StatCard label="RAM MB" value={data.ramUsedMb ?? 0} />
-        <StatCard label="Heap MB" value={data.heapUsedMb ?? 0} />
-        <StatCard label="p95 ms" value={data.latency?.p95 ?? 0} />
-        <StatCard label="Req/min" value={data.requestsPerMinute ?? 0} />
-      </div>
+      <PageHeader kicker="Developer" title="Sistema" description="Métricas del proceso Node." />
+      {query.isLoading ? (
+        <Skeleton lines={2} />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-3">
+          <SystemMetricCard label="Uptime" value={data.uptimeSeconds ?? 0} unit="s" />
+          <SystemMetricCard label="CPU" value={data.cpuPercent ?? 0} unit="%" percent={Number(data.cpuPercent ?? 0)} />
+          <SystemMetricCard label="RAM" value={data.ramUsedMb ?? 0} unit="MB" />
+          <SystemMetricCard label="Heap" value={data.heapUsedMb ?? 0} unit="MB" />
+          <SystemMetricCard label="Latencia p95" value={data.latency?.p95 ?? 0} unit="ms" />
+          <SystemMetricCard label="Req / min" value={data.requestsPerMinute ?? 0} />
+        </div>
+      )}
     </div>
   );
 };

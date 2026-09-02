@@ -3,15 +3,15 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { JobMonitor, type JobStatus } from '@/components/developer/JobMonitor';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const JobsPage = () => {
   const client = useQueryClient();
   const query = useQuery({
     queryKey: ['dev-jobs'],
-    queryFn: async () => (await api.get('/api/developer/jobs')).data.data,
+    queryFn: async () => (await api.get('/api/developer/jobs')).data.data as JobStatus[],
   });
   const trigger = useMutation({
     mutationFn: async (name: string) => api.post(`/api/developer/jobs/${name}/trigger`),
@@ -19,17 +19,10 @@ const JobsPage = () => {
   });
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <PageHeader kicker="Sistema" title="Cron jobs" />
-      {query.data?.map((job: { name: string; expression: string }) => (
-        <Card key={job.name} className="flex items-center justify-between">
-          <div>
-            <p className="font-medium">{job.name}</p>
-            <p className="text-sm text-slate-500">{job.expression}</p>
-          </div>
-          <Button onClick={() => trigger.mutate(job.name)}>Ejecutar</Button>
-        </Card>
-      ))}
+      {query.isLoading ? <Skeleton lines={2} /> : null}
+      <JobMonitor jobs={query.data ?? []} runningName={trigger.variables} onTrigger={(name) => trigger.mutate(name)} />
     </div>
   );
 };

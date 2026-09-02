@@ -13,6 +13,22 @@ export const formatGreetingDate = (value: Date): string => {
   return raw.charAt(0).toUpperCase() + raw.slice(1);
 };
 
+export const formatGreeting = (value: Date): string => {
+  const hour = Number(formatInTimeZone(value, BOGOTA, 'H'));
+  if (hour < 12) {
+    return 'Buenos días';
+  }
+  if (hour < 19) {
+    return 'Buenas tardes';
+  }
+  return 'Buenas noches';
+};
+
+export const formatLongDateBogota = (value: Date | string): string => {
+  const raw = formatInTimeZone(value, BOGOTA, "EEEE, d 'de' MMMM 'de' yyyy", { locale: es });
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+};
+
 export const formatDateTimeBogota = (value: string | Date): string => {
   return formatInTimeZone(value, BOGOTA, 'dd/MM/yyyy HH:mm');
 };

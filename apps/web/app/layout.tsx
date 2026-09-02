@@ -1,30 +1,38 @@
 // apps/web/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
-import { Libre_Baskerville, Source_Sans_3 } from 'next/font/google';
+import { DM_Sans, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import { Providers } from '@/components/layout/Providers';
 import './globals.css';
 
-const sourceSans = Source_Sans_3({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-source-sans',
+  variable: '--font-dm-sans',
   display: 'swap',
 });
 
-const libre = Libre_Baskerville({
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-libre-baskerville',
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-jetbrains',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Centro Misionero Shalom',
-  description: 'Plataforma de estudios bíblicos y seguimiento espiritual',
+  title: 'Centro de Gracia',
+  description: 'Plataforma de estudios bíblicos y seguimiento espiritual — Centro Misionero Shalom',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'black-translucent',
-    title: 'Shalom',
+    statusBarStyle: 'default',
+    title: 'Centro de Gracia',
   },
   icons: {
     apple: '/icons/icon-192.png',
@@ -36,13 +44,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#2F5D50',
+  themeColor: '#F7F3EF',
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="es">
-      <body className={`${sourceSans.variable} ${libre.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${playfair.variable} ${jetbrains.variable} bg-bg font-sans text-dark antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

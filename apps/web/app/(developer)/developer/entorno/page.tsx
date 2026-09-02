@@ -3,24 +3,20 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { EnvChecker, type EnvFlag } from '@/components/developer/EnvChecker';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const EnvPage = () => {
   const query = useQuery({
     queryKey: ['dev-env'],
-    queryFn: async () => (await api.get('/api/developer/env-check')).data.data,
+    queryFn: async () => (await api.get('/api/developer/env-check')).data.data as EnvFlag[],
   });
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <PageHeader kicker="Sistema" title="Variables de entorno" description="Solo presencia o ausencia, nunca valores." />
-      {query.data?.map((item: { key: string; present: boolean }) => (
-        <Card key={item.key} className="flex items-center justify-between">
-          <p>{item.key}</p>
-          <Badge tone={item.present ? 'teal' : 'danger'}>{item.present ? 'presente' : 'ausente'}</Badge>
-        </Card>
-      ))}
+      {query.isLoading ? <Skeleton lines={2} /> : null}
+      <EnvChecker items={query.data ?? []} />
     </div>
   );
 };

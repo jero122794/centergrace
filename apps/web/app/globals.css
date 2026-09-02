@@ -3,42 +3,114 @@
 @tailwind utilities;
 
 :root {
-  --color-cream: #f3ebe1;
-  --color-teal: #2f5d50;
-  --color-ink: #1c2a24;
-  --color-gold: #c4a265;
+  --color-bg: #f7f3ef;
+  --color-surface: #e8f4f5;
+  --color-white: #ffffff;
+  --color-primary: #a8c5c7;
+  --color-primary-d: #6a9ea1;
+  --color-accent: #4a7c7f;
+  --color-accent-hover: #3a6568;
+  --color-accent-active: #2e5052;
+  --color-dark: #1e3a3c;
+  --color-warm: #f0e6d3;
+  --color-gold: #d4b896;
+  --color-gold-d: #b8956a;
+  --color-success: #c8e6c9;
+  --color-success-d: #2e7d32;
+  --color-warning: #fff9c4;
+  --color-warning-d: #f57f17;
+  --color-danger: #ffcdd2;
+  --color-danger-d: #c62828;
+  --color-info: #e3f2fd;
+  --color-info-d: #1565c0;
+  --color-text: #1e3a3c;
+  --color-muted: #5c7a7c;
+  --color-hint: #8faaac;
+  --color-border: #c8dede;
+  --color-border-f: #6a9ea1;
+  --color-worship: #7b68ee;
+  --color-worship-l: #eee8ff;
+  --color-dev: #06b6d4;
+  --color-dev-l: #e0f7fa;
 }
 
 html,
 body {
   min-height: 100%;
-  background-color: var(--color-cream);
-  background-image:
-    radial-gradient(1200px 520px at 8% -10%, rgba(47, 93, 80, 0.14), transparent 55%),
-    radial-gradient(900px 420px at 100% 0%, rgba(196, 162, 101, 0.16), transparent 50%);
-  color: var(--color-ink);
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 ::selection {
-  background: rgba(47, 93, 80, 0.18);
+  background: rgba(168, 197, 199, 0.45);
 }
 
-textarea,
-select {
-  @apply w-full rounded-xl border border-teal/15 bg-surface px-3 py-2 text-sm outline-none ring-teal focus:ring-2;
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.prose-grace p {
+  margin-bottom: 0.75rem;
+}
+
+.prose-grace h2 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.prose-grace blockquote {
+  border-left: 4px solid var(--color-gold);
+  background: var(--color-warm);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+.prose-grace ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+.prose-grace li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-grace a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.tiptap {
+  min-height: 200px;
 }
 
 .tiptap p {
-  margin: 0.4rem 0;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap h2 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.tiptap blockquote {
+  border-left: 4px solid var(--color-primary-d);
+  background: var(--color-surface);
+  padding: 0.75rem 1rem;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
 }
 
 .tiptap ul {
   list-style: disc;
   padding-left: 1.25rem;
-}
-
-.tiptap h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0.75rem 0 0.35rem;
 }

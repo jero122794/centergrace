@@ -36,14 +36,14 @@ const GradesPage = () => {
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {query.isError ? <Alert>No se pudieron cargar las entregas.</Alert> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <EmptyState icon="clipboard" title="Sin trabajos pendientes" description="Cuando los estudiantes entreguen, aparecerán aquí." />
+        <EmptyState title="Sin trabajos pendientes" description="Cuando los estudiantes entreguen, aparecerán aquí." />
       ) : null}
       {query.data && query.data.length > 0 ? (
         <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
           <div className="space-y-2">
             {query.data.map((item) => (
               <button key={item.id} type="button" className="w-full text-left" onClick={() => setSelectedId(item.id)}>
-                <Card className={selected?.id === item.id ? 'ring-2 ring-teal' : ''}>
+            <Card className={selected?.id === item.id ? 'ring-2 ring-accent' : ''}>
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="font-medium">{item.user.name}</p>

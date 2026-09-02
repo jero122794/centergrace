@@ -1,18 +1,29 @@
 // apps/web/components/ui/Skeleton.tsx
+import { cn } from '@/lib/cn';
+
 interface Props {
   className?: string;
   lines?: number;
 }
 
+/**
+ * Shimmer placeholder while content loads.
+ *
+ * @example
+ * <Skeleton lines={3} />
+ */
 export const Skeleton = ({ className = 'h-24', lines }: Props) => {
+  const bar = (key: number) => (
+    <div
+      key={key}
+      className={cn(
+        'rounded-2xl bg-[linear-gradient(90deg,var(--color-surface)_0%,#fff_50%,var(--color-surface)_100%)] bg-[length:200%_100%] animate-shimmer',
+        lines ? 'h-20' : className,
+      )}
+    />
+  );
   if (lines) {
-    return (
-      <div className="space-y-3">
-        {Array.from({ length: lines }).map((_, index) => (
-          <div key={index} className="h-20 animate-pulse rounded-2xl bg-teal/10" />
-        ))}
-      </div>
-    );
+    return <div className="space-y-3">{Array.from({ length: lines }).map((_, index) => bar(index))}</div>;
   }
-  return <div className={`animate-pulse rounded-2xl bg-teal/10 ${className}`} />;
+  return bar(0);
 };

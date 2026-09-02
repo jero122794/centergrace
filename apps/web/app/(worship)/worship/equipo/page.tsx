@@ -29,7 +29,7 @@ const TeamPage = () => {
       {query.isLoading ? <Skeleton lines={2} /> : null}
       {query.isError ? <Alert>No se pudo cargar el equipo.</Alert> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <EmptyState icon="users" title="Equipo vacío" description="Aún no hay miembros con rol musical asignado." />
+        <EmptyState title="Equipo vacío" description="Aún no hay miembros con rol musical asignado." />
       ) : null}
       {query.data?.map((item) => (
         <Card key={`${item.user.id}-${item.ministry.id}`} className="flex items-center justify-between">

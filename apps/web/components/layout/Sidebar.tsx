@@ -3,15 +3,32 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  BookOpen,
+  CheckCircle2,
+  Clock3,
+  Code2,
+  FileText,
+  Grid3x3,
+  Heart,
+  Home,
+  Music,
+  Plus,
+  Settings,
+  Sun,
+  Users,
+  type LucideIcon,
+} from 'lucide-react';
 import { Logo } from '@/components/brand/Logo';
-import { Icon, type IconName } from '@/components/ui/Icon';
+import { Badge, roleTone } from '@/components/ui/Badge';
 import { useAuthStore, type Role } from '@/store/auth.store';
 import { useUiStore } from '@/store/ui.store';
+import { cn } from '@/lib/cn';
 
 interface NavItem {
   href: string;
   label: string;
-  icon: IconName;
+  icon: LucideIcon;
   roles: Role[];
   match?: string;
 }
@@ -29,40 +46,45 @@ const GROUPS: NavGroup[] = [
   {
     title: 'Formación',
     items: [
-      { href: '/dashboard', label: 'Inicio', icon: 'home', roles: ALL },
-      { href: '/cursos', label: 'Cursos', icon: 'book', roles: ALL },
-      { href: '/devocionales', label: 'Devocionales', icon: 'sun', roles: ALL },
-      { href: '/mis-trabajos', label: 'Mis trabajos', icon: 'clipboard', roles: ['STUDENT'] },
-      { href: '/mi-historial', label: 'Historial', icon: 'clock', roles: ['STUDENT'] },
+      { href: '/dashboard', label: 'Inicio', icon: Home, roles: ALL },
+      { href: '/cursos', label: 'Cursos', icon: BookOpen, roles: ALL },
+      { href: '/devocionales', label: 'Devocionales', icon: Sun, roles: ALL },
+      { href: '/mis-trabajos', label: 'Mis trabajos', icon: FileText, roles: ['STUDENT'] },
+      { href: '/mi-historial', label: 'Historial', icon: Clock3, roles: ['STUDENT'] },
     ],
   },
   {
     title: 'Pastoreo',
     items: [
-      { href: '/admin/dashboard', label: 'Panel', icon: 'grid', roles: STAFF },
-      { href: '/admin/grupos', label: 'Grupos', icon: 'users', roles: STAFF },
-      { href: '/admin/contenido', label: 'Contenido', icon: 'file', roles: STAFF },
-      { href: '/admin/devocional/nuevo', label: 'Nuevo devocional', icon: 'plus', roles: STAFF },
-      { href: '/admin/calificaciones', label: 'Calificaciones', icon: 'check', roles: STAFF },
-      { href: '/admin/seguimiento', label: 'Seguimiento', icon: 'heart', roles: STAFF },
-      { href: '/admin/usuarios', label: 'Usuarios', icon: 'users', roles: ADMINS },
-      { href: '/admin/configuracion', label: 'Iglesia', icon: 'settings', roles: ADMINS },
+      { href: '/admin/dashboard', label: 'Panel', icon: Grid3x3, roles: STAFF },
+      { href: '/admin/grupos', label: 'Grupos', icon: Users, roles: STAFF },
+      { href: '/admin/contenido', label: 'Contenido', icon: FileText, roles: STAFF },
+      { href: '/admin/devocional/nuevo', label: 'Nuevo devocional', icon: Plus, roles: STAFF },
+      { href: '/admin/calificaciones', label: 'Calificaciones', icon: CheckCircle2, roles: STAFF },
+      { href: '/admin/seguimiento', label: 'Seguimiento', icon: Heart, roles: STAFF },
+      { href: '/admin/usuarios', label: 'Usuarios', icon: Users, roles: ADMINS },
+      { href: '/admin/configuracion', label: 'Iglesia', icon: Settings, roles: ADMINS },
     ],
   },
   {
     title: 'Ministerio',
     items: [
-      { href: '/worship/dashboard', label: 'Alabanza', icon: 'music', roles: STAFF, match: '/worship' },
-      { href: '/developer/sistema', label: 'Sistema', icon: 'code', roles: ['DEVELOPER'], match: '/developer' },
+      { href: '/worship/dashboard', label: 'Alabanza', icon: Music, roles: STAFF, match: '/worship' },
+      { href: '/developer/sistema', label: 'Sistema', icon: Code2, roles: ['DEVELOPER'], match: '/developer' },
     ],
   },
 ];
 
+/**
+ * Persistent light sidebar with role-filtered navigation.
+ */
 export const Sidebar = () => {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const open = useUiStore((state) => state.sidebarOpen);
   const close = useUiStore((state) => state.closeSidebar);
+  const worship = pathname.startsWith('/worship');
+  const developer = pathname.startsWith('/developer');
   const groups = GROUPS.map((group) => ({
     ...group,
     items: group.items.filter((item) => user && item.roles.includes(user.role)),
@@ -76,34 +98,45 @@ export const Sidebar = () => {
   return (
     <>
       {open ? (
-        <button className="fixed inset-0 z-30 bg-ink/40 lg:hidden" onClick={close} aria-label="Cerrar menú" />
+        <button className="fixed inset-0 z-30 bg-dark/25 lg:hidden" onClick={close} aria-label="Cerrar menú" />
       ) : null}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-teal-dark p-5 text-cream transition-transform lg:static lg:translate-x-0 ${
-          open ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={cn(
+          'group/sidebar fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r bg-surface transition-[width,transform] duration-[250ms] ease-in-out lg:static lg:translate-x-0',
+          worship ? 'border-worship/30' : developer ? 'border-dev/30' : 'border-border',
+          'md:w-16 md:hover:w-[220px] md:overflow-hidden lg:w-[260px] lg:hover:w-[260px]',
+          open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+        )}
       >
-        <Logo inverted />
-        <nav className="mt-8 flex-1 space-y-6 overflow-y-auto">
+        <div className="flex h-16 items-center border-b border-border px-5">
+          <Logo compact={false} />
+        </div>
+        <nav className="flex-1 overflow-y-auto py-2">
           {groups.map((group) => (
             <div key={group.title}>
-              <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-light/80">
+              <p className="hidden px-6 pb-2 pt-4 text-[10px] font-semibold uppercase tracking-[0.08em] text-hint md:group-hover/sidebar:block lg:block">
                 {group.title}
               </p>
-              <div className="space-y-1">
+              <div>
                 {group.items.map((item) => {
                   const active = isActive(item);
+                  const Icon = item.icon;
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={close}
-                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${
-                        active ? 'bg-white/10 text-white' : 'text-cream/70 hover:bg-white/5 hover:text-white'
-                      }`}
+                      title={item.label}
+                      className={cn(
+                        'mx-2 my-0.5 flex items-center gap-3 rounded-[10px] px-4 py-2.5 text-sm text-muted transition',
+                        'hover:bg-paper hover:text-accent',
+                        active && 'border-l-[3px] border-accent bg-primary/20 font-semibold text-accent',
+                        worship && item.match === '/worship' && 'border-worship text-worship',
+                        developer && item.match === '/developer' && 'border-dev text-dev',
+                      )}
                     >
-                      <Icon name={item.icon} className="h-4 w-4" />
-                      {item.label}
+                      <Icon className="h-5 w-5 shrink-0" aria-hidden />
+                      <span className="truncate md:hidden md:group-hover/sidebar:inline lg:inline">{item.label}</span>
                     </Link>
                   );
                 })}
@@ -111,14 +144,14 @@ export const Sidebar = () => {
             </div>
           ))}
         </nav>
-        <Link
-          href="/perfil"
-          onClick={close}
-          className="mt-4 flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-cream/70 hover:bg-white/5 hover:text-white"
-        >
-          <Icon name="user" className="h-4 w-4" />
-          Perfil
-        </Link>
+        {user ? (
+          <Link href="/perfil" onClick={close} className="m-2 rounded-xl border border-border bg-paper p-3">
+            <p className="truncate text-[13px] font-semibold text-dark">{user.name}</p>
+            <Badge tone={roleTone(user.role)} className="mt-1">
+              {user.role}
+            </Badge>
+          </Link>
+        ) : null}
       </aside>
     </>
   );

@@ -1,19 +1,26 @@
 // apps/web/components/courses/ProgressBar.tsx
+import { cn } from '@/lib/cn';
+
 interface Props {
   percent: number;
+  className?: string;
 }
 
-export const ProgressBar = ({ percent }: Props) => {
+/**
+ * Course or lesson completion track.
+ */
+export const ProgressBar = ({ percent, className }: Props) => {
   const value = Math.min(100, Math.max(0, percent));
+  const done = value >= 100;
   return (
-    <div>
-      <div className="mb-1 flex justify-between text-xs text-ink/55">
-        <span>Progreso</span>
-        <span>{value}%</span>
+    <div className={cn('flex items-center gap-3', className)}>
+      <div className="h-1.5 flex-1 overflow-hidden rounded-[3px] bg-border">
+        <div
+          className={cn('h-full rounded-[3px] transition-[width] duration-700 ease-out', done ? 'bg-success-d' : 'bg-primary-d')}
+          style={{ width: `${value}%` }}
+        />
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-teal-mist">
-        <div className="h-full rounded-full bg-teal transition-all" style={{ width: `${value}%` }} />
-      </div>
+      <span className="text-xs font-semibold text-accent">{value}%</span>
     </div>
   );
 };

@@ -8,33 +8,21 @@ interface Props {
   children: ReactNode;
 }
 
+/**
+ * Centered light auth card used by password and similar flows.
+ */
 export const AuthShell = ({ title, subtitle, children }: Props) => (
-  <main className="grid min-h-screen lg:grid-cols-2">
-    <section className="relative hidden overflow-hidden bg-teal-dark p-12 text-cream lg:flex lg:flex-col lg:justify-between">
-      <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-gold/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-10 h-80 w-80 rounded-full bg-teal-light/30 blur-3xl" />
-      <Logo inverted />
-      <div className="relative max-w-md space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-light">Estudios · Seguimiento · Alabanza</p>
-        <h1 className="font-display text-4xl leading-tight">Una casa para crecer en la Palabra.</h1>
-        <p className="text-cream/75">
-          «Y la paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones y vuestros pensamientos en Cristo Jesús.»
-        </p>
-        <p className="text-sm text-gold-light">Filipenses 4:7</p>
-      </div>
-      <p className="relative text-sm text-cream/50">Centro Misionero Shalom</p>
-    </section>
-    <section className="flex items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-md space-y-6 rounded-[28px] border border-teal/10 bg-surface p-8 shadow-lift">
-        <div className="lg:hidden">
-          <Logo />
-        </div>
-        <div>
-          <h2 className="font-display text-3xl text-teal">{title}</h2>
-          <p className="mt-1 text-sm text-ink/60">{subtitle}</p>
-        </div>
-        {children}
-      </div>
-    </section>
+  <main className="relative flex min-h-screen items-center justify-center bg-bg px-4 py-10">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20" />
+      <div className="absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/15" />
+      <div className="absolute left-1/2 top-1/2 h-[240px] w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10" />
+    </div>
+    <div className="relative w-full max-w-[420px] rounded-[20px] bg-paper p-10 shadow-auth">
+      <Logo className="justify-center" />
+      <h1 className="mt-6 text-center font-display text-[28px] text-dark">{title}</h1>
+      <p className="mt-1 text-center text-sm text-muted">{subtitle}</p>
+      <div className="mt-8">{children}</div>
+    </div>
   </main>
 );

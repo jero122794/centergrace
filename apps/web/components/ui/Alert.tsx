@@ -1,5 +1,6 @@
 // apps/web/components/ui/Alert.tsx
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/cn';
 
 interface Props {
   children: ReactNode;
@@ -7,11 +8,16 @@ interface Props {
 }
 
 const tones: Record<NonNullable<Props['tone']>, string> = {
-  danger: 'border-red-200 bg-red-50 text-red-700',
-  info: 'border-teal/20 bg-teal-mist text-teal-dark',
-  success: 'border-teal/20 bg-teal-mist text-teal-dark',
+  danger: 'border-danger-d/30 bg-danger text-danger-d',
+  info: 'border-primary bg-surface text-dark',
+  success: 'border-success-d/20 bg-success text-success-d',
 };
 
+/**
+ * Inline status banner for forms and pages.
+ */
 export const Alert = ({ children, tone = 'danger' }: Props) => (
-  <p className={`rounded-xl border px-3 py-2 text-sm ${tones[tone]}`}>{children}</p>
+  <p role="alert" className={cn('rounded-xl border px-3.5 py-2.5 text-sm', tones[tone])}>
+    {children}
+  </p>
 );

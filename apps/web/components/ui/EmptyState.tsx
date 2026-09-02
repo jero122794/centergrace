@@ -1,21 +1,26 @@
 // apps/web/components/ui/EmptyState.tsx
+import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { Icon, type IconName } from './Icon';
+import { Sparkles } from 'lucide-react';
 
 interface Props {
   title: string;
   description: string;
-  icon?: IconName;
+  icon?: LucideIcon;
   action?: ReactNode;
 }
 
-export const EmptyState = ({ title, description, icon = 'spark', action }: Props) => (
-  <div className="rounded-3xl border border-dashed border-teal/20 bg-surface/70 px-6 py-12 text-center">
-    <span className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-mist text-teal">
-      <Icon name={icon} />
-    </span>
-    <h2 className="font-display text-xl text-teal">{title}</h2>
-    <p className="mx-auto mt-2 max-w-md text-sm text-ink/60">{description}</p>
+/**
+ * Centered empty-collection message.
+ *
+ * @example
+ * <EmptyState title="Sin avisos" description="Cuando haya mensajes, aparecerán aquí." />
+ */
+export const EmptyState = ({ title, description, icon: Icon = Sparkles, action }: Props) => (
+  <div className="rounded-2xl border border-dashed border-primary/60 bg-paper px-6 py-12 text-center">
+    <Icon className="mx-auto mb-3 h-12 w-12 text-primary" aria-hidden />
+    <h2 className="font-display text-lg text-dark">{title}</h2>
+    <p className="mx-auto mt-2 max-w-xs text-sm text-muted">{description}</p>
     {action ? <div className="mt-4">{action}</div> : null}
   </div>
 );

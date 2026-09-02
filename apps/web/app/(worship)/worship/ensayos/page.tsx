@@ -3,9 +3,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Card } from '@/components/ui/Card';
+import { RehearsalCard } from '@/components/worship/RehearsalCard';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { formatDateTimeBogota } from '@/lib/formatters';
 import Link from 'next/link';
 
 const RehearsalsPage = () => {
@@ -19,17 +18,14 @@ const RehearsalsPage = () => {
         kicker="Alabanza"
         title="Ensayos"
         action={
-          <Link className="text-sm font-semibold text-teal" href="/worship/ensayos/nuevo">
+          <Link className="text-sm font-semibold text-worship" href="/worship/ensayos/nuevo">
             Nuevo
           </Link>
         }
       />
       {query.data?.map((item: { id: string; date: string; location?: string }) => (
-        <Link key={item.id} href={`/worship/ensayos/${item.id}`}>
-          <Card>
-            <p>{formatDateTimeBogota(item.date)}</p>
-            <p className="text-sm text-slate-500">{item.location}</p>
-          </Card>
+        <Link key={item.id} href={`/worship/ensayos/${item.id}`} className="block">
+          <RehearsalCard date={item.date} location={item.location} />
         </Link>
       ))}
     </div>

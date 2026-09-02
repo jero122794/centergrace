@@ -56,7 +56,7 @@ const NotificationsPage = () => {
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {query.isError ? <Alert>No se pudieron cargar las notificaciones.</Alert> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <EmptyState icon="bell" title="Sin avisos" description="Cuando haya mensajes de la iglesia, aparecerán aquí." />
+        <EmptyState title="Sin avisos" description="Cuando haya mensajes de la iglesia, aparecerán aquí." />
       ) : null}
       {query.data?.map((item) => (
         <Card key={item.id} className={item.readAt ? 'opacity-70' : ''}>
@@ -66,7 +66,7 @@ const NotificationsPage = () => {
               <p className="text-sm text-ink/65">{item.body}</p>
               <p className="mt-1 text-xs text-ink/40">{formatDateTimeBogota(item.createdAt)}</p>
               {item.url ? (
-                <Link className="mt-2 inline-block text-sm text-teal" href={item.url} onClick={() => markOne.mutate(item.id)}>
+                <Link className="mt-2 inline-block text-sm text-accent" href={item.url} onClick={() => markOne.mutate(item.id)}>
                   Abrir
                 </Link>
               ) : null}

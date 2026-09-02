@@ -3,11 +3,15 @@
 
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 interface Props {
   content: unknown;
 }
 
+/**
+ * Read-only prose renderer sharing TipTap document JSON.
+ */
 export const TipTapRenderer = ({ content }: Props) => {
   const editor = useEditor({
     extensions: [StarterKit],
@@ -17,11 +21,11 @@ export const TipTapRenderer = ({ content }: Props) => {
   });
 
   if (!editor) {
-    return <p className="text-sm text-slate-500">Cargando contenido…</p>;
+    return <Skeleton className="h-24" />;
   }
 
   return (
-    <div className="prose max-w-none text-ink">
+    <div className="prose-grace max-w-none text-[15px] leading-[1.8] text-dark">
       <EditorContent editor={editor} />
     </div>
   );

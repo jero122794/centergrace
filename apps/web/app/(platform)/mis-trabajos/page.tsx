@@ -27,7 +27,7 @@ const MyWorkPage = () => {
       <PageHeader kicker="Estudiante" title="Mis trabajos" description="Entregas y calificaciones de tus lecciones." />
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <EmptyState icon="clipboard" title="Sin entregas" description="Cuando envíes una asignación, la verás aquí." />
+        <EmptyState title="Sin entregas" description="Cuando envíes una asignación, la verás aquí." />
       ) : null}
       {query.data?.map((item) => (
         <Card key={item.id}>

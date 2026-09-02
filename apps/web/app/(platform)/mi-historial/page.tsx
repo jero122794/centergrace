@@ -27,7 +27,7 @@ const HistoryPage = () => {
       <PageHeader kicker="Devocional" title="Mi historial" description="Tus participaciones diarias." />
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {!query.isLoading && query.data?.length === 0 ? (
-        <EmptyState icon="sun" title="Sin participaciones" description="Cuando completes un devocional, quedará registrado aquí." />
+        <EmptyState title="Sin participaciones" description="Cuando completes un devocional, quedará registrado aquí." />
       ) : null}
       {query.data?.map((item) => (
         <Card key={item.id}>

@@ -4,14 +4,12 @@
 import { useParams } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { VideoPlayer } from '@/components/courses/VideoPlayer';
-import { TipTapRenderer } from '@/components/editor/TipTapRenderer';
+import { LessonView } from '@/components/courses/LessonView';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const LessonPage = () => {
   const params = useParams<{ id: string; lid: string }>();
@@ -21,10 +19,8 @@ const LessonPage = () => {
     queryKey: ['course', params.id],
     queryFn: async () => (await api.get(`/api/courses/${params.id}`)).data.data,
   });
-  const lesson = (course.data?.lessons as Array<Record<string, unknown>> | undefined)?.find(
-    (item) => item.id === params.lid,
-  );
-
+  const lessons = (course.data?.lessons as Array<Record<string, unknown>> | undefined) ?? [];
+  const lesson = lessons.find((item) => item.id === params.lid);
   const complete = useMutation({
     mutationFn: async () => api.post(`/api/lessons/${params.lid}/complete`),
     onSuccess: () => client.invalidateQueries({ queryKey: ['progress', params.id] }),
@@ -42,34 +38,44 @@ const LessonPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="Lección" title={String(lesson.title)} />
-      {typeof lesson.youtubeId === 'string' && lesson.youtubeId ? (
-        <VideoPlayer youtubeId={lesson.youtubeId} title={String(lesson.title)} />
-      ) : null}
-      <Card>
-        <TipTapRenderer content={lesson.bodyContent} />
-      </Card>
-      <Button onClick={() => complete.mutate()} disabled={complete.isPending}>
-        {complete.isSuccess ? 'Completada' : 'Marcar como completada'}
-      </Button>
-      {lesson.hasAssignment ? (
-        <Card>
-          <form
-            className="space-y-3"
-            onSubmit={(event) => {
-              event.preventDefault();
-              submit.mutate();
-            }}
-          >
-            <h2 className="font-display text-xl text-teal">Asignación</h2>
-            <p className="text-sm text-ink/70">{String(lesson.assignmentDescription ?? '')}</p>
-            <textarea value={content} onChange={(event) => setContent(event.target.value)} required rows={6} />
-            <Button type="submit" disabled={submit.isPending}>
-              {submit.isSuccess ? 'Entregado' : 'Entregar'}
-            </Button>
-          </form>
-        </Card>
-      ) : null}
+      <p className="text-sm text-muted">
+        <Link className="text-accent" href={`/cursos/${params.id}`}>
+          {course.data.title}
+        </Link>
+        {' · '}
+        {String(lesson.title)}
+      </p>
+      <LessonView
+        title={String(lesson.title)}
+        youtubeId={typeof lesson.youtubeId === 'string' ? lesson.youtubeId : null}
+        bodyContent={lesson.bodyContent}
+        hasAssignment={Boolean(lesson.hasAssignment)}
+        assignmentDescription={typeof lesson.assignmentDescription === 'string' ? lesson.assignmentDescription : null}
+        completed={complete.isSuccess}
+        completing={complete.isPending}
+        onComplete={() => complete.mutate()}
+        assignmentSlot={
+          lesson.hasAssignment ? (
+            <form
+              className="mt-4 space-y-3"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submit.mutate();
+              }}
+            >
+              <textarea
+                className="min-h-[120px] w-full resize-y rounded-[10px] border-[1.5px] border-border bg-paper px-3.5 py-2.5 text-[15px]"
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+                required
+              />
+              <Button type="submit" disabled={submit.isPending}>
+                {submit.isSuccess ? 'Entregado' : 'Entregar'}
+              </Button>
+            </form>
+          ) : null
+        }
+      />
     </div>
   );
 };

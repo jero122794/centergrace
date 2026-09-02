@@ -43,13 +43,13 @@ const CourseDetailPage = () => {
       <PageHeader title={course.data.title} description={course.data.description} />
       <ProgressBar percent={progress.data?.percent ?? 0} />
       {lessons.length === 0 ? (
-        <EmptyState icon="file" title="Sin lecciones" description="Este curso todavía no tiene lecciones publicadas." />
+        <EmptyState title="Sin lecciones" description="Este curso todavía no tiene lecciones publicadas." />
       ) : (
         lessons.map((lesson) => (
           <Link key={lesson.id} href={`/cursos/${params.id}/leccion/${lesson.id}`} className="block">
-            <Card className="flex items-center justify-between transition hover:border-teal/30">
+            <Card className="flex items-center justify-between transition hover:border-primary">
               <p className="font-medium text-ink">{lesson.title}</p>
-              <span className="text-sm text-teal">Abrir</span>
+              <span className="text-sm text-accent">Abrir</span>
             </Card>
           </Link>
         ))

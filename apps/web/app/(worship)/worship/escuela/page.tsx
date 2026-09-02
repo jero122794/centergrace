@@ -52,7 +52,7 @@ const SchoolPage = () => {
       {query.data.courses.map((item) => (
         <Card key={item.course.id} className="space-y-2">
           <div className="flex items-center justify-between">
-            <Link className="font-medium text-teal" href={`/cursos/${item.course.id}`}>
+            <Link className="font-medium text-accent" href={`/cursos/${item.course.id}`}>
               {item.course.title}
             </Link>
             <Badge tone={item.meetsThreshold ? 'teal' : 'gold'}>{`${item.percent}%`}</Badge>
