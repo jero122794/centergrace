@@ -25,7 +25,7 @@ export const UPLOAD_RATE_LIMIT_WINDOW_MS = 60 * 1000;
 export const UPLOAD_RATE_LIMIT_MAX = 5;
 
 export const REFRESH_COOKIE_NAME = 'refreshToken';
-export const REFRESH_COOKIE_PATH = '/api/auth/refresh';
+export const REFRESH_COOKIE_PATH = '/api/auth';
 
 export const ALLOWED_UPLOAD_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.pdf', '.mp3'] as const;
 export const ALLOWED_UPLOAD_MIME_TYPES = [

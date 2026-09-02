@@ -49,4 +49,35 @@ describe('Auth HTTP', () => {
     const token = await loginToken(app, user.email, user.password);
     expect(token.split('.').length).toBe(3);
   });
+
+  it('rotates the refresh cookie and rejects reuse after logout', async () => {
+    const user = await createTestUser('STUDENT', `${suffix}r`);
+    const login = await request(app)
+      .post('/api/auth/login')
+      .send({ email: user.email, password: user.password });
+    expect(login.status).toBe(200);
+    const firstCookie = cookieHeader(login);
+    expect(firstCookie).toContain('refreshToken=');
+    const rotated = await request(app).post('/api/auth/refresh').set('Cookie', firstCookie);
+    expect(rotated.status).toBe(200);
+    expect(rotated.body.data.accessToken).toBeTruthy();
+    const reused = await request(app).post('/api/auth/refresh').set('Cookie', firstCookie);
+    expect(reused.status).toBe(401);
+    const logout = await request(app)
+      .post('/api/auth/logout')
+      .set('Cookie', cookieHeader(rotated));
+    expect(logout.status).toBe(200);
+    const afterLogout = await request(app)
+      .post('/api/auth/refresh')
+      .set('Cookie', cookieHeader(rotated));
+    expect(afterLogout.status).toBe(401);
+  });
 });
+
+const cookieHeader = (response: request.Response): string => {
+  const raw = response.headers['set-cookie'];
+  if (!raw) {
+    return '';
+  }
+  return Array.isArray(raw) ? raw.join('; ') : raw;
+};

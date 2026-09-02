@@ -96,30 +96,57 @@ npm run type-check
 npm run lint
 ```
 
-La suite de API usa PostgreSQL `platform_test` y Redis locales (también en CI).
+La suite de API usa PostgreSQL `platform_test` y Redis locales (también en CI). Cubre:
+
+- Auth: registro, login inválido, rotación de refresh, reuse y logout
+- Users: promoción de rol y bloqueo de `DEVELOPER`
+- Groups + notas espirituales: aislamiento por líder
+- Courses, calificaciones, uploads, settings, notificaciones, alabanza, health
+
+### Checklist QA manual
+
+- [ ] Login de los 4 usuarios seed
+- [ ] Estudiante: curso, lección, entrega y avisos
+- [ ] Líder: contenido, calificación, seguimiento, setlist, escuela
+- [ ] Admin: usuarios e identidad de iglesia
+- [ ] Developer: sistema, servicios, jobs, entorno (sin valores secretos)
+- [ ] Logout invalida la sesión (no se puede refrescar)
 
 ## Deploy
 
+El job `deploy` de GitHub Actions corre **solo en `main`** y **no falla** si faltan secretos: omite Railway o Vercel y deja un aviso en el log.
+
+### Secretos de GitHub (Settings → Secrets and variables → Actions)
+
+| Secret / variable | Uso |
+| --- | --- |
+| `RAILWAY_TOKEN` | Token de proyecto Railway |
+| `RAILWAY_SERVICE` (variable opcional) | Nombre del servicio, default `platform-api` |
+| `VERCEL_TOKEN` | Token de Vercel |
+| `VERCEL_ORG_ID` | Org de Vercel |
+| `VERCEL_PROJECT_ID` | Proyecto de la PWA |
+
 ### API — Railway
 
-1. Crear proyecto y servicio a partir de este repo.
-2. Builder: Dockerfile (`apps/api/Dockerfile`) — ya definido en `railway.toml`.
-3. Añadir PostgreSQL y Redis en el mismo proyecto y vincular `DATABASE_URL` / `REDIS_URL`.
-4. Copiar el resto de variables de `.env.example` (JWT PEM, VAPID, `FRONTEND_URL` del dominio Vercel).
-5. Healthcheck: `GET /api/health`.
-6. Guardar `RAILWAY_TOKEN` en GitHub Secrets para el job `deploy` de `.github/workflows/platform.yml` (solo corre en `main`).
+1. Crear proyecto y añadir PostgreSQL + Redis.
+2. Servicio API con Dockerfile `apps/api/Dockerfile` (`railway.toml`).
+3. Variables: las de `.env.example` (JWT PEM, VAPID, `FRONTEND_URL` de Vercel, `DATABASE_URL`, `REDIS_URL`).
+4. Healthcheck: `GET /api/health`.
+5. Guardar `RAILWAY_TOKEN` en GitHub. Un push a `main` ejecuta `railway up --ci`.
+
+Railway también puede desplegar al conectar el repo (sin Actions). El workflow es la vía CI.
 
 ### Web — Vercel
 
-1. Importar el repo y usar Root Directory `apps/web` **o** el `vercel.json` de la raíz.
+1. Importar el repo. Root Directory `apps/web` o usar `vercel.json` de la raíz.
 2. Environment:
    - `NEXT_PUBLIC_API_URL` = URL pública de Railway
    - `NEXT_PUBLIC_VAPID_KEY` = misma clave pública que el API
-3. Framework preset: Next.js.
+3. Guardar `VERCEL_TOKEN`, `VERCEL_ORG_ID` y `VERCEL_PROJECT_ID`.
 
 DNS sugerido: `app.tudominio.com` → Vercel, `api.tudominio.com` → Railway.
 
-Sin `RAILWAY_TOKEN` ni proyecto Vercel, el código queda listo para publicar pero el deploy no se ejecuta desde este entorno.
+Este entorno de desarrollo no tiene esos tokens: el código y el pipeline quedan listos; la primera publicación la hace el dueño del repo al cargar los secretos y mergear a `main`.
 
 ## CI
 
