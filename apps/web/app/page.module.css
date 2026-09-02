@@ -1,0 +1,183 @@
+/*
+ * page.module.css — landing. First impression of Centro de Gracia.
+ * Used by: app/page.tsx.
+ */
+
+.page {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 420px at 90% -10%, rgba(224, 122, 61, 0.12), transparent 50%),
+    var(--bg-primary);
+}
+
+.header {
+  display: flex;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.login {
+  display: none;
+  font-size: var(--text-small);
+  color: var(--accent-primary);
+}
+
+.hero {
+  display: grid;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  gap: var(--space-10);
+  padding: var(--space-4) var(--space-6) var(--space-16);
+  animation: page-rise var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.kicker {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.title {
+  margin: var(--space-5) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.rule {
+  margin: var(--space-6) 0;
+  max-width: 18rem;
+}
+
+.lead {
+  max-width: 28rem;
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.quiet {
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--accent-gold);
+}
+
+.verse {
+  margin: 0;
+  padding: var(--space-8);
+  background: var(--bg-card);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-sheet);
+  font-family: var(--font-display);
+  font-size: var(--text-verse);
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  animation: verse-reveal 800ms var(--ease-out-expo) 160ms both;
+}
+
+.cite {
+  display: block;
+  margin-top: var(--space-6);
+  font-size: var(--text-small);
+  font-style: normal;
+  letter-spacing: 0.14em;
+  color: var(--accent-gold);
+}
+
+.pillars {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6) var(--space-16);
+}
+
+.pillarRule {
+  margin-bottom: var(--space-10);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.card {
+  padding: var(--space-6);
+  background: var(--bg-card);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-sheet);
+  animation: card-enter var(--duration-med) var(--ease-out-expo) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.num {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  color: var(--accent-gold);
+}
+
+.cardTitle {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+}
+
+.cardBody {
+  margin: var(--space-3) 0 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+@media (min-width: 640px) {
+  .login {
+    display: inline;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .shift {
+    margin-top: var(--space-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: end;
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-16);
+  }
+}

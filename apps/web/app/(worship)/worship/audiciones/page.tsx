@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { PageHeader } from '@/components/ui/PageHeader';
+import stack from '@/components/ui/PageStack.module.css';
 
 const AuditionsPage = () => {
   const client = useQueryClient();
@@ -21,10 +22,10 @@ const AuditionsPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Alabanza" title="Audiciones" description="Aprueba postulaciones al equipo." />
       {query.data?.map((item: { id: string; status: string; user: { name: string } }) => (
-        <Card key={item.id} className="flex items-center justify-between">
+        <Card key={item.id} className={stack.row}>
           <div>
             <p>{item.user.name}</p>
             <Badge>{item.status}</Badge>

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { resolveMediaUrl } from '@/lib/formatters';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface ChurchSettings {
   churchName: string;
@@ -60,11 +61,11 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="max-w-xl space-y-4">
+    <div className={stack.page}>
       <PageHeader kicker="Iglesia" title="Identidad de la iglesia" description="Nombre, logo y colores de la plataforma." />
       <Card>
         <form
-          className="space-y-3"
+          className={stack.list}
           onSubmit={(event) => {
             event.preventDefault();
             save.mutate();
@@ -86,8 +87,8 @@ const SettingsPage = () => {
             value={form.accentColor}
             onChange={(event) => setForm((current) => ({ ...current, accentColor: event.target.value }))}
           />
-          <label className="block space-y-1 text-sm">
-            <span className="font-medium">Logo</span>
+          <label className={stack.list}>
+            <span className={stack.name}>Logo</span>
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp"
@@ -101,7 +102,7 @@ const SettingsPage = () => {
           </label>
           {form.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={resolveMediaUrl(form.logoUrl)} alt="Logo" className="h-16 w-16 rounded-xl object-cover" />
+            <img src={resolveMediaUrl(form.logoUrl)} alt="Logo" className={stack.thumb} />
           ) : null}
           <Button type="submit" disabled={save.isPending}>
             Guardar

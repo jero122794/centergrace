@@ -1,0 +1,70 @@
+/*
+ * LessonView.module.css
+ * Purpose: long-form lesson. Content is king — Medium/Substack density.
+ * Used by: LessonView.tsx.
+ */
+
+.article {
+  display: grid;
+  gap: var(--space-8);
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.videoTitle {
+  margin: var(--space-6) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: var(--text-h1-lh);
+}
+
+.readingHead {
+  padding: var(--space-8);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sheet);
+}
+
+.readingTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: var(--text-display-lh);
+}
+
+.prose {
+  margin-top: var(--space-4);
+}
+
+.assignment {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tag {
+  display: inline-flex;
+  align-self: start;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.assignmentCopy {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.doneIcon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+
+@media (min-width: 768px) {
+  .readingHead {
+    padding: var(--space-10);
+  }
+}

@@ -1,0 +1,89 @@
+/*
+ * ParticipationForm.module.css
+ * Purpose: a diary, not a ticket form.
+ * Used by: ParticipationForm.tsx.
+ */
+
+.saved {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.savedTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-style: italic;
+  color: var(--success-fg);
+}
+
+.savedIcon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+}
+
+.savedBody {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+
+.sub {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.promptLabel {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.prompts {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.number {
+  display: inline-flex;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--accent-primary-strong);
+  color: var(--text-on-accent);
+  font-size: var(--text-micro);
+  font-weight: 600;
+}
+
+.question {
+  margin: var(--space-2) 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.answer {
+  margin-top: var(--space-3);
+}

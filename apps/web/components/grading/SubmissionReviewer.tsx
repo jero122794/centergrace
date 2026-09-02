@@ -5,6 +5,7 @@ import { Download } from 'lucide-react';
 import { GradeBadge } from '@/components/grading/GradeBadge';
 import { GradeForm } from '@/components/grading/GradeForm';
 import { resolveMediaUrl } from '@/lib/formatters';
+import styles from './SubmissionReviewer.module.css';
 
 export interface SubmissionForReview {
   id: string;
@@ -24,27 +25,28 @@ interface Props {
 
 /**
  * Side-by-side student work and grading form.
+ * Desktop: two columns. Mobile: work first, grade sheet sticky at the bottom.
  */
 export const SubmissionReviewer = ({ submission, submitting, onGrade }: Props) => (
-  <div className="grid gap-6 lg:grid-cols-2">
-    <div className="max-h-[70vh] overflow-y-auto rounded-xl bg-surface p-6">
-      <p className="font-semibold text-dark">{submission.user.name}</p>
-      <p className="text-sm text-muted">{submission.lesson.title}</p>
-      <p className="mt-4 whitespace-pre-wrap text-[15px] leading-relaxed text-dark">{submission.content}</p>
+  <div className={styles.split}>
+    <div className={styles.work}>
+      <p className={styles.name}>{submission.user.name}</p>
+      <p className={styles.lesson}>{submission.lesson.title}</p>
+      <p className={styles.content}>{submission.content}</p>
       {submission.fileUrl ? (
         <a
-          className="mt-4 inline-flex items-center gap-2 rounded-pill border-[1.5px] border-primary-d bg-surface px-6 py-2.5 text-sm font-semibold text-accent"
+          className={styles.file}
           href={resolveMediaUrl(submission.fileUrl)}
           target="_blank"
           rel="noreferrer"
         >
-          <Download className="h-4 w-4" />
+          <Download className={styles.fileIcon} />
           Descargar adjunto
         </a>
       ) : null}
     </div>
-    <div className="lg:sticky lg:top-24">
-      <div className="mb-4 flex justify-center">
+    <div className={styles.grade}>
+      <div className={styles.badgeRow}>
         <GradeBadge score={submission.grade?.score ?? null} status={submission.status} large />
       </div>
       <GradeForm

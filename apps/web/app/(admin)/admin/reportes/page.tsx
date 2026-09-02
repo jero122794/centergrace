@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { PageHeader } from '@/components/ui/PageHeader';
+import stack from '@/components/ui/PageStack.module.css';
 
 const ReportsPage = () => {
   const query = useQuery({
@@ -12,9 +13,9 @@ const ReportsPage = () => {
     queryFn: async () => (await api.get('/api/dashboard')).data.data,
   });
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Pastoreo" title="Reportes" description="Participación y formación en un vistazo." />
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className={stack.grid2}>
         <StatCard label="Participaciones hoy" value={query.data?.participationsToday ?? 0} />
         <StatCard label="Cursos activos" value={query.data?.courses ?? 0} />
       </div>

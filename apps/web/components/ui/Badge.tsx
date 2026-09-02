@@ -1,5 +1,6 @@
 // apps/web/components/ui/Badge.tsx
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './Badge.module.css';
 
 export type BadgeTone =
   | 'developer'
@@ -23,19 +24,19 @@ interface Props {
 }
 
 const tones: Record<BadgeTone, string> = {
-  developer: 'bg-[#E0E0E0] text-[#424242]',
-  admin: 'bg-worship-l text-worship',
-  leader: 'bg-[#FFF3E0] text-[#E65100]',
-  student: 'bg-info text-info-d',
-  success: 'bg-success text-success-d',
-  warning: 'bg-warning text-warning-d',
-  danger: 'bg-danger text-danger-d',
-  info: 'bg-info text-info-d',
-  warm: 'bg-warm text-gold-d',
-  worship: 'bg-worship-l text-worship',
-  neutral: 'bg-surface text-muted',
-  teal: 'bg-success text-success-d',
-  gold: 'bg-warm text-gold-d',
+  developer: styles.developer,
+  admin: styles.admin,
+  leader: styles.leader,
+  student: styles.student,
+  success: styles.success,
+  warning: styles.warning,
+  danger: styles.danger,
+  info: styles.info,
+  warm: styles.warm,
+  worship: styles.worship,
+  neutral: styles.neutral,
+  teal: styles.teal,
+  gold: styles.gold,
 };
 
 /**
@@ -45,9 +46,7 @@ const tones: Record<BadgeTone, string> = {
  * <Badge tone="student">STUDENT</Badge>
  */
 export const Badge = ({ children, tone = 'neutral', className }: Props) => (
-  <span className={cn('chip inline-flex px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide', tones[tone], className)}>
-    {children}
-  </span>
+  <span className={cx(styles.chip, tones[tone], className)}>{children}</span>
 );
 
 /**

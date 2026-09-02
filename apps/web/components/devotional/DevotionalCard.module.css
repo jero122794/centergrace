@@ -1,0 +1,75 @@
+/*
+ * DevotionalCard.module.css
+ * Purpose: the most spiritual surface. Verse is revealed, not dumped.
+ * Used by: DevotionalCard.tsx on student dashboard and lists.
+ */
+
+.kicker {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.title {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.verse {
+  position: relative;
+  margin: var(--space-5) 0 0;
+  max-width: 40rem;
+  padding-left: var(--space-5);
+  font-family: var(--font-display);
+  font-size: var(--text-verse);
+  font-style: italic;
+  line-height: var(--text-verse-lh);
+  color: var(--text-secondary);
+  animation: verse-reveal 700ms var(--ease-out-expo) 180ms both;
+}
+
+.verse::before {
+  content: "“";
+  position: absolute;
+  left: 0;
+  top: -0.35rem;
+  font-size: 2rem;
+  color: var(--accent-gold);
+}
+
+.media {
+  margin-top: var(--space-6);
+}
+
+.body {
+  margin-top: var(--space-6);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.people {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: var(--text-micro);
+  color: var(--text-muted);
+}
+
+.peopleIcon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}

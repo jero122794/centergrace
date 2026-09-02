@@ -1,0 +1,53 @@
+/*
+ * AuditionStepper.module.css
+ * Purpose: four-stage worship onboarding. Current stage has presence.
+ * Used by: AuditionStepper.tsx.
+ */
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+
+.active {
+  background: var(--accent-worship-soft);
+  box-shadow: inset 0 0 0 1.5px var(--accent-worship);
+}
+
+.done {
+  background: var(--success-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--success-fg) 30%, transparent);
+}
+
+.label {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-worship);
+}
+
+.now {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-micro);
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

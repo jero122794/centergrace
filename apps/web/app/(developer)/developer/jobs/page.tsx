@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { JobMonitor, type JobStatus } from '@/components/developer/JobMonitor';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
+import stack from '@/components/ui/PageStack.module.css';
 
 const JobsPage = () => {
   const client = useQueryClient();
@@ -19,7 +20,7 @@ const JobsPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Sistema" title="Cron jobs" />
       {query.isLoading ? <Skeleton lines={2} /> : null}
       <JobMonitor jobs={query.data ?? []} runningName={trigger.variables} onTrigger={(name) => trigger.mutate(name)} />

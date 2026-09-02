@@ -1,0 +1,69 @@
+/*
+ * GradeForm.module.css
+ * Purpose: score slider + written feedback. The number is the hero.
+ * Used by: GradeForm.tsx.
+ */
+
+.form {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-micro);
+  color: var(--text-muted);
+}
+
+.hero {
+  text-align: center;
+}
+
+.score {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.slider {
+  width: 100%;
+  margin-top: var(--space-4);
+  accent-color: var(--accent-primary);
+}
+
+.feedbackLabel {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.feedback {
+  width: 100%;
+  min-height: 7.5rem;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  resize: vertical;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  box-shadow: inset 0 0 0 1.5px var(--border-default);
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.feedback:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--accent-primary);
+}
+
+.count {
+  display: block;
+  margin-top: var(--space-1);
+  text-align: right;
+  font-size: var(--text-micro);
+  color: var(--text-hint);
+}

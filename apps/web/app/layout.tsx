@@ -1,33 +1,27 @@
 // apps/web/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
-import { DM_Sans, JetBrains_Mono, Playfair_Display } from 'next/font/google';
+import { IBM_Plex_Mono, Nunito } from 'next/font/google';
 import { Providers } from '@/components/layout/Providers';
 import './globals.css';
 
-const dmSans = DM_Sans({
+const nunito = Nunito({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
-  variable: '--font-playfair',
+  variable: '--font-nunito',
   display: 'swap',
 });
 
-const jetbrains = JetBrains_Mono({
+const ibmPlex = IBM_Plex_Mono({
   subsets: ['latin'],
-  weight: ['400', '600'],
-  variable: '--font-jetbrains',
+  weight: ['400', '500'],
+  variable: '--font-ibm-plex',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: 'Centro de Gracia',
-  description: 'Plataforma de estudios bíblicos y seguimiento espiritual — Centro Misionero Shalom',
+  description: 'Estudios, comunidad y alabanza — Centro Misionero Shalom',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -44,17 +38,19 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#F7F3EF',
+  themeColor: '#14211d',
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <html lang="es">
-      <body className={`${dmSans.variable} ${playfair.variable} ${jetbrains.variable} bg-bg font-sans text-dark antialiased`}>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
-};
+const RootLayout = ({ children }: { children: React.ReactNode }) => (
+  <html lang="es">
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+    </head>
+    <body className={`${nunito.variable} ${ibmPlex.variable}`}>
+      <Providers>{children}</Providers>
+    </body>
+  </html>
+);
 
 export default RootLayout;

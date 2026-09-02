@@ -1,0 +1,82 @@
+/*
+ * Badge.module.css
+ * Purpose: compact status / role chips. Color is meaning, not decoration.
+ * Used by: Badge.tsx, GradeBadge sibling lives in grading/.
+ */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.developer {
+  background: #e4e4e4;
+  color: #3a3a3a;
+}
+
+.admin {
+  background: var(--accent-worship-soft);
+  color: var(--text-worship);
+}
+
+.leader {
+  background: #ffe8d2;
+  color: #9a3d0e;
+}
+
+.student {
+  background: var(--info-bg);
+  color: var(--info-fg);
+}
+
+.success {
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.warning {
+  background: var(--warning-bg);
+  color: var(--warning-fg);
+}
+
+.danger {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+}
+
+.info {
+  background: var(--info-bg);
+  color: var(--info-fg);
+}
+
+.warm {
+  background: #fbe4d4;
+  color: #9a3d0e;
+}
+
+.worship {
+  background: var(--accent-worship-soft);
+  color: var(--text-worship);
+}
+
+.neutral {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+}
+
+.teal {
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.gold {
+  background: #f4e6c8;
+  color: #7a5314;
+}

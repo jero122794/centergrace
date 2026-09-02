@@ -1,0 +1,151 @@
+/*
+ * apps/web/app/styles/design-tokens.css
+ *
+ * Manifiesto visual de Centro de Gracia.
+ * Úsalo como única fuente de valores repetidos. Los módulos importan
+ * estas custom properties; no duplican hex ni px mágicos.
+ *
+ * Audiencia: 11 a 50 años. El color debe sentirse contemporáneo,
+ * cálido y con peso — nunca “app de banco”, nunca “iglesia 2005”.
+ */
+
+:root {
+  /*
+   * FONDOS
+   * El contenido vive sobre lino, no sobre blanco clínico.
+   * La sidebar es un territorio distinto: musgo profundo.
+   * Ese contraste es la profundidad de la referencia.
+   */
+  --bg-primary: #f3eee6; /* lino — la casa, la página abierta */
+  --bg-surface: #ebe4d8; /* arena suave — paneles y filtros */
+  --bg-sidebar: #14211d; /* musgo de atardecer — identidad, no menú */
+  --bg-card: #fffdf9; /* papel de diario, un punto más cálido que blanco */
+  --bg-elevated: #ffffff;
+  --bg-worship: #161326; /* alabanza: noche violeta, mismo peso que la sidebar */
+  --bg-dev: #0b1418; /* developer: carbón técnico */
+
+  /*
+   * ACENTOS
+   * Primario: verde vivo, esperanza sin neón.
+   * Cálido: terracota — el botón que un joven de 17 sí toca.
+   * Secundario: agua — vínculos, no alarmas.
+   */
+  --accent-primary: #1f7a63;
+  --accent-primary-strong: #165a49;
+  --accent-secondary: #3a8f9c;
+  --accent-warm: #e07a3d;
+  --accent-warm-strong: #c45f28;
+  --accent-gold: #c9a36a; /* versículos, racha, momentos de peso */
+  --accent-worship: #8b7cf6;
+  --accent-worship-soft: #ece8fb;
+  --text-worship: #3d348f;
+  --accent-dev: #14b8a6;
+  --accent-dev-soft: #123038;
+  --text-dev: #5eead4;
+
+  /*
+   * TEXTO
+   * Sobre lino: tinta de bosque, no negro puro (menos fatiga).
+   * Sobre sidebar: casi blanco con un hálito verde.
+   */
+  --text-primary: #1c2421;
+  --text-secondary: #4e5c57;
+  --text-muted: #7a877f;
+  --text-hint: #8a948c;
+  --sidebar-text: #c5d4cc;
+  --sidebar-text-strong: #f2f7f4;
+  --sidebar-active: #f4ebe0;
+  --text-on-accent: #fffdf9;
+  --text-on-warm: #fffdf9;
+
+  /*
+   * BORDES
+   * Finos, nunca recuadros de dashboard. El fuerte se reserva al foco.
+   */
+  --border-default: #ddd4c6;
+  --border-strong: #1f7a63;
+  --border-sidebar: rgba(244, 235, 224, 0.08);
+
+  /*
+   * SEMÁNTICOS — pasteles con texto oscuro suficiente (WCAG AA).
+   */
+  --success-bg: #d8efe4;
+  --success-fg: #146247;
+  --warning-bg: #fbe8c8;
+  --warning-fg: #8a4b12;
+  --danger-bg: #f8d7d3;
+  --danger-fg: #9b2c2c;
+  --info-bg: #d7eaf4;
+  --info-fg: #1d4f6a;
+
+  /*
+   * ESPACIADO — escala 4px. Generoso por dentro, nunca apretado.
+   */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /*
+   * RADIOS
+   * Un rincón más abierto que el otro: hojas, no chips de SaaS.
+   */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-sheet: 10px 28px 16px 22px;
+  --radius-pill: 999px;
+  --radius-btn: 999px 999px 14px 999px;
+
+  /*
+   * SOMBRAS — profundidad de papel, no de modal de Bootstrap.
+   */
+  --shadow-sheet: 0 18px 40px -28px rgba(20, 33, 29, 0.35);
+  --shadow-lift: 0 24px 50px -24px rgba(20, 33, 29, 0.28);
+  --shadow-sidebar: 16px 0 40px -28px rgba(10, 16, 14, 0.55);
+  --shadow-toast: 0 16px 32px -18px rgba(20, 33, 29, 0.4);
+
+  /*
+   * LAYOUT
+   */
+  --sidebar-width: 268px;
+  --sidebar-collapsed: 76px;
+  --topbar-height: 64px;
+  --bottomnav-height: 68px;
+  --content-max: 1180px;
+  --detail-width: 340px;
+
+  /*
+   * MOVIMIENTO
+   * Nada de ease genérico. Expo para salidas, spring suave para toasts.
+   */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-swift: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --ease-spring: cubic-bezier(0.22, 1.35, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-med: 280ms;
+  --duration-slow: 520ms;
+  --duration-count: 800ms;
+
+  /*
+   * FOCO — anillo visible, contraste 3:1 sobre el fondo.
+   */
+  --focus-ring: 3px solid #1f7a63;
+  --focus-offset: 3px;
+
+  /*
+   * ICONOS Y CONTROLES
+   * Tamaños fijos para no repetir px en cada módulo.
+   */
+  --icon-sm: 0.875rem;
+  --icon-md: 1.125rem;
+  --icon-lg: 1.25rem;
+  --control-h: 2.75rem;
+  --enter-stagger: 60ms;
+}

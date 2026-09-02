@@ -2,7 +2,9 @@
 import { Users } from 'lucide-react';
 import { TipTapRenderer } from '@/components/editor/TipTapRenderer';
 import { VideoPlayer } from '@/components/courses/VideoPlayer';
+import { Card } from '@/components/ui/Card';
 import type { ReactNode } from 'react';
+import styles from './DevotionalCard.module.css';
 
 interface Props {
   title: string;
@@ -15,27 +17,27 @@ interface Props {
 }
 
 /**
- * Daily page of the journal: ribbon, verse, and a quiet call to participate.
+ * Daily page of the journal. The verse reveals after the title — as if being uncovered.
  */
 export const DevotionalCard = ({ title, verse, dateLabel, content, youtubeId, participants, action }: Props) => (
-  <article className="sheet--ribbon">
-    <p className="text-[11px] uppercase tracking-[0.2em] text-gold-d">{dateLabel}</p>
-    <h2 className="mt-3 font-display text-[1.85rem] leading-tight text-dark">{title}</h2>
-    {verse ? <blockquote className="verse-mark mt-5 max-w-2xl">{verse}</blockquote> : null}
+  <Card variant="devotional">
+    <p className={styles.kicker}>{dateLabel}</p>
+    <h2 className={styles.title}>{title}</h2>
+    {verse ? <blockquote className={styles.verse}>{verse}</blockquote> : null}
     {youtubeId ? (
-      <div className="mt-6 overflow-hidden" style={{ borderRadius: '18px 40px 16px 28px' }}>
+      <div className={styles.media}>
         <VideoPlayer youtubeId={youtubeId} title={title} />
       </div>
     ) : null}
     {content ? (
-      <div className="mt-6">
+      <div className={styles.body}>
         <TipTapRenderer content={content} />
       </div>
     ) : null}
-    <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
+    <div className={styles.footer}>
       {typeof participants === 'number' ? (
-        <p className="inline-flex items-center gap-1.5 text-xs text-muted">
-          <Users className="h-3.5 w-3.5" />
+        <p className={styles.people}>
+          <Users className={styles.peopleIcon} />
           {participants} personas han participado hoy
         </p>
       ) : (
@@ -43,5 +45,5 @@ export const DevotionalCard = ({ title, verse, dateLabel, content, youtubeId, pa
       )}
       {action}
     </div>
-  </article>
+  </Card>
 );

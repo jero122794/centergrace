@@ -1,0 +1,45 @@
+/*
+ * BottomNav.module.css — dock móvil, 4 destinos, indicador activo.
+ */
+
+.nav {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: var(--bottomnav-height);
+  background: var(--bg-card);
+  box-shadow: 0 -16px 32px -24px rgba(20, 33, 29, 0.35);
+  border-radius: 18px 18px 0 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+  font-weight: 500;
+}
+
+.active {
+  color: var(--accent-primary);
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-warm);
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: none;
+  }
+}

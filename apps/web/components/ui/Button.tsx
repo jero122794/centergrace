@@ -1,34 +1,79 @@
 // apps/web/components/ui/Button.tsx
 'use client';
 
-import type { ButtonHTMLAttributes } from 'react';
-import { cn } from '@/lib/cn';
+import { useState, type ButtonHTMLAttributes, type MouseEvent } from 'react';
+import { cx } from '@/lib/cn';
+import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'icon';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  fullWidth?: boolean;
 }
 
-const styles: Record<ButtonVariant, string> = {
-  primary: 'btn-grace',
-  secondary: 'btn-grace btn-grace--quiet',
-  ghost: 'btn-grace btn-grace--ghost',
-  danger: 'btn-grace btn-grace--danger',
-  icon: 'btn-grace btn-grace--icon',
+const variants: Record<ButtonVariant, string> = {
+  primary: styles.primary,
+  secondary: styles.secondary,
+  ghost: styles.ghost,
+  danger: styles.danger,
+  icon: styles.icon,
 };
 
+interface RipplePoint {
+  x: number;
+  y: number;
+  id: number;
+}
+
 /**
- * Action button with an organic, slightly uneven pill.
+ * Action button. Primary shines on hover; click drops a ripple at the touch point.
+ *
+ * @param variant Visual treatment. Primary is terracotta — the one a 17-year-old actually taps.
+ * @param fullWidth Stretch to the parent width (forms, lesson complete).
  */
-export const Button = ({ variant = 'primary', className, type = 'button', ...props }: Props) => (
-  <button
-    type={type}
-    className={cn(
-      'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-      styles[variant],
-      className,
-    )}
-    {...props}
-  />
-);
+export const Button = ({
+  variant = 'primary',
+  fullWidth = false,
+  className,
+  type = 'button',
+  onClick,
+  children,
+  ...props
+}: Props) => {
+  const [ripples, setRipples] = useState<RipplePoint[]>([]);
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setRipples((current) => [
+      ...current,
+      {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+        id: event.timeStamp,
+      },
+    ]);
+    window.setTimeout(() => {
+      setRipples((current) => current.slice(1));
+    }, 520);
+    onClick?.(event);
+  };
+
+  return (
+    <button
+      type={type}
+      className={cx(styles.root, variants[variant], fullWidth && styles.full, className)}
+      onClick={handleClick}
+      {...props}
+    >
+      {children}
+      {ripples.map((ripple) => (
+        <span
+          key={ripple.id}
+          className={styles.ripple}
+          style={{ left: `${ripple.x}px`, top: `${ripple.y}px` }}
+        />
+      ))}
+    </button>
+  );
+};

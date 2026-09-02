@@ -13,8 +13,9 @@ import { Alert } from '@/components/ui/Alert';
 import { Logo } from '@/components/brand/Logo';
 import { api, getApiErrorMessage } from '@/lib/api';
 import { useAuthStore } from '@/store/auth.store';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
 import { Ornament } from '@/components/brand/Ornament';
+import styles from './page.module.css';
 
 const schema = z
   .object({
@@ -63,13 +64,13 @@ const RegisterPage = () => {
   };
 
   return (
-    <main className="wash relative flex min-h-screen items-center justify-center px-4 py-12">
-      <form onSubmit={form.handleSubmit(onSubmit)} className="sheet relative w-full max-w-[440px] px-8 py-10 sm:px-11">
-        <Logo className="justify-center" />
-        <h1 className="mt-7 text-center font-display text-[2rem] leading-tight text-dark">Crea tu cuenta</h1>
-        <p className="mt-2 text-center text-sm text-muted">Únete al espacio de formación de la iglesia</p>
-        <Ornament className="my-6" />
-        <div className="space-y-5">
+    <main className={styles.stage}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={styles.card}>
+        <Logo className={styles.logo} />
+        <h1 className={styles.title}>Crea tu cuenta</h1>
+        <p className={styles.sub}>Únete al espacio de formación de la iglesia</p>
+        <Ornament className={styles.rule} />
+        <div className={styles.stack}>
           {error ? <Alert>{error}</Alert> : null}
           <Input label="Nombre completo" autoComplete="name" {...form.register('name')} error={form.formState.errors.name?.message} />
           <Input label="Correo" type="email" autoComplete="email" {...form.register('email')} error={form.formState.errors.email?.message} />
@@ -80,12 +81,9 @@ const RegisterPage = () => {
             {...form.register('password')}
             error={form.formState.errors.password?.message}
           />
-          <div className="grid grid-cols-4 gap-1" aria-hidden>
+          <div className={styles.meter} aria-hidden>
             {[0, 1, 2, 3].map((index) => (
-              <span
-                key={index}
-                className={cn('h-1.5 rounded-full bg-border', index < strength && 'bg-accent')}
-              />
+              <span key={index} className={cx(styles.seg, index < strength && styles.on)} />
             ))}
           </div>
           <Input
@@ -95,12 +93,12 @@ const RegisterPage = () => {
             {...form.register('confirm')}
             error={form.formState.errors.confirm?.message}
           />
-          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          <Button type="submit" fullWidth disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'Creando…' : 'Registrarme'}
           </Button>
-          <p className="text-center text-sm text-muted">
+          <p className={styles.switch}>
             ¿Ya tienes cuenta?{' '}
-            <Link className="font-semibold text-accent" href="/login">
+            <Link href="/login">
               Entrar
             </Link>
           </p>

@@ -1,0 +1,12 @@
+/*
+ * TipTapRenderer.module.css
+ * Purpose: long-form reading. Relies on global .prose-grace for marks.
+ * Used by: TipTapRenderer.tsx.
+ */
+
+.prose {
+  max-width: none;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}

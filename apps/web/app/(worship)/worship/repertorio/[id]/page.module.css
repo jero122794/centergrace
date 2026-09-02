@@ -1,0 +1,9 @@
+/*
+ * page.module.css — single song chart.
+ * Used by: app/(worship)/worship/repertorio/[id]/page.tsx.
+ */
+
+.page {
+  display: grid;
+  gap: var(--space-4);
+}

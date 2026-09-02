@@ -1,0 +1,42 @@
+/*
+ * lesson.module.css — reading room. Content is king.
+ * Used by: app/(platform)/cursos/[id]/leccion/[lid]/page.tsx.
+ */
+
+.page {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.crumb {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.crumb a {
+  color: var(--accent-primary);
+}
+
+.assignment {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.work {
+  width: 100%;
+  min-height: 7.5rem;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  resize: vertical;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  box-shadow: inset 0 0 0 1.5px var(--border-default);
+  line-height: 1.7;
+}
+
+.work:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--accent-primary);
+}

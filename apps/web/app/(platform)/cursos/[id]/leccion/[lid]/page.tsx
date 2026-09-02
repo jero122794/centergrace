@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
 import { useState } from 'react';
 import Link from 'next/link';
+import styles from './page.module.css';
 
 const LessonPage = () => {
   const params = useParams<{ id: string; lid: string }>();
@@ -37,9 +38,9 @@ const LessonPage = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <p className="text-sm text-muted">
-        <Link className="text-accent" href={`/cursos/${params.id}`}>
+    <div className={styles.page}>
+      <p className={styles.crumb}>
+        <Link href={`/cursos/${params.id}`}>
           {course.data.title}
         </Link>
         {' · '}
@@ -57,17 +58,18 @@ const LessonPage = () => {
         assignmentSlot={
           lesson.hasAssignment ? (
             <form
-              className="mt-4 space-y-3"
+              className={styles.assignment}
               onSubmit={(event) => {
                 event.preventDefault();
                 submit.mutate();
               }}
             >
               <textarea
-                className="min-h-[120px] w-full resize-y rounded-[10px] border-[1.5px] border-border bg-paper px-3.5 py-2.5 text-[15px]"
+                className={styles.work}
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
                 required
+                aria-label="Tu entrega"
               />
               <Button type="submit" disabled={submit.isPending}>
                 {submit.isSuccess ? 'Entregado' : 'Entregar'}

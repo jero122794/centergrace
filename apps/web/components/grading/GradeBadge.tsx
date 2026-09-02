@@ -1,5 +1,9 @@
 // apps/web/components/grading/GradeBadge.tsx
-import { cn } from '@/lib/cn';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { cx } from '@/lib/cn';
+import styles from './GradeBadge.module.css';
 
 interface Props {
   score: number | null;
@@ -7,20 +11,49 @@ interface Props {
   large?: boolean;
 }
 
+type Band = 'pending' | 'good' | 'mid' | 'low';
+
+const bandOf = (score: number | null, status?: string): Band => {
+  if ((status && status !== 'GRADED') || score === null) {
+    return 'pending';
+  }
+  if (score >= 70) {
+    return 'good';
+  }
+  if (score >= 50) {
+    return 'mid';
+  }
+  return 'low';
+};
+
 /**
- * Numeric grade chip. Colors follow 70 / 50 thresholds.
+ * Numeric grade chip. When the slider crosses a band, the number flips on the X axis.
  */
 export const GradeBadge = ({ score, status, large = false }: Props) => {
-  if ((status && status !== 'GRADED') || score === null) {
-    return (
-      <span className="inline-flex rounded-full bg-warm px-3 py-1 text-[11px] font-medium text-gold-d">Pendiente</span>
-    );
+  const band = bandOf(score, status);
+  const previous = useRef(band);
+  const [flip, setFlip] = useState(false);
+
+  useEffect(() => {
+    if (previous.current !== band) {
+      setFlip(true);
+      const timer = window.setTimeout(() => setFlip(false), 360);
+      previous.current = band;
+      return () => window.clearTimeout(timer);
+    }
+    previous.current = band;
+    return undefined;
+  }, [band]);
+
+  if (band === 'pending') {
+    return <span className={cx(styles.badge, styles.pending)}>Pendiente</span>;
   }
-  const tone =
-    score >= 70 ? 'bg-success text-success-d' : score >= 50 ? 'bg-warning text-warning-d' : 'bg-danger text-danger-d';
+
   return (
-    <span className={cn('inline-flex rounded-full font-bold', large ? 'px-4 py-1.5 text-lg' : 'px-3 py-1 text-[13px]', tone)}>
-      {score}/100
+    <span className={cx(styles.badge, large && styles.large, styles[band])}>
+      <span className={cx(flip && styles.flip)}>
+        {score}/100
+      </span>
     </span>
   );
 };

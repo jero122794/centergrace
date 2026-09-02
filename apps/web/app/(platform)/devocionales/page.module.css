@@ -1,0 +1,15 @@
+/*
+ * devotionals.module.css — daily list.
+ * Used by: app/(platform)/devocionales/page.tsx.
+ */
+
+.page {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.create {
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--accent-primary);
+}

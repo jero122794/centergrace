@@ -8,6 +8,7 @@ import { extractYoutubeId } from '@/lib/youtube';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { TipTapEditor } from '@/components/editor/TipTapEditor';
+import styles from './LessonEditor.module.css';
 
 interface YoutubePreview {
   youtubeId: string;
@@ -34,7 +35,7 @@ export const LessonEditor = ({ courseId, onCreated }: Props) => {
   const youtubeId = extractYoutubeId(youtubeUrl);
   const preview = useQuery({
     queryKey: ['oembed', youtubeUrl],
-    queryFn: async () => (await api.get< { data: YoutubePreview } >('/api/courses/oembed', { params: { url: youtubeUrl } })).data.data,
+    queryFn: async () => (await api.get<{ data: YoutubePreview }>('/api/courses/oembed', { params: { url: youtubeUrl } })).data.data,
     enabled: Boolean(youtubeId),
     retry: false,
   });
@@ -68,7 +69,7 @@ export const LessonEditor = ({ courseId, onCreated }: Props) => {
 
   return (
     <form
-      className="space-y-3"
+      className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
         create.mutate();
@@ -81,47 +82,43 @@ export const LessonEditor = ({ courseId, onCreated }: Props) => {
         onChange={(event) => setYoutubeUrl(event.target.value)}
         placeholder="https://www.youtube.com/watch?v=..."
       />
-      {preview.isFetching ? <p className="text-sm text-slate-500">Validando video…</p> : null}
-      {preview.isError ? <p className="text-sm text-red-600">El video de YouTube no se pudo validar.</p> : null}
+      {preview.isFetching ? <p className={styles.hint}>Validando video…</p> : null}
+      {preview.isError ? <p className={styles.error}>El video de YouTube no se pudo validar.</p> : null}
       {preview.data ? (
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-cream p-3">
+        <div className={styles.preview}>
           {preview.data.youtubeThumbnail ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={preview.data.youtubeThumbnail}
-              alt=""
-              className="h-16 w-28 rounded-lg object-cover"
-            />
+            <img src={preview.data.youtubeThumbnail} alt="" className={styles.thumb} />
           ) : null}
           <div>
-            <p className="text-xs uppercase tracking-wide text-teal">Vista previa</p>
-            <p className="font-medium">{preview.data.youtubeTitle}</p>
+            <p className={styles.kicker}>Vista previa</p>
+            <p className={styles.title}>{preview.data.youtubeTitle}</p>
           </div>
         </div>
       ) : null}
       <div>
-        <p className="mb-1 text-sm font-medium">Contenido</p>
+        <p className={styles.label}>Contenido</p>
         <TipTapEditor value={body} onChange={setBody} />
       </div>
-      <label className="flex items-center gap-2 text-sm">
+      <label className={styles.check}>
         <input type="checkbox" checked={hasAssignment} onChange={(event) => setHasAssignment(event.target.checked)} />
         Incluye asignación
       </label>
       {hasAssignment ? (
-        <label className="block space-y-1">
-          <span className="text-sm font-medium">Descripción de la asignación</span>
+        <label>
+          <span className={styles.label}>Descripción de la asignación</span>
           <textarea
-            className="w-full rounded-xl border border-slate-200 px-3 py-2"
+            className={styles.textarea}
             value={assignmentDescription}
             onChange={(event) => setAssignmentDescription(event.target.value)}
             required={hasAssignment}
           />
         </label>
       ) : null}
-      <label className="block text-sm">
-        Estado
+      <label>
+        <span className={styles.label}>Estado</span>
         <select
-          className="mt-1 w-full rounded-xl border border-slate-200 p-2"
+          className={styles.select}
           value={status}
           onChange={(event) => setStatus(event.target.value as 'DRAFT' | 'PUBLISHED')}
         >
@@ -129,7 +126,7 @@ export const LessonEditor = ({ courseId, onCreated }: Props) => {
           <option value="PUBLISHED">Publicada</option>
         </select>
       </label>
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {error ? <p className={styles.error}>{error}</p> : null}
       <Button type="submit" disabled={create.isPending}>
         {create.isPending ? 'Guardando…' : 'Agregar lección'}
       </Button>

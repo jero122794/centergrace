@@ -1,0 +1,102 @@
+/*
+ * login.module.css — first return. Same moss field as AuthShell.
+ * Used by: app/(auth)/login/page.tsx.
+ */
+
+.stage {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-4);
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(224, 122, 61, 0.18), transparent 55%),
+    radial-gradient(900px 500px at 110% 110%, rgba(31, 122, 99, 0.35), transparent 50%),
+    var(--bg-sidebar);
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-10) var(--space-8);
+  background: var(--bg-card);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-lift);
+  animation: page-rise var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.logo {
+  justify-content: center;
+}
+
+.title {
+  margin: var(--space-6) 0 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1.15;
+}
+
+.sub {
+  margin: var(--space-2) 0 0;
+  text-align: center;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.rule {
+  margin: var(--space-6) 0;
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.forgot {
+  margin: 0;
+  text-align: right;
+  font-size: var(--text-micro);
+}
+
+.forgot a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--accent-gold) 70%, transparent);
+}
+
+.google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--control-h);
+  border-radius: var(--radius-btn);
+  background: var(--bg-card);
+  box-shadow: inset 0 0 0 1.5px var(--border-default);
+  color: var(--accent-primary-strong);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.switch {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.switch a {
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: var(--space-10) 2.75rem;
+  }
+}

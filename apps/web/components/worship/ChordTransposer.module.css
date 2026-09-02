@@ -1,0 +1,91 @@
+/*
+ * ChordTransposer.module.css
+ * Purpose: the most interactive worship control. Keys retune with blur.
+ * Used by: ChordTransposer.tsx.
+ */
+
+.wrap {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.keys {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+}
+
+.key {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--accent-worship-soft);
+  color: var(--text-worship);
+  font-size: var(--text-small);
+  font-weight: 600;
+  transition: background-color var(--duration-fast) var(--ease-out-expo), color var(--duration-fast) var(--ease-out-expo);
+}
+
+.key:hover,
+.key:focus-visible {
+  background: color-mix(in srgb, var(--accent-worship) 70%, white);
+  color: var(--text-on-accent);
+}
+
+.active {
+  background: var(--accent-worship);
+  color: var(--text-on-accent);
+}
+
+.section {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-worship-soft) 70%, white);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-worship) 22%, transparent);
+}
+
+.sectionName {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-worship);
+}
+
+.line {
+  margin-top: var(--space-3);
+}
+
+.chords {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.retune {
+  animation: chord-retune 420ms var(--ease-in-out-swift);
+}
+
+.lyrics {
+  margin: 0.15rem 0 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+@media (min-width: 1024px) {
+  .keys {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .key {
+    width: 100%;
+  }
+}

@@ -1,8 +1,8 @@
-// apps/web/lib/cn.ts
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
 /**
- * Merges Tailwind class names, resolving conflicts with tailwind-merge.
+ * Joins class names. No Tailwind merge — CSS Modules only.
  */
-export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs));
+export const cx = (...parts: Array<string | number | false | null | undefined>): string =>
+  parts.filter((part): part is string => typeof part === 'string' && part.length > 0).join(' ');
+
+/** @deprecated alias kept for a few leftover call sites during migration */
+export const cn = cx;

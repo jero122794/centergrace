@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { LogViewer, type SystemLogRow } from '@/components/developer/LogViewer';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
+import stack from '@/components/ui/PageStack.module.css';
 
 const LogsPage = () => {
   const [level, setLevel] = useState<string | undefined>();
@@ -20,7 +21,7 @@ const LogsPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Sistema" title="Logs" description="Eventos técnicos del proceso." />
       {query.isLoading ? <Skeleton lines={3} /> : null}
       <LogViewer

@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { formatDateTimeBogota } from '@/lib/formatters';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './LogViewer.module.css';
 
 export interface SystemLogRow {
   id: string;
@@ -45,9 +46,9 @@ export const LogViewer = ({ logs, autoRefresh, onToggleRefresh, onFilter }: Prop
   const levels = useMemo(() => ['info', 'warn', 'error'] as const, []);
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end">
-        <div className="flex gap-2">
+    <div className={styles.wrap}>
+      <div className={styles.toolbar}>
+        <div className={styles.levels}>
           {levels.map((item) => (
             <Button
               key={item}
@@ -62,7 +63,7 @@ export const LogViewer = ({ logs, autoRefresh, onToggleRefresh, onFilter }: Prop
             </Button>
           ))}
         </div>
-        <div className="flex-1">
+        <div className={styles.search}>
           <Input
             label="Buscar"
             value={search}
@@ -78,23 +79,23 @@ export const LogViewer = ({ logs, autoRefresh, onToggleRefresh, onFilter }: Prop
           Auto 30s: {autoRefresh ? 'on' : 'off'}
         </Button>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="w-full text-left text-[13px]">
-          <thead className="bg-dev-l font-mono text-[10px] uppercase tracking-wide text-dev">
+      <div className={styles.tableWrap}>
+        <table className={styles.table}>
+          <thead className={styles.head}>
             <tr>
-              <th className="px-3 py-2">Timestamp</th>
-              <th className="px-3 py-2">Nivel</th>
-              <th className="px-3 py-2">Mensaje</th>
+              <th className={styles.cell}>Timestamp</th>
+              <th className={styles.cell}>Nivel</th>
+              <th className={styles.cell}>Mensaje</th>
             </tr>
           </thead>
           <tbody>
             {logs.map((item, index) => (
-              <tr key={item.id} className={cn(index % 2 === 0 ? 'bg-bg' : 'bg-paper')}>
-                <td className="whitespace-nowrap px-3 py-2 font-mono text-muted">{formatDateTimeBogota(item.createdAt)}</td>
-                <td className="px-3 py-2">
+              <tr key={item.id} className={index % 2 === 0 ? styles.odd : styles.even}>
+                <td className={cx(styles.cell, styles.time)}>{formatDateTimeBogota(item.createdAt)}</td>
+                <td className={styles.cell}>
                   <Badge tone={levelTone(item.level)}>{item.level}</Badge>
                 </td>
-                <td className="px-3 py-2 font-mono text-dark">{item.message}</td>
+                <td className={cx(styles.cell, styles.msg)}>{item.message}</td>
               </tr>
             ))}
           </tbody>

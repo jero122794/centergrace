@@ -1,0 +1,52 @@
+/*
+ * calificaciones.module.css — list + reviewer. Reference two-column.
+ * Used by: app/(admin)/admin/calificaciones/page.tsx.
+ */
+
+.page {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.split {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.pick {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.meta {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-micro);
+  color: var(--text-muted);
+}
+
+@media (min-width: 1024px) {
+  .split {
+    grid-template-columns: 280px minmax(0, 1fr);
+    align-items: start;
+  }
+}

@@ -1,5 +1,7 @@
 // apps/web/components/developer/SystemMetricCard.tsx
-import { cn } from '@/lib/cn';
+import type { CSSProperties } from 'react';
+import { cx } from '@/lib/cn';
+import styles from './SystemMetricCard.module.css';
 
 interface Props {
   label: string;
@@ -7,33 +9,34 @@ interface Props {
   unit?: string;
   status?: 'ok' | 'warn' | 'crit';
   percent?: number;
+  enterDelay?: number;
 }
 
 const dots: Record<NonNullable<Props['status']>, string> = {
-  ok: 'bg-[#22C55E]',
-  warn: 'bg-[#F59E0B]',
-  crit: 'bg-[#EF4444]',
+  ok: styles.ok,
+  warn: styles.warn,
+  crit: styles.crit,
 };
 
 /**
  * Technical metric tile for the developer panel.
  */
-export const SystemMetricCard = ({ label, value, unit, status = 'ok', percent }: Props) => (
-  <div className="rounded-xl border border-dev/30 bg-dev-l p-[18px]">
-    <div className="flex items-center justify-between">
-      <p className="font-mono text-[10px] uppercase tracking-wide text-dev">{label}</p>
-      <span className={cn('h-2 w-2 rounded-full', dots[status])} />
+export const SystemMetricCard = ({ label, value, unit, status = 'ok', percent, enterDelay = 0 }: Props) => (
+  <div className={styles.card} style={{ '--enter-delay': `${enterDelay}ms` } as CSSProperties}>
+    <div className={styles.head}>
+      <p className={styles.label}>{label}</p>
+      <span className={cx(styles.dot, dots[status])} />
     </div>
-    <p className="mt-2 font-mono text-[28px] font-semibold text-dark">
+    <p className={styles.value}>
       {value}
-      {unit ? <span className="ml-1 text-xs font-normal text-muted">{unit}</span> : null}
+      {unit ? <span className={styles.unit}>{unit}</span> : null}
     </p>
     {typeof percent === 'number' ? (
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border">
+      <div className={styles.track}>
         <div
-          className={cn(
-            'h-full',
-            percent < 60 ? 'bg-success-d' : percent < 85 ? 'bg-warning-d' : 'bg-danger-d',
+          className={cx(
+            styles.fill,
+            percent < 60 ? styles.fillOk : percent < 85 ? styles.fillWarn : styles.fillCrit,
           )}
           style={{ width: `${Math.min(100, percent)}%` }}
         />
