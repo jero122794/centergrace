@@ -12,8 +12,7 @@ for (const file of envCandidates) {
   }
 }
 
-const optionalInDev = (): z.ZodType<string> =>
-  z.string().optional().transform((value) => value ?? '');
+const optionalSecret = z.string().default('');
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -27,13 +26,13 @@ const envSchema = z.object({
   VAPID_PUBLIC_KEY: z.string().min(1),
   VAPID_PRIVATE_KEY: z.string().min(1),
   VAPID_SUBJECT: z.string().min(1),
-  AWS_ACCESS_KEY_ID: optionalInDev(),
-  AWS_SECRET_ACCESS_KEY: optionalInDev(),
+  AWS_ACCESS_KEY_ID: optionalSecret,
+  AWS_SECRET_ACCESS_KEY: optionalSecret,
   AWS_REGION: z.string().default('us-east-1'),
-  AWS_S3_BUCKET: optionalInDev(),
-  AWS_SES_FROM: optionalInDev(),
-  GOOGLE_CLIENT_ID: optionalInDev(),
-  GOOGLE_CLIENT_SECRET: optionalInDev(),
+  AWS_S3_BUCKET: optionalSecret,
+  AWS_SES_FROM: optionalSecret,
+  GOOGLE_CLIENT_ID: optionalSecret,
+  GOOGLE_CLIENT_SECRET: optionalSecret,
   GOOGLE_CALLBACK_URL: z.string().url().optional(),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 });
