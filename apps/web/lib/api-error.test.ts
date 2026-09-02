@@ -6,7 +6,7 @@ describe('getApiErrorMessage', () => {
   it('reads the API error payload', () => {
     const error = new AxiosError('fail');
     error.response = {
-      data: { message: 'Correo o contraseña incorrectos.' },
+      data: { message: 'Invalid credentials' },
       status: 401,
       statusText: 'Unauthorized',
       headers: {},

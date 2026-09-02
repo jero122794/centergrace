@@ -1,7 +1,7 @@
 // apps/web/components/layout/AppShell.tsx
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
@@ -13,8 +13,21 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.accessToken);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    const markReady = (): void => setHydrated(true);
+    if (useAuthStore.persist.hasHydrated()) {
+      markReady();
+      return;
+    }
+    return useAuthStore.persist.onFinishHydration(markReady);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
     if (token) {
       setAccessToken(token);
     }
@@ -25,10 +38,14 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
     if (user.mustChangePassword) {
       router.replace('/change-password');
     }
-  }, [user, token, router]);
+  }, [hydrated, user, token, router]);
 
-  if (!user) {
-    return null;
+  if (!hydrated || !user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-sm text-ink/50">
+        Cargando…
+      </div>
+    );
   }
 
   return (

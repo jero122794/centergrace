@@ -22,6 +22,9 @@ export const getApiErrorMessage = (error: unknown, fallback = 'No se pudo comple
   if (axios.isAxiosError(error)) {
     const payload = error.response?.data as { message?: string } | undefined;
     if (payload?.message) {
+      if (payload.message === 'Invalid credentials') {
+        return 'Correo o contraseña incorrectos.';
+      }
       return payload.message;
     }
   }
