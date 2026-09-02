@@ -14,6 +14,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Alert } from '@/components/ui/Alert';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface CourseSummary {
   id: string;
@@ -49,11 +50,11 @@ const ContentPage = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className={stack.page}>
       <PageHeader kicker="Pastoreo" title="Contenido" description="Cursos y lecciones de la iglesia." />
       <Card>
-        <h2 className="mb-3 font-display text-xl">Nuevo curso</h2>
-        <form className="space-y-3" onSubmit={form.handleSubmit((values) => createCourse.mutate(values))}>
+        <h2 className={stack.title}>Nuevo curso</h2>
+        <form className={stack.list} onSubmit={form.handleSubmit((values) => createCourse.mutate(values))}>
           <Input label="Título" {...form.register('title', { required: true })} />
           <Input label="Descripción" {...form.register('description', { required: true })} />
           <Button type="submit" disabled={createCourse.isPending}>
@@ -66,24 +67,24 @@ const ContentPage = () => {
       {!courses.isLoading && courses.data?.length === 0 ? (
         <EmptyState title="Sin cursos" description="Crea el primero con el formulario de arriba." />
       ) : null}
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className={stack.grid2}>
         {courses.data?.map((course) => (
-          <button key={course.id} type="button" className="text-left" onClick={() => setSelectedId(course.id)}>
-            <Card className={selectedId === course.id ? 'ring-2 ring-accent' : ''}>
-              <p className="font-medium">{course.title}</p>
-              <p className="text-sm text-slate-500">{course._count?.lessons ?? 0} lecciones</p>
+          <button key={course.id} type="button" className={stack.pick} onClick={() => setSelectedId(course.id)}>
+            <Card selected={selectedId === course.id}>
+              <p className={stack.name}>{course.title}</p>
+              <p className={stack.muted}>{course._count?.lessons ?? 0} lecciones</p>
             </Card>
           </button>
         ))}
       </div>
       {selected.data ? (
-        <Card className="space-y-4">
-          <h2 className="font-display text-2xl text-accent">{selected.data.title}</h2>
-          <ul className="space-y-2">
+        <Card className={stack.tight}>
+          <h2 className={stack.title}>{selected.data.title}</h2>
+          <ul className={stack.list}>
             {selected.data.lessons.map((lesson) => (
-              <li key={lesson.id} className="flex items-center justify-between rounded-xl bg-cream px-3 py-2">
+              <li key={lesson.id} className={stack.lessonRow}>
                 <span>{lesson.title}</span>
-                <span className="flex gap-2">
+                <span className={stack.actions}>
                   {lesson.youtubeTitle ? <Badge>YouTube</Badge> : null}
                   {lesson.hasAssignment ? <Badge tone="gold">Asignación</Badge> : null}
                   <Badge tone={lesson.status === 'PUBLISHED' ? 'teal' : 'neutral'}>{lesson.status}</Badge>

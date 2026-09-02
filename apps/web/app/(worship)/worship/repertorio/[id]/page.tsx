@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { ChordTransposer } from '@/components/worship/ChordTransposer';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
+import styles from './page.module.css';
 
 const SongPage = () => {
   const params = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ const SongPage = () => {
     return <Skeleton lines={3} />;
   }
   return (
-    <div className="space-y-4">
+    <div className={styles.page}>
       <PageHeader kicker="Repertorio" title={song.title} />
       <ChordTransposer originalKey={song.originalKey} chords={song.chords} />
     </div>

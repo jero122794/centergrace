@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Alert';
 import { AuthShell } from '@/components/layout/AuthShell';
 import { api, getApiErrorMessage } from '@/lib/api';
+import stack from '@/components/ui/PageStack.module.css';
 
 const schema = z.object({
   currentPassword: z.string().min(1, 'Ingresa la contraseña actual'),
@@ -34,7 +35,7 @@ const ChangePasswordPage = () => {
 
   return (
     <AuthShell title="Cambia tu contraseña" subtitle="Por seguridad, actualiza tu clave antes de continuar.">
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={stack.form}>
         {error ? <Alert>{error}</Alert> : null}
         <Input
           label="Contraseña actual"
@@ -48,7 +49,7 @@ const ChangePasswordPage = () => {
           {...form.register('newPassword')}
           error={form.formState.errors.newPassword?.message}
         />
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+        <Button type="submit" fullWidth disabled={form.formState.isSubmitting}>
           Guardar
         </Button>
       </form>

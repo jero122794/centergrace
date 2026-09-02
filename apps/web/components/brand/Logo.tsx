@@ -1,24 +1,20 @@
 // apps/web/components/brand/Logo.tsx
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './Logo.module.css';
 
 interface Props {
   className?: string;
   compact?: boolean;
+  inverted?: boolean;
 }
 
 /**
- * Centro de Gracia wordmark with an oval olive mark.
+ * Wordmark with an oval olive mark. `inverted` for the dark rail.
  */
-export const Logo = ({ className, compact = false }: Props) => (
-  <div className={cn('flex items-center gap-3', className)}>
-    <span
-      className="inline-flex h-11 w-10 items-center justify-center text-warm"
-      style={{
-        background: 'var(--color-accent)',
-        borderRadius: '58% 42% 50% 50% / 42% 48% 52% 58%',
-      }}
-    >
-      <svg viewBox="0 0 32 32" className="h-6 w-6" fill="none" aria-hidden>
+export const Logo = ({ className, compact = false, inverted = false }: Props) => (
+  <div className={cx(styles.wrap, inverted && styles.inverted, className)}>
+    <span className={styles.mark} aria-hidden>
+      <svg viewBox="0 0 32 32" fill="none">
         <path
           d="M16 5.5c3.1 3.6 4.6 7.1 4.6 10.2 0 3.6-1.9 6.5-4.6 8.4-2.7-1.9-4.6-4.8-4.6-8.4 0-3.1 1.5-6.6 4.6-10.2Z"
           fill="currentColor"
@@ -32,9 +28,9 @@ export const Logo = ({ className, compact = false }: Props) => (
       </svg>
     </span>
     {compact ? null : (
-      <span className="leading-tight">
-        <span className="block font-display text-[1.15rem] tracking-tight text-dark">Centro de Gracia</span>
-        <span className="block text-[10px] uppercase tracking-[0.22em] text-muted">Centro Misionero Shalom</span>
+      <span className={styles.word}>
+        <span className={styles.name}>Centro de Gracia</span>
+        <span className={styles.sub}>Centro Misionero Shalom</span>
       </span>
     )}
   </div>

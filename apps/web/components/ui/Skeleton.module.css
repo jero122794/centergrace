@@ -1,0 +1,27 @@
+/*
+ * Skeleton.module.css
+ * Purpose: paper-shaped placeholders while data arrives.
+ * Used by: Skeleton.tsx, AppShell boot.
+ */
+
+.stack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.bar {
+  height: 4rem;
+  border-radius: var(--radius-sheet);
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 0%,
+    var(--bg-elevated) 50%,
+    var(--bg-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 1.4s var(--ease-in-out-swift) infinite;
+}
+
+.short {
+  height: 1.5rem;
+}

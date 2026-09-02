@@ -11,6 +11,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Alert } from '@/components/ui/Alert';
+import styles from './page.module.css';
 
 const GradesPage = () => {
   const client = useQueryClient();
@@ -31,7 +32,7 @@ const GradesPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={styles.page}>
       <PageHeader kicker="Pastoreo" title="Calificaciones" description="Revisa entregas lado a lado." />
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {query.isError ? <Alert>No se pudieron cargar las entregas.</Alert> : null}
@@ -39,15 +40,15 @@ const GradesPage = () => {
         <EmptyState title="Sin trabajos pendientes" description="Cuando los estudiantes entreguen, aparecerán aquí." />
       ) : null}
       {query.data && query.data.length > 0 ? (
-        <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
-          <div className="space-y-2">
+        <div className={styles.split}>
+          <div className={styles.list}>
             {query.data.map((item) => (
-              <button key={item.id} type="button" className="w-full text-left" onClick={() => setSelectedId(item.id)}>
-            <Card className={selected?.id === item.id ? 'ring-2 ring-accent' : ''}>
-                  <div className="flex items-center justify-between gap-2">
+              <button key={item.id} type="button" className={styles.pick} onClick={() => setSelectedId(item.id)}>
+                <Card selected={selected?.id === item.id}>
+                  <div className={styles.row}>
                     <div>
-                      <p className="font-medium">{item.user.name}</p>
-                      <p className="text-xs text-slate-500">{item.lesson.title}</p>
+                      <p className={styles.name}>{item.user.name}</p>
+                      <p className={styles.meta}>{item.lesson.title}</p>
                     </div>
                     <GradeBadge score={item.grade?.score ?? null} status={item.status} />
                   </div>

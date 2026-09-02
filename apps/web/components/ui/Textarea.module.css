@@ -1,0 +1,84 @@
+/*
+ * Textarea.module.css
+ * Purpose: journal fields — reflection, feedback, assignment.
+ * Used by: Textarea.tsx. Shares visual language with Input.
+ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.control {
+  width: 100%;
+  min-height: 7.5rem;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  resize: vertical;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  box-shadow: inset 3px 0 0 var(--accent-gold), inset 0 0 0 1px var(--border-default);
+  color: var(--text-primary);
+  line-height: 1.7;
+  transition: box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.control:focus {
+  outline: none;
+  box-shadow: inset 3px 0 0 var(--accent-primary), inset 0 0 0 1px var(--accent-primary);
+}
+
+.invalid {
+  box-shadow: inset 3px 0 0 var(--danger-fg), inset 0 0 0 1px var(--danger-fg);
+}
+
+.meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-micro);
+  color: var(--text-muted);
+}
+
+.error {
+  color: var(--danger-fg);
+}
+
+.counter {
+  margin-left: auto;
+  font-size: var(--text-micro);
+  color: var(--text-hint);
+}
+
+.ok {
+  color: var(--success-fg);
+}
+
+.warn {
+  color: var(--warning-fg);
+}
+
+.over {
+  color: var(--danger-fg);
+}
+
+.icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}

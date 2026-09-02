@@ -10,9 +10,10 @@ import { PageWrapper } from './PageWrapper';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useAuthStore } from '@/store/auth.store';
 import { setAccessToken } from '@/lib/api';
+import styles from './AppShell.module.css';
 
 /**
- * Authenticated chrome: sidebar, topbar and mobile bottom nav.
+ * Authenticated chrome: dark rail + linen canvas + mobile dock.
  */
 export const AppShell = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -49,19 +50,19 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
 
   if (!hydrated || !user) {
     return (
-      <div className="min-h-screen bg-bg p-6">
-        <Skeleton className="mb-4 h-16" />
+      <div className={styles.boot}>
+        <Skeleton />
         <Skeleton lines={3} />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-transparent">
+    <div className={styles.shell}>
       {isDeveloper ? null : <Sidebar />}
-      <div className="flex min-h-screen flex-1 flex-col pb-16 lg:pb-0">
+      <div className={styles.column}>
         <Topbar />
-        <main className="flex-1 p-4 md:p-6 lg:p-8">
+        <main className={styles.main}>
           <PageWrapper>{children}</PageWrapper>
         </main>
       </div>

@@ -8,6 +8,7 @@ import { api } from '@/lib/api';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { PageHeader } from '@/components/ui/PageHeader';
+import stack from '@/components/ui/PageStack.module.css';
 
 const NewRehearsalPage = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const NewRehearsalPage = () => {
 
   return (
     <form
-      className="max-w-lg space-y-3"
+      className={stack.list}
       onSubmit={form.handleSubmit(async (values) => {
         await api.post('/api/worship/rehearsals', { ...values, date: new Date(values.date).toISOString() });
         router.push('/worship/ensayos');
@@ -28,9 +29,9 @@ const NewRehearsalPage = () => {
       <PageHeader kicker="Alabanza" title="Nuevo ensayo" />
       <Input label="Fecha y hora" type="datetime-local" {...form.register('date')} />
       <Input label="Lugar" {...form.register('location')} />
-      <label className="block text-sm">
+      <label className={stack.list}>
         Ministerio
-        <select className="mt-1 w-full rounded-xl border p-2" {...form.register('ministryId')}>
+        <select className={stack.select} {...form.register('ministryId')}>
           {ministries.data?.map((item: { id: string; name: string }) => (
             <option key={item.id} value={item.id}>
               {item.name}

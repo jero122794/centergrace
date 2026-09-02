@@ -6,6 +6,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Textarea } from '@/components/ui/Textarea';
+import styles from './ParticipationForm.module.css';
 
 export interface ReflectionQuestion {
   id: string;
@@ -30,10 +31,7 @@ const withinEditWindow = (createdAt: string): boolean => {
 };
 
 /**
- * Daily reflection form with numbered questions and a main textarea.
- *
- * @example
- * <ParticipationForm questions={[]} submitting={false} onSubmit={send} />
+ * Daily reflection form. Feels like a journal: numbered prompts, then a free page.
  */
 export const ParticipationForm = ({ questions, existing, submitting, onSubmit }: Props) => {
   const canEdit = existing ? withinEditWindow(existing.createdAt) : true;
@@ -49,14 +47,14 @@ export const ParticipationForm = ({ questions, existing, submitting, onSubmit }:
 
   if (existing && !editing) {
     return (
-      <Card variant="surface" className="bg-success">
-        <p className="inline-flex items-center gap-2 font-display text-lg italic text-success-d">
-          <CheckCircle2 className="h-5 w-5" aria-hidden />
+      <Card variant="surface" className={styles.saved}>
+        <p className={styles.savedTitle}>
+          <CheckCircle2 className={styles.savedIcon} aria-hidden />
           Tu reflexión fue compartida
         </p>
-        <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-dark">{existing.content}</p>
+        <p className={styles.savedBody}>{existing.content}</p>
         {canEdit ? (
-          <Button variant="ghost" className="mt-4" onClick={() => setEditing(true)}>
+          <Button variant="ghost" onClick={() => setEditing(true)}>
             Editar (hasta 24 h)
           </Button>
         ) : null}
@@ -66,7 +64,7 @@ export const ParticipationForm = ({ questions, existing, submitting, onSubmit }:
 
   return (
     <form
-      className="space-y-5"
+      className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit({
@@ -79,24 +77,21 @@ export const ParticipationForm = ({ questions, existing, submitting, onSubmit }:
       }}
     >
       <div>
-        <h2 className="text-base font-semibold text-dark">Tu participación</h2>
-        <p className="text-sm text-muted">Comparte tu reflexión de hoy</p>
+        <h2 className={styles.heading}>Tu participación</h2>
+        <p className={styles.sub}>Comparte tu reflexión de hoy</p>
       </div>
       {questions.length > 0 ? (
-        <div className="space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-wide text-accent">Para reflexionar</p>
+        <div className={styles.prompts}>
+          <p className={styles.promptLabel}>Para reflexionar</p>
           {questions.map((question, index) => (
             <Card key={question.id} variant="surface">
-              <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-primary-d px-2 text-[11px] font-semibold text-white">
-                {index + 1}
-              </span>
-              <p className="mt-2 text-[15px] font-medium text-dark">{question.text}</p>
-              <div className="mt-3">
+              <span className={styles.number}>{index + 1}</span>
+              <p className={styles.question}>{question.text}</p>
+              <div className={styles.answer}>
                 <Textarea
                   label={`Respuesta ${index + 1}`}
                   minChars={30}
                   maxChars={500}
-                  className="min-h-[80px]"
                   value={answers[question.id] ?? ''}
                   onChange={(event) =>
                     setAnswers((current) => ({ ...current, [question.id]: event.target.value }))
@@ -109,14 +104,13 @@ export const ParticipationForm = ({ questions, existing, submitting, onSubmit }:
       ) : null}
       <Textarea
         label="Reflexión"
-        className="min-h-[120px]"
         maxChars={2000}
         placeholder="¿Qué te habló Dios hoy a través de este devocional?"
         value={content}
         onChange={(event) => setContent(event.target.value)}
         required
       />
-      <Button type="submit" className="w-full" disabled={submitting || content.trim().length < 3}>
+      <Button type="submit" fullWidth disabled={submitting || content.trim().length < 3}>
         {submitting ? 'Enviando…' : 'Compartir mi reflexión'}
       </Button>
     </form>

@@ -1,5 +1,6 @@
 // apps/web/components/worship/AuditionStepper.tsx
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './AuditionStepper.module.css';
 
 export const AUDITION_STEPS = ['SCHOOL', 'ELIGIBLE', 'SCHEDULED', 'APPROVED'] as const;
 
@@ -25,23 +26,16 @@ const LABELS: Record<AuditionStep, string> = {
 export const AuditionStepper = ({ current }: Props) => {
   const currentIndex = AUDITION_STEPS.indexOf(current);
   return (
-    <ol className="grid grid-cols-2 gap-3 md:grid-cols-4">
+    <ol className={styles.list}>
       {AUDITION_STEPS.map((step, index) => {
         const active = index === currentIndex;
         const done = index < currentIndex;
         return (
-          <li
-            key={step}
-            className={cn(
-              'rounded-xl border px-4 py-3 text-center',
-              active ? 'border-worship bg-worship-l' : 'border-border bg-paper',
-              done && 'border-success-d/30 bg-success',
-            )}
-          >
-            <p className="text-[11px] font-bold uppercase tracking-wide text-worship">
+          <li key={step} className={cx(styles.step, active && styles.active, done && styles.done)}>
+            <p className={styles.label}>
               {index + 1}. {LABELS[step]}
             </p>
-            {active ? <p className="mt-1 text-xs text-muted">Etapa actual</p> : null}
+            {active ? <p className={styles.now}>Etapa actual</p> : null}
           </li>
         );
       })}

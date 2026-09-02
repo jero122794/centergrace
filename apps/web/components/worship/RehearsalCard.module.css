@@ -1,0 +1,37 @@
+/*
+ * RehearsalCard.module.css
+ * Purpose: upcoming rehearsal — date is primary, place is secondary.
+ * Used by: RehearsalCard.tsx.
+ */
+
+.date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  color: var(--text-primary);
+}
+
+.icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: var(--accent-worship);
+}
+
+.place {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.ready {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  color: var(--success-fg);
+}

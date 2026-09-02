@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { PageHeader } from '@/components/ui/PageHeader';
+import stack from '@/components/ui/PageStack.module.css';
 
 const GroupsPage = () => {
   const client = useQueryClient();
@@ -22,10 +23,10 @@ const GroupsPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Pastoreo" title="Grupos" description="Células y grupos de seguimiento." />
       <form
-        className="flex gap-2"
+        className={stack.actions}
         onSubmit={form.handleSubmit((values) => create.mutate(values.name))}
       >
         <Input label="Nombre" {...form.register('name')} />
@@ -33,8 +34,8 @@ const GroupsPage = () => {
       </form>
       {query.data?.map((item: { id: string; name: string; type: string }) => (
         <Card key={item.id}>
-          <p className="font-medium">{item.name}</p>
-          <p className="text-sm text-slate-500">{item.type}</p>
+          <p className={stack.name}>{item.name}</p>
+          <p className={stack.muted}>{item.type}</p>
         </Card>
       ))}
     </div>

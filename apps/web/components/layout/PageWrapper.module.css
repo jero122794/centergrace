@@ -1,0 +1,14 @@
+/*
+ * PageWrapper.module.css — columna de lectura + entrada de página.
+ */
+
+.wrap {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  animation: page-rise var(--duration-med) var(--ease-out-expo) both;
+}
+
+.wide {
+  max-width: none;
+}

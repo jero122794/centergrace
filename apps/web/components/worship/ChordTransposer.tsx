@@ -1,9 +1,11 @@
 // apps/web/components/worship/ChordTransposer.tsx
 'use client';
 
+import { useEffect, useState } from 'react';
 import { KEYS } from '@/lib/transposer';
 import { useTransposer } from '@/hooks/useTransposer';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './ChordTransposer.module.css';
 
 interface ChordLine {
   lyrics: string;
@@ -22,38 +24,44 @@ interface Props {
 
 /**
  * Client-side key selector and chord chart.
+ * Changing the key retunes chords with a blur+scale — not a generic fade.
  */
 export const ChordTransposer = ({ originalKey, chords }: Props) => {
   const { setSemitones, transpose, currentKey } = useTransposer(originalKey);
   const currentIndex = KEYS.indexOf(currentKey as (typeof KEYS)[number]);
   const originalIndex = KEYS.indexOf(originalKey as (typeof KEYS)[number]);
+  const [pulse, setPulse] = useState(false);
+
+  useEffect(() => {
+    setPulse(true);
+    const timer = window.setTimeout(() => setPulse(false), 420);
+    return () => window.clearTimeout(timer);
+  }, [currentKey]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2 overflow-x-auto pb-1 lg:grid lg:grid-cols-6 lg:overflow-visible">
+    <div className={styles.wrap}>
+      <div className={styles.keys} role="group" aria-label="Tonalidad">
         {KEYS.map((note, index) => (
           <button
             type="button"
             key={note}
             onClick={() => setSemitones(index - (originalIndex < 0 ? 0 : originalIndex))}
-            className={cn(
-              'h-9 w-9 shrink-0 rounded-full text-sm font-semibold',
-              currentIndex === index ? 'bg-worship text-white shadow-card' : 'bg-worship-l text-worship hover:bg-worship/70 hover:text-white',
-            )}
+            className={cx(styles.key, currentIndex === index && styles.active)}
+            aria-pressed={currentIndex === index}
           >
             {note}
           </button>
         ))}
       </div>
       {chords.sections.map((section) => (
-        <div key={section.name} className="rounded-2xl border border-worship/20 bg-worship-l/50 p-4">
-          <p className="text-[11px] font-bold uppercase tracking-wide text-worship">{section.name}</p>
+        <div key={section.name} className={styles.section}>
+          <p className={styles.sectionName}>{section.name}</p>
           {section.lines.map((line) => (
-            <div key={line.lyrics} className="mt-3">
-              <p className="font-mono text-base font-semibold text-dark">
+            <div key={line.lyrics} className={styles.line}>
+              <p className={cx(styles.chords, pulse && styles.retune)}>
                 {line.chords.map((chord) => transpose(chord)).join('  ')}
               </p>
-              <p className="text-sm text-muted">{line.lyrics}</p>
+              <p className={styles.lyrics}>{line.lyrics}</p>
             </div>
           ))}
         </div>

@@ -11,6 +11,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Alert } from '@/components/ui/Alert';
 import { isPushSupported, subscribeToPush, unsubscribeFromPush } from '@/lib/push';
 import { api } from '@/lib/api';
+import stack from '@/components/ui/PageStack.module.css';
 
 const ProfilePage = () => {
   const user = useAuthStore((state) => state.user);
@@ -37,16 +38,16 @@ const ProfilePage = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className={stack.page}>
       <PageHeader kicker="Cuenta" title="Perfil" description="Tu identidad en la plataforma y las alertas de este dispositivo." />
-      <Card className="max-w-lg space-y-3">
-        <p className="font-display text-2xl text-dark">{user?.name}</p>
-        <p className="text-sm text-ink/55">{user?.email}</p>
-        <p className="text-sm">
+      <Card className={stack.list}>
+        <p className={stack.title}>{user?.name}</p>
+        <p className={stack.muted}>{user?.email}</p>
+        <p className={stack.muted}>
           Rol: <Badge>{user?.role ?? ''}</Badge>
         </p>
-        <div className="flex items-center gap-2">
-          <span className="text-sm">Push</span>
+        <div className={stack.actions}>
+          <span className={stack.muted}>Push</span>
           <Badge tone={status.data?.subscribed ? 'teal' : 'neutral'}>
             {status.data?.subscribed ? 'activo' : 'inactivo'}
           </Badge>
@@ -57,7 +58,7 @@ const ProfilePage = () => {
             siguen llegando al centro de notificaciones.
           </Alert>
         ) : null}
-        <div className="flex flex-wrap gap-2">
+        <div className={stack.actions}>
           <Button type="button" onClick={() => subscribe.mutate()} disabled={subscribe.isPending}>
             Activar notificaciones
           </Button>
@@ -65,7 +66,7 @@ const ProfilePage = () => {
             Desactivar
           </Button>
         </div>
-        {message ? <p className="text-sm text-ink/70">{message}</p> : null}
+        {message ? <p className={stack.muted}>{message}</p> : null}
       </Card>
     </div>
   );

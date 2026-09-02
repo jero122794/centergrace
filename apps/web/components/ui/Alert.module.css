@@ -1,0 +1,33 @@
+/*
+ * Alert.module.css
+ * Purpose: inline banners. Left tick carries the meaning.
+ * Used by: Alert.tsx.
+ */
+
+.banner {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--danger-fg);
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+  font-size: var(--text-small);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.info {
+  border-left-color: var(--accent-secondary);
+  background: var(--info-bg);
+  color: var(--info-fg);
+}
+
+.success {
+  border-left-color: var(--success-fg);
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.danger {
+  border-left-color: var(--danger-fg);
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+}

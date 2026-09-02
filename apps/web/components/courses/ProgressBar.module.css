@@ -1,0 +1,47 @@
+/*
+ * ProgressBar.module.css
+ * Purpose: completion track that fills from 0. Shine when complete.
+ * Used by: ProgressBar.tsx, CourseCard.
+ */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.track {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--border-default);
+}
+
+.fill {
+  height: 100%;
+  transform-origin: left center;
+  background: var(--accent-primary);
+  border-radius: 3px;
+  animation: progress-fill 700ms var(--ease-out-expo) both;
+}
+
+.done {
+  background: var(--success-fg);
+}
+
+.done::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 253, 249, 0.7), transparent);
+  animation: progress-complete-shine 720ms var(--ease-out-expo) 700ms both;
+}
+
+.label {
+  font-size: var(--text-micro);
+  font-weight: 600;
+  color: var(--accent-primary);
+}

@@ -11,6 +11,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
 import { formatDateTimeBogota } from '@/lib/formatters';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface InAppNotification {
   id: string;
@@ -43,7 +44,7 @@ const NotificationsPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader
         kicker="Comunidad"
         title="Notificaciones"
@@ -59,14 +60,14 @@ const NotificationsPage = () => {
         <EmptyState title="Sin avisos" description="Cuando haya mensajes de la iglesia, aparecerán aquí." />
       ) : null}
       {query.data?.map((item) => (
-        <Card key={item.id} className={item.readAt ? 'opacity-70' : ''}>
-          <div className="flex items-start justify-between gap-3">
+        <Card key={item.id} className={item.readAt ? stack.dim : undefined}>
+          <div className={stack.row}>
             <div>
-              <p className="font-medium">{item.title}</p>
-              <p className="text-sm text-ink/65">{item.body}</p>
-              <p className="mt-1 text-xs text-ink/40">{formatDateTimeBogota(item.createdAt)}</p>
+              <p className={stack.name}>{item.title}</p>
+              <p className={stack.muted}>{item.body}</p>
+              <p className={stack.muted}>{formatDateTimeBogota(item.createdAt)}</p>
               {item.url ? (
-                <Link className="mt-2 inline-block text-sm text-accent" href={item.url} onClick={() => markOne.mutate(item.id)}>
+                <Link className={stack.link} href={item.url} onClick={() => markOne.mutate(item.id)}>
                   Abrir
                 </Link>
               ) : null}

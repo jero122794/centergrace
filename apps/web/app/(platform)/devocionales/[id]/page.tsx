@@ -11,6 +11,7 @@ import { ParticipationForm } from '@/components/devotional/ParticipationForm';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
 import { formatLongDateBogota, resolveMediaUrl } from '@/lib/formatters';
+import styles from './page.module.css';
 
 interface Question {
   id: string;
@@ -55,27 +56,23 @@ const DevotionalDetailPage = () => {
   const youtubeId = item.mediaType === 'youtube' ? youtubeIdFrom(item.mediaUrl) : null;
 
   return (
-    <article className="mx-auto max-w-[720px] space-y-8 px-0 md:px-6">
+    <article className={styles.article}>
       <header>
-        <p className="text-[13px] text-muted">{formatLongDateBogota(item.date ?? new Date())}</p>
-        <h1 className="mt-2 font-display text-h1 leading-[1.15] text-dark">{item.title}</h1>
+        <p className={styles.date}>{formatLongDateBogota(item.date ?? new Date())}</p>
+        <h1 className={styles.title}>{item.title}</h1>
       </header>
-      {item.verse ? (
-        <blockquote className="rounded-r-xl border-l-[5px] border-gold bg-warm px-6 py-5 font-display text-xl italic text-muted">
-          {item.verse}
-        </blockquote>
-      ) : null}
+      {item.verse ? <blockquote className={styles.verse}>{item.verse}</blockquote> : null}
       {item.mediaType === 'audio' && item.mediaUrl ? (
-        <div className="rounded-xl border border-primary p-4">
-          <audio className="w-full" controls src={resolveMediaUrl(item.mediaUrl)}>
+        <div className={styles.audio}>
+          <audio className={styles.audioPlayer} controls src={resolveMediaUrl(item.mediaUrl)}>
             Tu navegador no reproduce audio.
           </audio>
         </div>
       ) : null}
       {youtubeId ? <VideoPlayer youtubeId={youtubeId} title={item.title} /> : null}
       <TipTapRenderer content={item.content} />
-      <p className="inline-flex items-center gap-1 text-sm text-muted">
-        <Users className="h-4 w-4" aria-hidden />
+      <p className={styles.people}>
+        <Users className={styles.icon} aria-hidden />
         {item._count?.participations ?? item.participations?.length ?? 0} personas han compartido su reflexión hoy
       </p>
       <ParticipationForm

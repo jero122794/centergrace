@@ -1,6 +1,7 @@
 // apps/web/components/ui/Alert.tsx
 import type { ReactNode } from 'react';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './Alert.module.css';
 
 interface Props {
   children: ReactNode;
@@ -8,16 +9,16 @@ interface Props {
 }
 
 const tones: Record<NonNullable<Props['tone']>, string> = {
-  danger: 'border-l-danger-d bg-danger text-danger-d',
-  info: 'border-l-accent bg-surface text-dark',
-  success: 'border-l-success-d bg-success text-success-d',
+  danger: styles.danger,
+  info: styles.info,
+  success: styles.success,
 };
 
 /**
  * Inline status banner for forms and pages.
  */
 export const Alert = ({ children, tone = 'danger' }: Props) => (
-  <p role="alert" className={cn('border-l-[3px] py-2.5 pl-3.5 pr-3 text-sm', tones[tone])}>
+  <p role="alert" className={cx(styles.banner, tones[tone])}>
     {children}
   </p>
 );

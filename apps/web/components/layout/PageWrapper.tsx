@@ -1,15 +1,17 @@
 // apps/web/components/layout/PageWrapper.tsx
 import type { ReactNode } from 'react';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './PageWrapper.module.css';
 
 interface Props {
   children: ReactNode;
   className?: string;
+  wide?: boolean;
 }
 
 /**
- * Constrains main content to the 1280px reading column.
+ * Reading column. Rises on mount (page-rise).
  */
-export const PageWrapper = ({ children, className }: Props) => (
-  <div className={cn('mx-auto w-full max-w-content animate-fadein', className)}>{children}</div>
+export const PageWrapper = ({ children, className, wide = false }: Props) => (
+  <div className={cx(styles.wrap, wide && styles.wide, className)}>{children}</div>
 );

@@ -9,6 +9,7 @@ import { SetlistBuilder } from '@/components/worship/SetlistBuilder';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface RehearsalDetail {
   id: string;
@@ -39,9 +40,9 @@ const RehearsalDetailPage = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Alabanza" title="Ensayo" description={formatDateTimeBogota(query.data.date)} />
-      {query.data.location ? <p className="text-slate-600">{query.data.location}</p> : null}
+      {query.data.location ? <p className={stack.muted}>{query.data.location}</p> : null}
       <SetlistBuilder rehearsalId={query.data.id} songs={query.data.songs} />
     </div>
   );

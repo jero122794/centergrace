@@ -8,6 +8,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { formatDateBogota } from '@/lib/formatters';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface HistoryItem {
   id: string;
@@ -23,7 +24,7 @@ const HistoryPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Devocional" title="Mi historial" description="Tus participaciones diarias." />
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {!query.isLoading && query.data?.length === 0 ? (
@@ -31,9 +32,9 @@ const HistoryPage = () => {
       ) : null}
       {query.data?.map((item) => (
         <Card key={item.id}>
-          <p className="text-xs text-ink/45">{formatDateBogota(item.createdAt)}</p>
-          <p className="font-medium">{item.devotional.title}</p>
-          <p className="mt-2 text-sm">{item.content}</p>
+          <p className={stack.muted}>{formatDateBogota(item.createdAt)}</p>
+          <p className={stack.name}>{item.devotional.title}</p>
+          <p className={stack.muted}>{item.content}</p>
         </Card>
       ))}
     </div>

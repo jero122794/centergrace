@@ -1,0 +1,65 @@
+/*
+ * AuthShell.module.css
+ * Purpose: first-contact canvas. Dark moss field + paper card.
+ * Used by: AuthShell.tsx, login, register, change-password.
+ */
+
+.stage {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-4);
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(224, 122, 61, 0.18), transparent 55%),
+    radial-gradient(900px 500px at 110% 110%, rgba(31, 122, 99, 0.35), transparent 50%),
+    var(--bg-sidebar);
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-10) var(--space-8);
+  background: var(--bg-card);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-lift);
+  animation: page-rise var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.logo {
+  justify-content: center;
+}
+
+.title {
+  margin: var(--space-6) 0 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: var(--space-2) 0 0;
+  text-align: center;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.rule {
+  margin: var(--space-6) 0;
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: var(--space-10) 2.75rem;
+  }
+}

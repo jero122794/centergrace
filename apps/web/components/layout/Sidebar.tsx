@@ -20,10 +20,10 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { Logo } from '@/components/brand/Logo';
-import { Badge, roleTone } from '@/components/ui/Badge';
 import { useAuthStore, type Role } from '@/store/auth.store';
 import { useUiStore } from '@/store/ui.store';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
+import styles from './Sidebar.module.css';
 
 interface NavItem {
   href: string;
@@ -44,11 +44,11 @@ const ADMINS: Role[] = ['ADMIN', 'DEVELOPER'];
 
 const GROUPS: NavGroup[] = [
   {
-    title: 'Formación',
+    title: 'Tu camino',
     items: [
       { href: '/dashboard', label: 'Inicio', icon: Home, roles: ALL },
       { href: '/cursos', label: 'Cursos', icon: BookOpen, roles: ALL },
-      { href: '/devocionales', label: 'Devocionales', icon: Sun, roles: ALL },
+      { href: '/devocionales', label: 'Devocional', icon: Sun, roles: ALL },
       { href: '/mis-trabajos', label: 'Mis trabajos', icon: FileText, roles: ['STUDENT'] },
       { href: '/mi-historial', label: 'Historial', icon: Clock3, roles: ['STUDENT'] },
     ],
@@ -75,16 +75,23 @@ const GROUPS: NavGroup[] = [
   },
 ];
 
+const initialsOf = (name: string): string => {
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] ?? 'C';
+  const last = parts[1]?.[0] ?? '';
+  return `${first}${last}`.toUpperCase();
+};
+
 /**
- * Persistent light sidebar with role-filtered navigation.
+ * Dark identity rail. Active item settles with scale + gold tick.
+ *
+ * @param none Uses auth + ui stores.
  */
 export const Sidebar = () => {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const open = useUiStore((state) => state.sidebarOpen);
   const close = useUiStore((state) => state.closeSidebar);
-  const worship = pathname.startsWith('/worship');
-  const developer = pathname.startsWith('/developer');
   const groups = GROUPS.map((group) => ({
     ...group,
     items: group.items.filter((item) => user && item.roles.includes(user.role)),
@@ -97,59 +104,50 @@ export const Sidebar = () => {
 
   return (
     <>
-      {open ? (
-        <button className="fixed inset-0 z-30 bg-dark/25 lg:hidden" onClick={close} aria-label="Cerrar menú" />
-      ) : null}
-      <aside
-        className={cn(
-          'group/sidebar rail fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col transition-[width,transform] duration-[250ms] ease-in-out lg:static lg:translate-x-0',
-          'md:w-16 md:hover:w-[220px] md:overflow-hidden lg:w-[260px] lg:hover:w-[260px]',
-          open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-        )}
-      >
-        <div className="flex h-[4.6rem] items-center px-5">
-          <Logo compact={false} />
+      {open ? <button className={styles.overlay} onClick={close} aria-label="Cerrar menú" type="button" /> : null}
+      <aside className={cx(styles.rail, open && styles.open)}>
+        <div className={styles.brand}>
+          <Logo inverted />
         </div>
-        <nav className="flex-1 overflow-y-auto py-2">
+        {user ? (
+          <Link href="/perfil" onClick={close} className={styles.profile}>
+            <span className={styles.avatar} aria-hidden>
+              {initialsOf(user.name)}
+            </span>
+            <span>
+              <p className={styles.profileName}>{user.name}</p>
+              <p className={styles.profileMeta}>{user.role.toLowerCase()}</p>
+            </span>
+          </Link>
+        ) : null}
+        <nav className={styles.nav} aria-label="Principal">
           {groups.map((group) => (
             <div key={group.title}>
-              <p className="hidden px-6 pb-2 pt-4 text-[10px] font-semibold uppercase tracking-[0.08em] text-hint md:group-hover/sidebar:block lg:block">
-                {group.title}
-              </p>
-              <div>
-                {group.items.map((item) => {
-                  const active = isActive(item);
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={close}
-                      title={item.label}
-                      className={cn(
-                        'nav-leaf text-sm',
-                        active && 'is-active',
-                        worship && item.match === '/worship' && 'text-worship',
-                        developer && item.match === '/developer' && 'text-dev',
-                      )}
-                    >
-                      <Icon className="h-5 w-5 shrink-0" aria-hidden />
-                      <span className="truncate md:hidden md:group-hover/sidebar:inline lg:inline">{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </div>
+              <p className={styles.groupTitle}>{group.title}</p>
+              {group.items.map((item) => {
+                const active = isActive(item);
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={close}
+                    title={item.label}
+                    className={cx(styles.item, active && styles.itemActive)}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    <Icon width={20} height={20} aria-hidden />
+                    <span className={styles.label}>{item.label}</span>
+                  </Link>
+                );
+              })}
             </div>
           ))}
         </nav>
-        {user ? (
-          <Link href="/perfil" onClick={close} className="sheet m-3 p-3">
-            <p className="truncate text-[13px] font-semibold text-dark">{user.name}</p>
-            <Badge tone={roleTone(user.role)} className="mt-1">
-              {user.role}
-            </Badge>
-          </Link>
-        ) : null}
+        <p className={styles.community}>
+          <strong>Tu casa</strong>
+          Centro Misionero Shalom
+        </p>
       </aside>
     </>
   );

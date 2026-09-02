@@ -1,0 +1,20 @@
+/*
+ * sistema.module.css — developer metrics mosaic.
+ * Used by: app/(developer)/developer/sistema/page.tsx.
+ */
+
+.page {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -4,6 +4,7 @@
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { formatDateTimeBogota } from '@/lib/formatters';
+import styles from './JobMonitor.module.css';
 
 export interface JobStatus {
   name: string;
@@ -21,17 +22,17 @@ interface Props {
  * Cron job cards with a confirmed “run now” action.
  */
 export const JobMonitor = ({ jobs, runningName, onTrigger }: Props) => (
-  <div className="grid gap-4 md:grid-cols-2">
+  <div className={styles.grid}>
     {jobs.map((job) => (
-      <article key={job.name} className="rounded-xl border border-dev/30 bg-dev-l p-[18px]">
-        <p className="font-mono text-sm font-semibold text-dark">{job.name}</p>
-        <p className="mt-1 font-mono text-xs text-muted">{job.expression}</p>
-        <p className="mt-2 font-mono text-xs text-muted">
+      <article key={job.name} className={styles.card}>
+        <p className={styles.name}>{job.name}</p>
+        <p className={styles.meta}>{job.expression}</p>
+        <p className={styles.meta}>
           {job.lastRun
             ? `${formatDateTimeBogota(job.lastRun.startedAt)} · ${job.lastRun.durationMs} ms`
             : 'Sin ejecuciones'}
         </p>
-        <div className="mt-3 flex items-center justify-between">
+        <div className={styles.row}>
           <Badge tone={job.lastRun?.status === 'error' ? 'danger' : 'success'}>
             {job.lastRun?.status ?? 'idle'}
           </Badge>

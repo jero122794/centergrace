@@ -10,6 +10,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface Course {
   id: string;
@@ -34,7 +35,7 @@ const CoursesList = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className={stack.page}>
       <PageHeader kicker="Formación" title="Cursos" description="Estudia a tu ritmo con el material de tu iglesia." />
       {query.isLoading ? <Skeleton lines={3} /> : null}
       {query.isError ? <Alert>No se pudieron cargar los cursos.</Alert> : null}
@@ -42,9 +43,9 @@ const CoursesList = () => {
         <EmptyState title="Aún no hay cursos" description="Cuando tus líderes publiquen material, aparecerá aquí." />
       ) : null}
       {courses.length > 0 ? (
-        <div className="course-mosaic grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
-            <CourseCard key={course.id} {...course} />
+        <div className={stack.grid3}>
+          {courses.map((course, index) => (
+            <CourseCard key={course.id} {...course} enterDelay={index * 60} />
           ))}
         </div>
       ) : null}

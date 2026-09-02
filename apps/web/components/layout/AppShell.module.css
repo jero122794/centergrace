@@ -1,0 +1,44 @@
+/*
+ * AppShell.module.css — zonas: sidebar oscura, lienzo de lino, dock.
+ */
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.column {
+  display: flex;
+  min-height: 100vh;
+  flex: 1;
+  flex-direction: column;
+  padding-bottom: var(--bottomnav-height);
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-5);
+}
+
+.boot {
+  min-height: 100vh;
+  padding: var(--space-8);
+  background: var(--bg-primary);
+}
+
+@media (min-width: 768px) {
+  .column {
+    padding-bottom: 0;
+  }
+
+  .main {
+    padding: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .main {
+    padding: var(--space-8);
+  }
+}

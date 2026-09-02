@@ -1,0 +1,49 @@
+/*
+ * GradeBadge.module.css
+ * Purpose: live score chip. Color eases; the number flips when the band changes.
+ * Used by: GradeBadge.tsx, GradeForm slider.
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  perspective: 240px;
+  transition: background-color var(--duration-med) var(--ease-in-out-swift), color var(--duration-med) var(--ease-in-out-swift);
+}
+
+.large {
+  padding: 0.45rem 1rem;
+  font-size: 1.125rem;
+}
+
+.pending {
+  background: #fbe4d4;
+  color: #9a3d0e;
+  font-weight: 600;
+  font-size: var(--text-micro);
+}
+
+.good {
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.mid {
+  background: var(--warning-bg);
+  color: var(--warning-fg);
+}
+
+.low {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+}
+
+.flip {
+  display: inline-block;
+  animation: grade-flip 360ms var(--ease-in-out-swift);
+}

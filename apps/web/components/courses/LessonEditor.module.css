@@ -1,0 +1,79 @@
+/*
+ * LessonEditor.module.css
+ * Purpose: authoring a lesson inside a course.
+ * Used by: LessonEditor.tsx.
+ */
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.error {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--danger-fg);
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+}
+
+.thumb {
+  width: 7rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.kicker {
+  margin: 0;
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.title {
+  margin: var(--space-1) 0 0;
+  font-weight: 600;
+}
+
+.label {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+}
+
+.textarea,
+.select {
+  width: 100%;
+  padding: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  box-shadow: inset 0 0 0 1.5px var(--border-default);
+}
+
+.select {
+  min-height: var(--control-h);
+  margin-top: var(--space-1);
+}

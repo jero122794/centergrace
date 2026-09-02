@@ -1,0 +1,95 @@
+/*
+ * Input.module.css
+ * Purpose: labeled text fields with a gold tick, journal-like.
+ * Used by: Input.tsx, and visually mirrored by Textarea.
+ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.controlWrap {
+  position: relative;
+}
+
+.control {
+  width: 100%;
+  min-height: var(--control-h);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  box-shadow: inset 3px 0 0 var(--accent-gold), inset 0 0 0 1px var(--border-default);
+  color: var(--text-primary);
+  transition: box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.control:focus {
+  outline: none;
+  box-shadow: inset 3px 0 0 var(--accent-primary), inset 0 0 0 1px var(--accent-primary);
+}
+
+.invalid {
+  box-shadow: inset 3px 0 0 var(--danger-fg), inset 0 0 0 1px var(--danger-fg);
+}
+
+.withSuffix {
+  padding-right: 2.75rem;
+}
+
+.suffix {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.suffix:hover,
+.suffix:focus-visible {
+  color: var(--text-primary);
+}
+
+.suffix button {
+  display: grid;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.suffix svg {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+
+.message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-micro);
+  color: var(--text-muted);
+}
+
+.error {
+  color: var(--danger-fg);
+}
+
+.icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}

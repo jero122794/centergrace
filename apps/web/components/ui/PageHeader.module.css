@@ -1,0 +1,56 @@
+/*
+ * PageHeader.module.css
+ * Purpose: editorial titles for platform screens.
+ * Used by: PageHeader.tsx.
+ */
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.copy {
+  max-width: 40rem;
+}
+
+.kicker {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.title {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: var(--text-h1-lh);
+  color: var(--text-primary);
+}
+
+.description {
+  margin: var(--space-2) 0 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.rule {
+  margin-top: var(--space-5);
+  max-width: 16rem;
+}
+
+.action {
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .row {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}

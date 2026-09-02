@@ -1,0 +1,81 @@
+/*
+ * register.module.css — first arrival. Strength meter as a living bar.
+ * Used by: app/(auth)/register/page.tsx.
+ */
+
+.stage {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-4);
+  background:
+    radial-gradient(1000px 520px at 90% 0%, rgba(58, 143, 156, 0.22), transparent 55%),
+    var(--bg-sidebar);
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-10) var(--space-8);
+  background: var(--bg-card);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-lift);
+  animation: page-rise var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.logo {
+  justify-content: center;
+}
+
+.title {
+  margin: var(--space-6) 0 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+}
+
+.sub {
+  margin: var(--space-2) 0 0;
+  text-align: center;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.rule {
+  margin: var(--space-6) 0;
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.meter {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
+
+.seg {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--border-default);
+}
+
+.on {
+  background: var(--accent-primary);
+}
+
+.switch {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.switch a {
+  font-weight: 600;
+  color: var(--accent-primary);
+}

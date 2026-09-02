@@ -1,5 +1,6 @@
 // apps/web/components/ui/Icon.tsx
 import type { SVGProps } from 'react';
+import styles from './Icon.module.css';
 
 export type IconName =
   | 'home'
@@ -51,7 +52,10 @@ const PATHS: Record<IconName, string> = {
   arrow: 'M5 12h14m-6-6 6 6-6 6',
 };
 
-export const Icon = ({ name, className = 'h-5 w-5', ...props }: Props) => (
+/**
+ * Stroke icon set used when Lucide is not imported.
+ */
+export const Icon = ({ name, className, ...props }: Props) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
@@ -59,7 +63,7 @@ export const Icon = ({ name, className = 'h-5 w-5', ...props }: Props) => (
     strokeWidth="1.7"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className={className}
+    className={className ?? styles.icon}
     aria-hidden
     {...props}
   >

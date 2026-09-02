@@ -5,8 +5,9 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Bold, Heading2, Italic, List } from 'lucide-react';
 import { useEffect, type ReactNode } from 'react';
-import { cn } from '@/lib/cn';
+import { cx } from '@/lib/cn';
 import { Skeleton } from '@/components/ui/Skeleton';
+import styles from './TipTapEditor.module.css';
 
 interface Props {
   value: unknown;
@@ -24,7 +25,7 @@ export const TipTapEditor = ({ value, onChange, placeholder }: Props) => {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'tiptap px-6 py-5 text-[15px] leading-relaxed focus:outline-none',
+        class: 'tiptap',
         'data-placeholder': placeholder ?? '',
       },
     },
@@ -38,35 +39,37 @@ export const TipTapEditor = ({ value, onChange, placeholder }: Props) => {
   }, [editor]);
 
   if (!editor) {
-    return <Skeleton className="h-48" />;
+    return <Skeleton />;
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border-[1.5px] border-border bg-paper">
-      <div className="flex gap-1 overflow-x-auto border-b border-border bg-surface px-3 py-2">
+    <div className={styles.shell}>
+      <div className={styles.toolbar}>
         <ToolbarButton active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} label="Negrita">
-          <Bold className="h-4 w-4" />
+          <Bold className={styles.icon} />
         </ToolbarButton>
         <ToolbarButton active={editor.isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()} label="Cursiva">
-          <Italic className="h-4 w-4" />
+          <Italic className={styles.icon} />
         </ToolbarButton>
-        <span className="mx-1.5 h-5 w-px self-center bg-border" />
+        <span className={styles.rule} />
         <ToolbarButton
           active={editor.isActive('heading', { level: 2 })}
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           label="Título"
         >
-          <Heading2 className="h-4 w-4" />
+          <Heading2 className={styles.icon} />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive('bulletList')}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           label="Lista"
         >
-          <List className="h-4 w-4" />
+          <List className={styles.icon} />
         </ToolbarButton>
       </div>
-      <EditorContent editor={editor} />
+      <div className={styles.body}>
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 };
@@ -83,10 +86,7 @@ const ToolbarButton = ({ active, onClick, children, label }: ToolbarButtonProps)
     type="button"
     aria-label={label}
     onClick={onClick}
-    className={cn(
-      'inline-flex h-8 w-8 items-center justify-center rounded-md text-muted hover:bg-paper hover:text-accent',
-      active && 'bg-primary/20 text-accent',
-    )}
+    className={cx(styles.tool, active && styles.active)}
   >
     {children}
   </button>

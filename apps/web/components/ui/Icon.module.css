@@ -1,0 +1,10 @@
+/*
+ * Icon.module.css
+ * Purpose: default size for the local stroke set.
+ * Used by: Icon.tsx.
+ */
+
+.icon {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}

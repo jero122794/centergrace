@@ -4,11 +4,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { Clock3, Music, Users } from 'lucide-react';
 import { api } from '@/lib/api';
-import { StatCard } from '@/components/dashboard/StatCard';
+import { Ledger, StatCard } from '@/components/dashboard/StatCard';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { AuditionStepper, type AuditionStep } from '@/components/worship/AuditionStepper';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import styles from './page.module.css';
 
 const WorshipDashboardPage = () => {
   const songs = useQuery({ queryKey: ['songs'], queryFn: async () => (await api.get('/api/worship/songs')).data.data });
@@ -27,27 +28,27 @@ const WorshipDashboardPage = () => {
   const step: AuditionStep = school.data?.canAudition ? 'ELIGIBLE' : 'SCHOOL';
 
   return (
-    <div className="space-y-8">
+    <div className={styles.page}>
       <PageHeader kicker="Ministerio" title="Alabanza" description="Repertorio, ensayos, escuela y equipo." />
-      <dl className="ledger">
+      <Ledger>
         <StatCard label="Canciones" value={songs.data?.length ?? 0} icon={Music} accent="worship" />
-        <StatCard label="Ensayos" value={rehearsals.data?.length ?? 0} icon={Clock3} accent="worship" />
-        <StatCard label="Audiciones" value={auditions.data?.length ?? 0} icon={Users} accent="worship" />
-      </dl>
-      <section className="space-y-3">
-        <h2 className="font-display text-h2 text-dark">Ruta de ingreso</h2>
+        <StatCard label="Ensayos" value={rehearsals.data?.length ?? 0} icon={Clock3} accent="worship" enterDelay={60} />
+        <StatCard label="Audiciones" value={auditions.data?.length ?? 0} icon={Users} accent="worship" enterDelay={120} />
+      </Ledger>
+      <section>
+        <h2 className={styles.sectionTitle}>Ruta de ingreso</h2>
         <AuditionStepper current={step} />
         {step === 'ELIGIBLE' ? (
           <Link href="/worship/audiciones">
             <Button>Solicitar audición</Button>
           </Link>
         ) : (
-          <Link href="/worship/escuela" className="text-sm font-semibold text-worship">
+          <Link href="/worship/escuela" className={styles.school}>
             Continuar la escuela
           </Link>
         )}
       </section>
-      <div className="flex flex-wrap gap-3 text-sm font-semibold text-worship">
+      <div className={styles.links}>
         <Link href="/worship/repertorio">Repertorio</Link>
         <Link href="/worship/ensayos">Ensayos</Link>
         <Link href="/worship/audiciones">Audiciones</Link>

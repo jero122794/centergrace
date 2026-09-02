@@ -1,12 +1,12 @@
 // apps/web/app/(auth)/auth/callback/page.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 import { api, setAccessToken } from '@/lib/api';
-import { Suspense } from 'react';
-import { Logo } from '@/components/brand/Logo';
+import { AuthShell } from '@/components/layout/AuthShell';
+import stack from '@/components/ui/PageStack.module.css';
 
 const CallbackInner = () => {
   const params = useSearchParams();
@@ -27,21 +27,18 @@ const CallbackInner = () => {
   }, [params, router, setSession]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-6">
-      <div className="rounded-[28px] border border-teal/10 bg-surface px-8 py-10 text-center shadow-card">
-        <Logo className="justify-center" />
-        <p className="mt-6 text-sm text-ink/60">Completando inicio de sesión…</p>
-      </div>
-    </main>
+    <AuthShell title="Un momento" subtitle="Completando inicio de sesión…">
+      <p className={stack.hint}>Te llevamos a tu casa.</p>
+    </AuthShell>
   );
 };
 
 const AuthCallbackPage = () => (
   <Suspense
     fallback={
-      <main className="flex min-h-screen items-center justify-center p-6">
-        <p className="text-sm text-ink/60">Cargando…</p>
-      </main>
+      <AuthShell title="Cargando" subtitle="Preparando tu sesión.">
+        <span />
+      </AuthShell>
     }
   >
     <CallbackInner />

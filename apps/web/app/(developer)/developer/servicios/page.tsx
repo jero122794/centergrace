@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { PageHeader } from '@/components/ui/PageHeader';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface ServicesPayload {
   postgres?: { connected?: boolean };
@@ -26,46 +27,58 @@ const ServicesPage = () => {
   const data = query.data;
 
   return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <div className="md:col-span-2">
+    <div className={stack.grid2}>
+      <div className={stack.span2}>
         <PageHeader kicker="Sistema" title="Servicios" description="Postgres, Redis y proveedores opcionales." />
       </div>
-      <Card className="flex items-center justify-between">
-        <p>PostgreSQL</p>
-        <Badge tone={flag(data?.postgres?.connected)}>{data?.postgres?.connected ? 'ok' : 'caído'}</Badge>
-      </Card>
-      <Card className="flex items-center justify-between">
-        <div>
-          <p>Redis</p>
-          <p className="text-xs text-slate-500">
-            {data?.redis?.memory} · {data?.redis?.keys ?? 0} keys
-          </p>
+      <Card>
+        <div className={stack.row}>
+          <p>PostgreSQL</p>
+          <Badge tone={flag(data?.postgres?.connected)}>{data?.postgres?.connected ? 'ok' : 'caído'}</Badge>
         </div>
-        <Badge tone={flag(data?.redis?.ping === 'PONG')}>{data?.redis?.ping ?? '—'}</Badge>
       </Card>
-      <Card className="flex items-center justify-between">
-        <p>S3</p>
-        <Badge tone={data?.s3?.configured ? 'teal' : 'gold'}>{data?.s3?.configured ? 'configurado' : 'local'}</Badge>
-      </Card>
-      <Card className="flex items-center justify-between">
-        <p>SES</p>
-        <Badge tone={data?.ses?.configured ? 'teal' : 'gold'}>{data?.ses?.configured ? 'configurado' : 'omitido'}</Badge>
-      </Card>
-      <Card className="flex items-center justify-between">
-        <div>
-          <p>YouTube oEmbed</p>
-          <p className="text-xs text-slate-500">{data?.youtube?.latencyMs ? `${data.youtube.latencyMs} ms` : ''}</p>
+      <Card>
+        <div className={stack.row}>
+          <div>
+            <p>Redis</p>
+            <p className={stack.muted}>
+              {data?.redis?.memory} · {data?.redis?.keys ?? 0} keys
+            </p>
+          </div>
+          <Badge tone={flag(data?.redis?.ping === 'PONG')}>{data?.redis?.ping ?? '—'}</Badge>
         </div>
-        <Badge tone={flag(data?.youtube?.reachable)}>{data?.youtube?.reachable ? 'ok' : 'sin red'}</Badge>
       </Card>
-      <Card className="flex items-center justify-between">
-        <div>
-          <p>Web Push</p>
-          <p className="text-xs text-slate-500">{data?.webPush?.subscriptions ?? 0} suscripciones</p>
+      <Card>
+        <div className={stack.row}>
+          <p>S3</p>
+          <Badge tone={data?.s3?.configured ? 'teal' : 'gold'}>{data?.s3?.configured ? 'configurado' : 'local'}</Badge>
         </div>
-        <Badge tone={data?.webPush?.vapidConfigured ? 'teal' : 'danger'}>
-          {data?.webPush?.vapidConfigured ? 'VAPID' : 'sin VAPID'}
-        </Badge>
+      </Card>
+      <Card>
+        <div className={stack.row}>
+          <p>SES</p>
+          <Badge tone={data?.ses?.configured ? 'teal' : 'gold'}>{data?.ses?.configured ? 'configurado' : 'omitido'}</Badge>
+        </div>
+      </Card>
+      <Card>
+        <div className={stack.row}>
+          <div>
+            <p>YouTube oEmbed</p>
+            <p className={stack.muted}>{data?.youtube?.latencyMs ? `${data.youtube.latencyMs} ms` : ''}</p>
+          </div>
+          <Badge tone={flag(data?.youtube?.reachable)}>{data?.youtube?.reachable ? 'ok' : 'sin red'}</Badge>
+        </div>
+      </Card>
+      <Card>
+        <div className={stack.row}>
+          <div>
+            <p>Web Push</p>
+            <p className={stack.muted}>{data?.webPush?.subscriptions ?? 0} suscripciones</p>
+          </div>
+          <Badge tone={data?.webPush?.vapidConfigured ? 'teal' : 'danger'}>
+            {data?.webPush?.vapidConfigured ? 'VAPID' : 'sin VAPID'}
+          </Badge>
+        </div>
       </Card>
     </div>
   );

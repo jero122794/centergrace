@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import styles from './SetlistBuilder.module.css';
 
 interface CatalogSong {
   id: string;
@@ -56,31 +57,33 @@ export const SetlistBuilder = ({ rehearsalId, songs }: Props) => {
   const available = catalog.data?.filter((song) => !songs.some((item) => item.songId === song.id)) ?? [];
 
   return (
-    <div className="space-y-4">
-      <h2 className="font-display text-2xl text-teal">Setlist</h2>
-      {songs.length === 0 ? <p className="text-sm text-slate-500">Aún no hay canciones en este ensayo.</p> : null}
-      <ol className="space-y-2">
+    <div className={styles.wrap}>
+      <h2 className={styles.title}>Setlist</h2>
+      {songs.length === 0 ? <p className={styles.hint}>Aún no hay canciones en este ensayo.</p> : null}
+      <ol className={styles.list}>
         {songs.map((item, index) => (
           <li key={item.songId}>
-            <Card className="flex items-center justify-between gap-3">
-              <div>
-                <p className="font-medium">
-                  {index + 1}. {item.song.title}
-                </p>
-                <p className="text-sm text-slate-500">Tono: {item.key}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge tone={item.isReady ? 'teal' : 'gold'}>{item.isReady ? 'Lista' : 'Pendiente'}</Badge>
-                <Button variant="secondary" onClick={() => toggle.mutate(item)}>
-                  {item.isReady ? 'Marcar pendiente' : 'Marcar lista'}
-                </Button>
+            <Card>
+              <div className={styles.row}>
+                <div>
+                  <p>
+                    {index + 1}. {item.song.title}
+                  </p>
+                  <p className={styles.meta}>Tono: {item.key}</p>
+                </div>
+                <div className={styles.actions}>
+                  <Badge tone={item.isReady ? 'teal' : 'gold'}>{item.isReady ? 'Lista' : 'Pendiente'}</Badge>
+                  <Button variant="secondary" onClick={() => toggle.mutate(item)}>
+                    {item.isReady ? 'Marcar pendiente' : 'Marcar lista'}
+                  </Button>
+                </div>
               </div>
             </Card>
           </li>
         ))}
       </ol>
       <form
-        className="flex flex-col gap-2 md:flex-row md:items-end"
+        className={styles.form}
         onSubmit={(event) => {
           event.preventDefault();
           if (songId) {
@@ -88,10 +91,10 @@ export const SetlistBuilder = ({ rehearsalId, songs }: Props) => {
           }
         }}
       >
-        <label className="block flex-1 text-sm">
+        <label className={styles.label}>
           Canción del repertorio
           <select
-            className="mt-1 w-full rounded-xl border border-slate-200 p-2"
+            className={styles.control}
             value={songId}
             onChange={(event) => setSongId(event.target.value)}
             required
@@ -104,10 +107,10 @@ export const SetlistBuilder = ({ rehearsalId, songs }: Props) => {
             ))}
           </select>
         </label>
-        <label className="block text-sm">
+        <label className={styles.label}>
           Tono
           <input
-            className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2"
+            className={styles.control}
             value={key}
             onChange={(event) => setKey(event.target.value)}
             required

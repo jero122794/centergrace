@@ -10,6 +10,8 @@ import { SpiritualNotesPanel } from '@/components/groups/SpiritualNotesPanel';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { formatDateBogota } from '@/lib/formatters';
+import { cx } from '@/lib/cn';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface GroupRow {
   id: string;
@@ -51,10 +53,10 @@ const FollowUpPage = () => {
   const selectedMember = members.data?.find((item) => item.user.id === userId);
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Pastoreo" title="Seguimiento espiritual" description="Notas y acompañamiento por grupo." />
       {groups.isLoading ? <Skeleton lines={2} /> : null}
-      <div className="flex flex-wrap gap-2">
+      <div className={stack.actions}>
         {groups.data?.map((group) => (
           <button
             key={group.id}
@@ -63,50 +65,50 @@ const FollowUpPage = () => {
               setGroupId(group.id);
               setUserId(null);
             }}
-            className={`rounded-full px-3 py-1 text-sm ${groupId === group.id ? 'bg-teal text-white' : 'bg-white border border-slate-200'}`}
+            className={cx(stack.chip, groupId === group.id && stack.chipOn)}
           >
             {group.name}
           </button>
         ))}
       </div>
-      {!groupId ? <p className="text-sm text-slate-500">Selecciona un grupo para ver a sus miembros.</p> : null}
-      <div className="grid gap-4 lg:grid-cols-[260px_1fr]">
-        <div className="space-y-2">
+      {!groupId ? <p className={stack.muted}>Selecciona un grupo para ver a sus miembros.</p> : null}
+      <div className={stack.grid2}>
+        <div className={stack.list}>
           {members.data?.map((member) => (
-            <button key={member.id} type="button" className="w-full text-left" onClick={() => setUserId(member.user.id)}>
-              <Card className={userId === member.user.id ? 'ring-2 ring-teal' : ''}>
-                <p className="font-medium">{member.user.name}</p>
-                <p className="text-xs text-slate-500">{member.user.email}</p>
+            <button key={member.id} type="button" className={stack.pick} onClick={() => setUserId(member.user.id)}>
+              <Card selected={userId === member.user.id}>
+                <p className={stack.name}>{member.user.name}</p>
+                <p className={stack.muted}>{member.user.email}</p>
               </Card>
             </button>
           ))}
         </div>
         {followUp.data && selectedMember ? (
-          <Card className="space-y-6">
+          <Card className={stack.page}>
             <div>
-              <h2 className="font-display text-2xl text-teal">{followUp.data.user.name}</h2>
-              <p className="text-sm text-slate-500">{followUp.data.user.email}</p>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <h2 className={stack.title}>{followUp.data.user.name}</h2>
+              <p className={stack.muted}>{followUp.data.user.email}</p>
+              <div className={stack.actions}>
                 {followUp.data.memberships.map((item) => (
                   <Badge key={item.group.id}>{item.group.name}</Badge>
                 ))}
               </div>
             </div>
             <section>
-              <h3 className="mb-2 font-display text-xl">Cursos</h3>
-              {followUp.data.enrollments.length === 0 ? <p className="text-sm text-slate-500">Sin inscripciones.</p> : null}
-              <ul className="space-y-1 text-sm">
+              <h3 className={stack.title}>Cursos</h3>
+              {followUp.data.enrollments.length === 0 ? <p className={stack.muted}>Sin inscripciones.</p> : null}
+              <ul className={stack.list}>
                 {followUp.data.enrollments.map((item) => (
                   <li key={item.course.id}>{item.course.title}</li>
                 ))}
               </ul>
             </section>
             <section>
-              <h3 className="mb-2 font-display text-xl">Trabajos</h3>
-              {followUp.data.submissions.length === 0 ? <p className="text-sm text-slate-500">Sin entregas.</p> : null}
-              <ul className="space-y-1 text-sm">
+              <h3 className={stack.title}>Trabajos</h3>
+              {followUp.data.submissions.length === 0 ? <p className={stack.muted}>Sin entregas.</p> : null}
+              <ul className={stack.list}>
                 {followUp.data.submissions.map((item) => (
-                  <li key={item.id} className="flex justify-between">
+                  <li key={item.id} className={stack.row}>
                     <span>{item.lesson.title}</span>
                     <span>{item.grade ? `${item.grade.score}/100` : item.status}</span>
                   </li>
@@ -114,16 +116,16 @@ const FollowUpPage = () => {
               </ul>
             </section>
             <section>
-              <h3 className="mb-2 font-display text-xl">Devocionales</h3>
+              <h3 className={stack.title}>Devocionales</h3>
               {followUp.data.participations.length === 0 ? (
-                <p className="text-sm text-slate-500">Sin participaciones.</p>
+                <p className={stack.muted}>Sin participaciones.</p>
               ) : null}
-              <ul className="space-y-2 text-sm">
+              <ul className={stack.list}>
                 {followUp.data.participations.map((item) => (
                   <li key={item.id}>
-                    <p className="font-medium">{item.devotional.title}</p>
-                    <p className="text-slate-600">{item.content}</p>
-                    <p className="text-xs text-slate-400">{formatDateBogota(item.createdAt)}</p>
+                    <p className={stack.name}>{item.devotional.title}</p>
+                    <p className={stack.muted}>{item.content}</p>
+                    <p className={stack.muted}>{formatDateBogota(item.createdAt)}</p>
                   </li>
                 ))}
               </ul>
@@ -131,7 +133,7 @@ const FollowUpPage = () => {
             <SpiritualNotesPanel userId={followUp.data.user.id} groupId={selectedMember.groupId} />
           </Card>
         ) : (
-          groupId ? <p className="text-sm text-slate-500">Selecciona un miembro para ver su historial.</p> : null
+          groupId ? <p className={stack.muted}>Selecciona un miembro para ver su historial.</p> : null
         )}
       </div>
     </div>

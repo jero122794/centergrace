@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { formatDateTimeBogota } from '@/lib/formatters';
+import styles from './SpiritualNotesPanel.module.css';
 
 interface Note {
   id: string;
@@ -36,32 +37,32 @@ export const SpiritualNotesPanel = ({ userId, groupId }: Props) => {
   });
 
   return (
-    <section className="space-y-3">
-      <h3 className="font-display text-xl text-teal">Notas espirituales (privadas)</h3>
-      {notes.isLoading ? <p className="text-sm text-slate-500">Cargando notas…</p> : null}
-      {notes.isError ? <p className="text-sm text-red-600">No se pudieron cargar las notas.</p> : null}
+    <section className={styles.wrap}>
+      <h3 className={styles.title}>Notas espirituales (privadas)</h3>
+      {notes.isLoading ? <p className={styles.hint}>Cargando notas…</p> : null}
+      {notes.isError ? <p className={styles.error}>No se pudieron cargar las notas.</p> : null}
       {!notes.isLoading && notes.data?.length === 0 ? (
-        <p className="text-sm text-slate-500">Aún no hay notas para este miembro.</p>
+        <p className={styles.hint}>Aún no hay notas para este miembro.</p>
       ) : null}
-      <ul className="space-y-2">
+      <ul className={styles.list}>
         {notes.data?.map((note) => (
-          <li key={note.id} className="rounded-xl border border-slate-100 bg-cream p-3 text-sm">
+          <li key={note.id} className={styles.note}>
             <p>{note.content}</p>
-            <p className="mt-1 text-xs text-slate-500">
+            <p className={styles.meta}>
               {note.leader?.name ?? 'Líder'} · {formatDateTimeBogota(note.createdAt)}
             </p>
           </li>
         ))}
       </ul>
       <form
-        className="space-y-2"
+        className={styles.form}
         onSubmit={(event) => {
           event.preventDefault();
           create.mutate();
         }}
       >
         <textarea
-          className="w-full rounded-xl border border-slate-200 px-3 py-2"
+          className={styles.textarea}
           placeholder="Observación pastoral confidencial"
           value={content}
           onChange={(event) => setContent(event.target.value)}

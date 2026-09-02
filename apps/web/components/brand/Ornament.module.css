@@ -1,0 +1,32 @@
+/*
+ * Ornament.module.css
+ * Purpose: olive-branch hairline between editorial blocks.
+ * Used by: Ornament.tsx, landing, auth, page headers.
+ */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--accent-gold);
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  opacity: 0.55;
+}
+
+.leaf {
+  width: 3rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}

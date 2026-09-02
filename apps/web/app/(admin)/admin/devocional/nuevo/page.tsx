@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/Button';
 import { TipTapEditor } from '@/components/editor/TipTapEditor';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { extractYoutubeId } from '@/lib/youtube';
+import { cx } from '@/lib/cn';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface GroupOption {
   id: string;
@@ -80,7 +82,7 @@ const NewDevotionalPage = () => {
 
   return (
     <form
-      className="max-w-2xl space-y-4"
+      className={cx(stack.wide, stack.form)}
       onSubmit={(event) => {
         event.preventDefault();
         create.mutate();
@@ -91,11 +93,11 @@ const NewDevotionalPage = () => {
       <Input label="Versículo" value={verse} onChange={(event) => setVerse(event.target.value)} />
       <Input label="Fecha" type="date" value={date} onChange={(event) => setDate(event.target.value)} required />
       <div>
-        <p className="mb-1 text-sm font-medium">Contenido</p>
+        <p className={stack.name}>Contenido</p>
         <TipTapEditor value={content} onChange={setContent} />
       </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Preguntas de reflexión</p>
+      <div className={stack.list}>
+        <p className={stack.name}>Preguntas de reflexión</p>
         {questions.map((question, index) => (
           <Input
             key={question.order}
@@ -116,10 +118,10 @@ const NewDevotionalPage = () => {
           Agregar pregunta
         </Button>
       </div>
-      <label className="block text-sm">
+      <label className={stack.list}>
         Medio opcional
         <select
-          className="mt-1 w-full rounded-xl border border-slate-200 p-2"
+          className={stack.select}
           value={mediaType}
           onChange={(event) => {
             setMediaType(event.target.value as 'none' | 'audio' | 'youtube');
@@ -135,8 +137,8 @@ const NewDevotionalPage = () => {
         <Input label="URL de YouTube" value={mediaUrl} onChange={(event) => setMediaUrl(event.target.value)} />
       ) : null}
       {mediaType === 'audio' ? (
-        <label className="block space-y-1 text-sm">
-          <span className="font-medium">Archivo MP3</span>
+        <label className={stack.list}>
+          <span className={stack.name}>Archivo MP3</span>
           <input
             type="file"
             accept="audio/mpeg,.mp3"
@@ -147,12 +149,12 @@ const NewDevotionalPage = () => {
               }
             }}
           />
-          {mediaUrl ? <p className="text-xs text-teal">Audio listo para publicar</p> : null}
+          {mediaUrl ? <p className={stack.hint}>Audio listo para publicar</p> : null}
         </label>
       ) : null}
-      <label className="block text-sm">
+      <label className={stack.list}>
         Grupo (opcional)
-        <select className="mt-1 w-full rounded-xl border border-slate-200 p-2" value={groupId} onChange={(event) => setGroupId(event.target.value)}>
+        <select className={stack.select} value={groupId} onChange={(event) => setGroupId(event.target.value)}>
           <option value="">Sin asignar</option>
           {groups.data?.map((group) => (
             <option key={group.id} value={group.id}>
@@ -161,10 +163,10 @@ const NewDevotionalPage = () => {
           ))}
         </select>
       </label>
-      <label className="block text-sm">
+      <label className={stack.list}>
         Estado
         <select
-          className="mt-1 w-full rounded-xl border border-slate-200 p-2"
+          className={stack.select}
           value={status}
           onChange={(event) => setStatus(event.target.value as 'DRAFT' | 'PUBLISHED')}
         >
@@ -172,7 +174,7 @@ const NewDevotionalPage = () => {
           <option value="PUBLISHED">Publicado</option>
         </select>
       </label>
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {error ? <p className={stack.error}>{error}</p> : null}
       <Button type="submit" disabled={create.isPending}>
         {create.isPending ? 'Guardando…' : 'Crear devocional'}
       </Button>

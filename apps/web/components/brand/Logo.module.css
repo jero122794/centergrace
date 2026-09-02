@@ -1,0 +1,55 @@
+/*
+ * Logo.module.css
+ */
+
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.mark {
+  display: grid;
+  width: 2.4rem;
+  height: 2.55rem;
+  place-items: center;
+  border-radius: 58% 42% 50% 50% / 42% 48% 52% 58%;
+  background: var(--accent-warm);
+  color: var(--text-on-warm);
+}
+
+.mark svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.word {
+  line-height: 1.15;
+}
+
+.name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.sub {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.inverted .name {
+  color: var(--sidebar-text-strong);
+}
+
+.inverted .sub {
+  color: var(--sidebar-text);
+}
+
+.inverted .mark {
+  background: var(--accent-warm);
+}

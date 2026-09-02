@@ -1,0 +1,70 @@
+/*
+ * StatCard.module.css
+ * Purpose: typographic metrics on a ledger, not boxed KPIs.
+ * Used by: StatCard.tsx, StreakCard.tsx (shared ledger).
+ */
+
+.ledger {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.item {
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-default);
+  animation: card-enter var(--duration-med) var(--ease-out-expo) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+
+.gold .value {
+  color: var(--accent-gold);
+}
+
+.danger .value {
+  color: var(--danger-fg);
+}
+
+.success .value {
+  color: var(--success-fg);
+}
+
+.worship .value {
+  color: var(--text-worship);
+}
+
+.dev .value {
+  color: var(--accent-dev);
+}
+
+@media (min-width: 768px) {
+  .ledger {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}

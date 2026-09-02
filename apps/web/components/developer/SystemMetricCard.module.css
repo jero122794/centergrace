@@ -1,0 +1,87 @@
+/*
+ * SystemMetricCard.module.css
+ * Purpose: technical tiles. Mono type, Datadog density.
+ * Used by: SystemMetricCard.tsx. Colors may diverge from pastoral palette.
+ */
+
+.card {
+  padding: 1.125rem;
+  border-radius: var(--radius-md);
+  background: var(--accent-dev-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-dev) 28%, transparent);
+  font-family: var(--font-mono);
+  animation: card-enter var(--duration-med) var(--ease-out-expo) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  margin: 0;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dev);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+}
+
+.ok {
+  background: #22c55e;
+}
+
+.warn {
+  background: #f59e0b;
+}
+
+.crit {
+  background: #ef4444;
+}
+
+.value {
+  margin: var(--space-2) 0 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #e8f4f1;
+}
+
+.unit {
+  margin-left: var(--space-1);
+  font-size: var(--text-micro);
+  font-weight: 400;
+  color: #8aa8a2;
+}
+
+.track {
+  margin-top: var(--space-3);
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: #0b1418;
+}
+
+.fill {
+  height: 100%;
+  transform-origin: left center;
+  animation: progress-fill 700ms var(--ease-out-expo) both;
+}
+
+.fillOk {
+  background: #22c55e;
+}
+
+.fillWarn {
+  background: #f59e0b;
+}
+
+.fillCrit {
+  background: #ef4444;
+}

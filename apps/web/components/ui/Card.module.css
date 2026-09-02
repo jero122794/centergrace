@@ -1,0 +1,59 @@
+/*
+ * Card.module.css
+ * Purpose: paper sheets with hierarchy. Not a generic SaaS tile.
+ * Used by: Card.tsx. Pages compose inner layout; this file owns surface.
+ * Animation: card-enter from below. Delay via --enter-delay.
+ */
+
+.sheet {
+  padding: var(--space-5);
+  background: var(--bg-card);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-sheet);
+  animation: card-enter var(--duration-med) var(--ease-out-expo) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.surface {
+  background: var(--bg-surface);
+  box-shadow: none;
+}
+
+.accent {
+  box-shadow: inset 3px 0 0 var(--accent-primary), var(--shadow-sheet);
+}
+
+.devotional {
+  position: relative;
+  padding: var(--space-6);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent-gold) 16%, var(--bg-card)) 0%, var(--bg-card) 42%);
+  overflow: hidden;
+  animation: card-enter 520ms var(--ease-out-expo) both;
+}
+
+.devotional::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--space-6);
+  width: 3.2rem;
+  height: 0.55rem;
+  border-radius: 0 0 8px 8px;
+  background: var(--accent-warm);
+}
+
+.hover {
+  transition:
+    transform var(--duration-med) var(--ease-out-expo),
+    box-shadow var(--duration-med) var(--ease-out-expo);
+}
+
+.hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+.selected {
+  box-shadow: inset 0 0 0 2px var(--accent-primary), var(--shadow-sheet);
+}

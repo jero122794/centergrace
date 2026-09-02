@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Alert } from '@/components/ui/Alert';
+import stack from '@/components/ui/PageStack.module.css';
 
 interface TeamMember {
   musicalRole: string;
@@ -24,7 +25,7 @@ const TeamPage = () => {
   });
 
   return (
-    <div className="space-y-4">
+    <div className={stack.tight}>
       <PageHeader kicker="Alabanza" title="Equipo" description="Miembros con rol musical asignado." />
       {query.isLoading ? <Skeleton lines={2} /> : null}
       {query.isError ? <Alert>No se pudo cargar el equipo.</Alert> : null}
@@ -32,10 +33,10 @@ const TeamPage = () => {
         <EmptyState title="Equipo vacío" description="Aún no hay miembros con rol musical asignado." />
       ) : null}
       {query.data?.map((item) => (
-        <Card key={`${item.user.id}-${item.ministry.id}`} className="flex items-center justify-between">
+        <Card key={`${item.user.id}-${item.ministry.id}`} className={stack.row}>
           <div>
-            <p className="font-medium">{item.user.name}</p>
-            <p className="text-sm text-slate-500">{item.ministry.name}</p>
+            <p className={stack.name}>{item.user.name}</p>
+            <p className={stack.muted}>{item.ministry.name}</p>
           </div>
           <Badge>{item.musicalRole}</Badge>
         </Card>

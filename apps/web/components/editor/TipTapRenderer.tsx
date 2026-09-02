@@ -4,6 +4,8 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { cx } from '@/lib/cn';
+import styles from './TipTapRenderer.module.css';
 
 interface Props {
   content: unknown;
@@ -21,11 +23,11 @@ export const TipTapRenderer = ({ content }: Props) => {
   });
 
   if (!editor) {
-    return <Skeleton className="h-24" />;
+    return <Skeleton />;
   }
 
   return (
-    <div className="prose-grace max-w-none text-[15px] leading-[1.8] text-dark">
+    <div className={cx('prose-grace', styles.prose)}>
       <EditorContent editor={editor} />
     </div>
   );

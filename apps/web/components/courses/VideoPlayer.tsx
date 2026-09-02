@@ -1,4 +1,6 @@
 // apps/web/components/courses/VideoPlayer.tsx
+import styles from './VideoPlayer.module.css';
+
 interface Props {
   youtubeId: string;
   title: string;
@@ -12,10 +14,10 @@ export const VideoPlayer = ({ youtubeId, title }: Props) => {
     return null;
   }
   return (
-    <div className="aspect-video overflow-hidden bg-black" style={{ borderRadius: '18px 42px 16px 30px' }}>
+    <div className={styles.frame}>
       <iframe
         title={title}
-        className="h-full w-full border-0"
+        className={styles.iframe}
         src={`https://www.youtube.com/embed/${youtubeId}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

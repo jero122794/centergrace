@@ -11,6 +11,7 @@ import { DevotionalCard } from '@/components/devotional/DevotionalCard';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth.store';
 import { formatLongDateBogota } from '@/lib/formatters';
+import styles from './page.module.css';
 
 const DevotionalsPage = () => {
   const role = useAuthStore((state) => state.user?.role);
@@ -21,20 +22,20 @@ const DevotionalsPage = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className={styles.page}>
       <PageHeader
         kicker="Cada día"
         title="Devocionales"
         description="Un espacio diario para meditar la Palabra."
         action={
           canCreate ? (
-            <Link className="text-sm font-semibold text-accent" href="/admin/devocional/nuevo">
+            <Link className={styles.create} href="/admin/devocional/nuevo">
               Crear
             </Link>
           ) : null
         }
       />
-      {today.isLoading ? <Skeleton className="h-40" /> : null}
+      {today.isLoading ? <Skeleton /> : null}
       {!today.isLoading && today.data ? (
         <DevotionalCard
           title={today.data.title}
