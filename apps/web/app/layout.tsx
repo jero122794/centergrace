@@ -1,20 +1,14 @@
 // apps/web/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, IBM_Plex_Mono, Outfit } from 'next/font/google';
+import { IBM_Plex_Mono, Nunito } from 'next/font/google';
 import { Providers } from '@/components/layout/Providers';
 import './globals.css';
 
-const outfit = Outfit({
+const nunito = Nunito({
   subsets: ['latin'],
-  variable: '--font-outfit',
-  display: 'swap',
-});
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
-  variable: '--font-fraunces',
+  variable: '--font-nunito',
   display: 'swap',
 });
 
@@ -53,7 +47,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
     </head>
-    <body className={`${outfit.variable} ${fraunces.variable} ${ibmPlex.variable}`}>
+    <body className={`${nunito.variable} ${ibmPlex.variable}`}>
       <Providers>{children}</Providers>
     </body>
   </html>

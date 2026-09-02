@@ -1,28 +1,26 @@
 /*
  * apps/web/app/styles/typography.css
  *
- * Fraunces — momentos de peso. Serif blanda, contemporánea, con “wonk”
- * suficiente para no parecer Times de plantilla. Versículos, títulos
- * de devocional, nombres de curso.
- *
- * Outfit — sistema. Geométrica, juvenil, legible a 13px en un teléfono
- * de 11 años. No es Inter: tiene más carácter en los terminales.
+ * Nunito — una sola familia redondeada para títulos y sistema.
+ * Los terminales suaves le quitan solemnidad a la serif anterior
+ * sin caer en “fuente de app infantil”. Legible a 13px. El versículo
+ * usa el mismo corte en itálica, más cálido que una display geométrica.
  *
  * IBM Plex Mono — solo el panel developer. Claridad técnica, no “hacker”.
  */
 
 :root {
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --font-body: var(--font-outfit), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-nunito), "Segoe UI", system-ui, sans-serif;
+  --font-body: var(--font-nunito), "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex), ui-monospace, monospace;
 
   /* Escala. Leading holgado en lectura, más apretado en display. */
   --text-display: 2.75rem;
-  --text-display-lh: 1.05;
+  --text-display-lh: 1.08;
   --text-h1: 2rem;
-  --text-h1-lh: 1.15;
+  --text-h1-lh: 1.18;
   --text-h2: 1.5rem;
-  --text-h2-lh: 1.25;
+  --text-h2-lh: 1.28;
   --text-h3: 1.125rem;
   --text-h3-lh: 1.35;
   --text-body: 0.95rem;
@@ -33,8 +31,9 @@
   --text-micro-lh: 1.4;
   --text-verse: 1.25rem;
   --text-verse-lh: 1.55;
-  --tracking-display: -0.03em;
-  --tracking-kicker: 0.18em;
+  /* Nunito ya es ancha; el tracking negativo de una serif la aplastaría. */
+  --tracking-display: -0.015em;
+  --tracking-kicker: 0.16em;
 }
 
 body {
@@ -42,33 +41,31 @@ body {
   font-size: var(--text-body);
   line-height: var(--text-body-lh);
   color: var(--text-primary);
-  font-optical-sizing: auto;
 }
 
 h1,
 h2,
 .t-display {
   font-family: var(--font-display);
-  font-optical-sizing: auto;
   letter-spacing: var(--tracking-display);
+  font-weight: 800;
 }
 
 h1 {
   font-size: var(--text-h1);
   line-height: var(--text-h1-lh);
-  font-weight: 600;
 }
 
 h2 {
   font-size: var(--text-h2);
   line-height: var(--text-h2-lh);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h3,
 h4 {
   font-family: var(--font-body);
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--text-h3);
   line-height: var(--text-h3-lh);
 }
@@ -76,7 +73,7 @@ h4 {
 .t-kicker {
   font-family: var(--font-body);
   font-size: var(--text-micro);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: var(--tracking-kicker);
   text-transform: uppercase;
   color: var(--accent-gold);
@@ -87,7 +84,7 @@ h4 {
   font-size: var(--text-verse);
   line-height: var(--text-verse-lh);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--text-secondary);
 }
 
