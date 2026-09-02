@@ -16,6 +16,8 @@
     "type-check": "npm run type-check --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml}\"",
+    "setup:local": "node scripts/setup-local.mjs",
+    "dev:infra": "docker compose up -d postgres redis",
     "db:migrate": "npm run prisma:migrate --workspace=apps/api",
     "db:seed": "npm run prisma:seed --workspace=apps/api"
   },

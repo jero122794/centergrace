@@ -12,8 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate": "tsx prisma/run-prisma.ts migrate dev",
+    "prisma:migrate:deploy": "tsx prisma/run-prisma.ts migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate"
   },

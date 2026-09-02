@@ -1,4 +1,5 @@
 // apps/api/prisma/seed.ts
+import './load-env';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import {
