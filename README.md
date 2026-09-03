@@ -33,12 +33,13 @@ cp .env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env.local
 ```
 
-Todo en Docker (API + web + Postgres + Redis):
+Todo en Docker (API + web + Postgres + Redis). Compose lee `.env.example` si aún no existe `.env`, así que el botón Compose Up de VS Code/Cursor no exige copiar el archivo antes:
 
 ```bash
-cp .env.example .env
 docker compose up --build
 ```
+
+Para secretos locales propios, copia el example una vez (`cp .env.example .env`) y Compose lo usa encima del example.
 
 Servicios:
 
