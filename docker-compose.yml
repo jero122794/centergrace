@@ -7,6 +7,7 @@ services:
       dockerfile: apps/api/Dockerfile
     ports:
       - "3001:3001"
+    # .env is gitignored; VS Code Compose Up must still work from the committed example.
     env_file:
       - path: .env.example
         required: true
